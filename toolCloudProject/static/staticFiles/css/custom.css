@@ -1,0 +1,28 @@
+#icon {
+	height: 20px;
+	width: 20px;
+}
+
+#iconMain {
+	height: 5%;
+	width: 5%;
+}
+
+* {
+	-webkit-transition: .45s;
+	-moz-transition: .45s;
+	transition: .45s;
+}
+
+#content {
+	width: 80%;
+	margin-left: 20%;
+	margin-right: 20%;
+	max-width: 60%;
+	text-align: left;
+}
+
+#content input {
+	min-width: 50%;
+	max-width: 80%;
+}
