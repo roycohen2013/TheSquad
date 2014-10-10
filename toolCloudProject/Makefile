@@ -6,4 +6,6 @@ pull:
 	git pull origin master
 clean:
 	rm -rf *.pyc
+test: ready
+	python3 manage.py runserver
 
