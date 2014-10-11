@@ -36,4 +36,4 @@ def invalid_login(request):
 
 def logout(request):
 	logout(request)
-	return HttpResponseRedirect('/accounts/logout.html')
+	return render_to_response('logout.html')

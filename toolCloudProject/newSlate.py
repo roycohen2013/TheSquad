@@ -11,7 +11,6 @@ $Author: rxc1931 $
 #!/usr/bin/env python
 import os
 import sys
-import platform
 from subprocess import *
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
@@ -78,12 +77,9 @@ print ("--> User generation complete")
 
 print ("")
 
-
+#print (mode)
 if mode == 1:
-	if platform.system() == 'Linux' or platform.system() == 'Darwin':
-		os.system('python3 populationControl.py')
-	else:
-		os.system('python populationControl.py')
+	os.system('python populationControl.py')
 	print ("")
 
 
