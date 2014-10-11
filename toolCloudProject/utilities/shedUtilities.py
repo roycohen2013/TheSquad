@@ -17,132 +17,132 @@ from toolCloudApp.models import Profile, Tool, Shed
 """
 	Get name of shed.
 """
-def getNameOfShed(shed):
-	return shed.name
+def getNameOfShed(shedObj):
+	return shedObj.name
 
 """
-	Update name of shed.
+	Update name of shedObj.
 """
-def updateNameOfShed(shed, newName):
-	shed.name = newName
-	shed.save()
-	return shed
+def updateNameOfShed(shedObj, newName):
+	shedObj.name = newName
+	shedObj.save()
+	return shedObj
 
 """
-	Get owner of shed.
+	Get owner of shedObj.
 """
-def getOwnerOfShed(shed):
-	return shed.ownerID
-
-
-"""
-	Get admins of shed.
-"""
-def getAdminsOfShed(shed):
-	return shed.admins
+def getOwnerOfShed(shedObj):
+	return shedObj.ownerID
 
 
 """
-	Add an admin to a shed.
+	Get admins of shedObj.
 """
-def addAdminToShed(shed, profile):
-	oldAdmins = shed.admins
+def getAdminsOfShed(shedObj):
+	return shedObj.admins
+
+
+"""
+	Add an admin to a shedObj.
+"""
+def addAdminToShed(shedObj, profile):
+	oldAdmins = shedObj.admins
 	newAdmins = oldAdmins + str(profile.pk)
-	shed.admins = newAdmins
-	shed.save()
-	return shed
+	shedObj.admins = newAdmins
+	shedObj.save()
+	return shedObj
 
 
 """
-	Remove an admin from a shed.
+	Remove an admin from a shedObj.
 """
-def removeAdminFromShed(shed, profile):
-	adminList = shed.admins.split(',')
+def removeAdminFromShed(shedObj, profile):
+	adminList = shedObj.admins.split(',')
 	if profile.pk in adminList:
 		adminList.remove(profile.pk)	
 		newAdmins = ','.join(adminList)
-		shed.admins = newAdmins
-		shed.save()
-	return shed.admins
+		shedObj.admins = newAdmins
+		shedObj.save()
+	return shedObj.admins
 
 """
-	Get the members of a shed.
+	Get the members of a shedObj.
 """
-def getMembersOfShed(shed):
-	return shed.members
-
-
-"""
-	Add a member to a shed.
-"""
-def addMemberToShed(shed, profile):
-	shed.members = shed.members + ',' + str(profile.pk)
-	return shed.members
+def getMembersOfShed(shedObj):
+	return shedObj.members
 
 
 """
-	Remove a member from the shed.
+	Add a member to a shedObj.
 """
-def removeMemberFromShed(shed, profile):
-	memberList = shed.members.split(',')
+def addMemberToShed(shedObj, profile):
+	shedObj.members = shedObj.members + ',' + str(profile.pk)
+	return shedObj.members
+
+
+"""
+	Remove a member from the shedObj.
+"""
+def removeMemberFromShed(shedObj, profile):
+	memberList = shedObj.members.split(',')
 	if profile.pk in adminList:
 		memberList.remove(profile.pk)	
 		newMembers = ','.join(memberList)
-		shed.members = newMembers
-		shed.save()
-	return shed.members
+		shedObj.members = newMembers
+		shedObj.save()
+	return shedObj.members
 
 
 """
-	Get the location of the shed.
+	Get the location of the shedObj.
 """
-def getLocationOfShed(shed):
-	return shed.location
+def getLocationOfShed(shedObj):
+	return shedObj.location
 
 
 """
-	Update the location of the shed.
+	Update the location of the shedObj.
 """
-def updateLocationOfShed(shed, newLocation):
-	shed.location = newLocation
-	shed.save()
-	return shed
+def updateLocationOfShed(shedObj, newLocation):
+	shedObj.location = newLocation
+	shedObj.save()
+	return shedObj
 
 
 """
-	Get the sharezone of a shed.
+	Get the sharezone of a shedObj.
 """
-def getSharezoneOfShed(shed):
-	return shed.sharezone
+def getSharezoneOfShed(shedObj):
+	return shedObj.sharezone
 
 
 """
-	Get the longitude of a shed.
+	Get the longitude of a shedObj.
 """
-def getLongitudeOfShed(shed):
-	return shed.longitude
+def getLongitudeOfShed(shedObj):
+	return shedObj.longitude
 
 
 """
-	Update the longitude of the shed.
+	Update the longitude of the shedObj.
 """
-def updateLongitudeOfShed(shed, newLongitude):
-	shed.longitude = newLongitude
-	shed.save()
-	return shed.longitude
+def updateLongitudeOfShed(shedObj, newLongitude):
+	shedObj.longitude = newLongitude
+	shedObj.save()
+	return shedObj.longitude
 
 
 """
-	Get the latitude of the shed.
+	Get the latitude of the shedObj.
 """
-def getLatitudeOfShed(shed):
-	return shed.latitude
+def getLatitudeOfShed(shedObj):
+	return shedObj.latitude
 
 
 """
-	Update the latitude of the shed.
+	Update the latitude of the shedObj.
 """
-def updateLatitudeOfShed(shed, newLatitude):
-	shed.latitude = newLatitude
-	shed.save()
-	return shed.latitude
+def updateLatitudeOfShed(shedObj, newLatitude):
+	shedObj.latitude = newLatitude
+	shedObj.save()
+	return shedObj.latitude
