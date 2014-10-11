@@ -66,7 +66,8 @@ class Tool(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
-	ownerID = models.OneToOneField('Profile', related_name='owner_ID') #the Profile who owns this tool
+	tags = models.CharField(max_length=200) #categories that apply to this tool object
+	ownerID = models.OneToOneField('Profile', null=True, related_name='owner_ID') #the Profile who owns this tool
 	borrowerID = models.OneToOneField('Profile',null=True, related_name='borrower_ID') # the Profile who is borrowing the tool
 	myShed = models.OneToOneField('Shed',null=True) #the Shed this tool is apart of
 	location = models.CharField(max_length=75) #current location of the tool

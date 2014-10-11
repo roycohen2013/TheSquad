@@ -5,11 +5,15 @@ $Author: $
 
 """
 
+"""This file contains all forms for User, Profile, and Tool creation.
+
+"""
 from django import forms
+from django.forms import ModelForm
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from toolCloudApp.models import Profile
+from toolCloudApp.models import Profile, Tool
 from django.utils import timezone
 
 """This form will create a new user and linked profile
@@ -40,3 +44,26 @@ class UserRegistrationForm(UserCreationForm):
             newProfile.user = user
             newProfile.save()
         return user
+
+"""This form will create a new Tool (link to user created in views.py)
+
+"""
+
+class ToolCreationForm(ModelForm):
+
+    class Meta:
+        model = Tool
+        fields = ('name', 'description', 'tags', 'condition')
+
+    def save(self,commit = True):
+        tool = super(ToolCreationForm, self).save(commit = False)
+        tool.timeCreated = timezone.now()
+        tool.isAvailable = 1
+        tool.location = ''
+        tool.picture = ''
+        tool.borrowedCount = 0
+        tool.requestedCount = 0
+        tool.preferences = ''
+        if commit:
+            tool.save()
+        return tool

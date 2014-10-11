@@ -19,5 +19,5 @@ urlpatterns = patterns('',
 
 
 	# Tool urls
-	#url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission')
+	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission')
 )
