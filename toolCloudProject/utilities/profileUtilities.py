@@ -2,6 +2,7 @@
 $Date $
 $Revision $
 $Author $
+
 Provides functionality for all front end requests regarding profiles.
 """
 
@@ -15,84 +16,158 @@ from toolCloudApp.models import Profile, Tool, Shed
 
 
 """
-	Return a list of all profiles in the database
+	Return a list of all profile objects in the entire database.
+	(regardless of sharezone)
 """
-def listAllProfiles():
+def getAllProfiles():
 	return Profile.objects.all()
 
 
 """
-	Get the Django User object related to this Profile.
+	Return a list of all profiles in a specific sharezone.
 """
-def getUserofProfile(profileID):
-	return profile.user
+def getAllProfilesInSharezone(sharezone):
+	return Profile.objects.filter(sharezone=sharezone)
+
+
+"""
+	Get the Django User object related to this Profile object.
+"""
+def getUserofProfile(profileObj):
+	return profileObj.user
 
 
 """
 	Get the Profile object related to this User object.
 """
-def getProfileFromUser(userID):
-	return Profile.objects.get(user=userID)
-
-"""
-	Get the phone number of a Profile.
-"""
-def getPhoneNumber(profile):
-	return profile.phoneNumber
-
-"""
-	Update the phone number of a Profile.
-"""
-def updatePhoneNumber(profile, newNumber):
-	profile.phoneNumber = newNumber
-	profile.save()
-	return profile
+def getProfileFromUser(userObj):
+	return Profile.objects.get(user=userObj)
 
 
 """
-	Get the address of a Profile.
+	Get the first name of a Profile object.
 """
-def getAddress(profile):
-	return profile.address
+def getFirstName(profileObj):
+	return profileObj.user.first_name
 
 
 """
-	Update the address of a profile.
+	Update the first name of a Profile object.
 """
-def updateAddress(profile, newAddress):
-	profile.address = newAddress
-	profile.save()
-	return profile
+def updateFirstName(profileObj, newFirstName):
+	profileObj.user.first_name = newFirstName
+	profileObj.user.save()
+	profileObj.save()
+	return profileObj
 
 
 """
-	Get the reputation of a Profile.
+	Get the last name of a Profile object.
 """
-def getReputation(profile):
-	return profile.reputation
+def getLastName(profileObj):
+	return profileObj.user.last_name
 
 
 """
-	Update the reputation of a profile by a factor. The new reputation will be
+	Update the last name of a Profile object.
+"""
+def updateLastName(profileObj, newLastName):
+	profileObj.user.last_name = newLastName
+	profileObj.user.save()
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Get the username of a Profile object.
+"""
+def getUsername(profileObj):
+	return profileObj.user.username
+
+
+"""
+	Get email of a Profile object.
+"""
+def getEmail(profileObject):
+	return profileObj.user.email
+
+
+"""
+	Get the phone number of a Profile object.
+"""
+def getPhoneNumber(profileObj):
+	return profileObj.phoneNumber
+
+
+"""
+	Update the phone number of a Profile object.
+"""
+def updatePhoneNumber(profileObj, newNumber):
+	profileObj.phoneNumber = newNumber
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Get the address of a Profile object.
+"""
+def getAddress(profileObj):
+	return profileObj.address
+
+
+"""
+	Update the address of a Profile object.
+"""
+def updateAddress(profileObj, newAddress):
+	profileObj.address = newAddress
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Get the reputation of a Profile object.
+"""
+def getReputation(profileObj):
+	return profileObj.reputation
+
+
+"""
+	Update the reputation of a Profile by a factor. The new reputation will be
 	the old reputation multiplied by the factor.
 """
-def updateReputation(profile, factor):
-	profile.reputation = (profile.reputation * factor)
-	profile.save()
-	return profile
+def updateReputation(profileObj, factor):
+	profileObj.reputation = (profileObj.reputation * factor)
+	profileObj.save()
+	return profileObj
 
 
 """
-	Get the sharezone of a Profile.
+	Get the sharezone of a Profile object.
 """
-def getSharezone(profile):
-	return profile.sharezone
+def getSharezone(profileObj):
+	return profileObj.sharezone
 
 
 """
-	Update the sharezone of a Profile.
+	Update the sharezone of a Profile object.
 """
-def updateSharezone(profile, newSharezone):
-	profile.sharezone = newSharezone
-	profile.save()
-	return profile
+def updateSharezone(profileObj, newSharezone):
+	profileObj.sharezone = newSharezone
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Get the status of a Profile object.
+"""
+def getStatus(profileObj):
+	return profileObj.status
+
+
+"""
+	Update the status of a Profile object.
+"""
+def updateStatus(profileObj, newStatus):
+	profileObj.status = newStatus
+	profileObj.save()
+	return profileObj
