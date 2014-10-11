@@ -31,7 +31,7 @@
 <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -65,12 +65,12 @@
     </nav>
 
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" id="content">
         <div class="row">
             <div class="col-lg-12 text-center">
-            <h1 style="padding-top:5%;">ToolShare
+            <h1 id="heading" style="padding-top:5%;">ToolShare
             <img id="iconMain" src="{% static 'img/shed.png' %}"/></h1>
-                <div id="content">
+                <div id="contentBlock">
                     {% block content %}{% endblock %}
                 </div>
             </div>
