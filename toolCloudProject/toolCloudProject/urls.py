@@ -11,11 +11,11 @@ urlpatterns = patterns('',
 	url(r'^accounts/register/$', 'toolCloudApp.views.user_register'),
 
     # Accounts urls
-	url(r'^accounts/login/$', 'toolCloudApp.views.login'),
-	url(r'^accounts/logout/$', 'toolCloudApp.views.logout'),
-	url(r'^accounts/auth/$', 'toolCloudApp.views.auth_view'),
-	url(r'^accounts/loggedin/$', 'toolCloudApp.views.loggedin'),
-	url(r'^accounts/invalid/$', 'toolCloudApp.views.invalid_login'),
+	url(r'^accounts/login/$', 'toolCloudProject.views.login'),
+	url(r'^accounts/logout/$', 'toolCloudProject.views.logout'),
+	url(r'^accounts/auth/$', 'toolCloudProject.views.auth_view'),
+	url(r'^accounts/loggedin/$', 'toolCloudProject.views.loggedin'),
+	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 
 
 	# Tool urls

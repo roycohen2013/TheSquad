@@ -20,7 +20,7 @@ def auth_view(request):
 	user = auth.authenticate(username=username,password=password)
 
 	if user is not None:
-		auth.login(request,user)
+		login(request,user)
 		return HttpResponseRedirect('/accounts/loggedin')
 	else:
 		return HttpResponseRedirect('/accounts/invalid')
