@@ -2,7 +2,9 @@
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
 from django.core.context_processors import csrf
 
 
@@ -20,8 +22,7 @@ def auth_view(request):
 	user = authenticate(username=username,password=password)
 
 	if user is not None:
-		login(request)
-
+		auth_login(request,user)
 		return HttpResponseRedirect('/accounts/loggedin')
 	else:
 		return HttpResponseRedirect('/accounts/invalid')
@@ -35,5 +36,5 @@ def invalid_login(request):
 	return render_to_response('invalid_login.html')
 
 def logout(request):
-	logout(request)
+	auth_logout(request)
 	return render_to_response('logout.html')
