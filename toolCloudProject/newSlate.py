@@ -24,7 +24,7 @@ print ("")
 
 # Get the arguments list 
 #cmdargs = str(sys.argv)
-#total = len(sys.argv)
+total = len(sys.argv)
 mode = 1 					#default arguments list
 
 if total > 1:
