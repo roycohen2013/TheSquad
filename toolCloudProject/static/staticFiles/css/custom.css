@@ -1,6 +1,6 @@
 #nav {
-	height: 7.12vh;
-	min-height: 0;
+	height: 5vw;
+	min-height: 45px;
 }
 
 #icon {
@@ -12,6 +12,7 @@
 
 #content #heading {
 	font-size: 4.6vw;
+	padding-top: 8vw;
 }
 
 #iconMain {
