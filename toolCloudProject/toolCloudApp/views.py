@@ -27,7 +27,11 @@ def user_login(request):
                     return HttpResponse("Not active")
             else:
                 return HttpResponse("Wrong username/password")
-    return HttpResponseRedirect("/")
+    return render(request, 'myapp/login_error.html')
+    
+
+
+    #return HttpResponseRedirect("/")
 
 # User Logout View
 def user_logout(request):
