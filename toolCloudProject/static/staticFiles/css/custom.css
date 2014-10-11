@@ -1,6 +1,17 @@
+#nav {
+	height: 7.12vh;
+	min-height: 0;
+}
+
 #icon {
 	height: 20px;
+	height: 1.56vw;
 	width: 20px;
+	width: 1.56vw;
+}
+
+#content #heading {
+	font-size: 4.6vw;
 }
 
 #iconMain {
@@ -14,7 +25,7 @@
 	transition: .45s;
 }
 
-#content {
+#contentBlock {
 	width: 80%;
 	margin-left: 20%;
 	margin-right: 20%;
@@ -22,7 +33,7 @@
 	text-align: left;
 }
 
-#content input {
+#contentBlock input {
 	min-width: 50%;
 	max-width: 80%;
 }
