@@ -19,32 +19,6 @@ def home(request):
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm
 
-# User Login View
-def user_login(request):
-    if request.user.is_anonymous():
-        if request.method == 'POST':
-            username = request.POST['username']
-            password = request.POST['password']
-            #This authenticates the user
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                if user.is_active:
-                    #This logs him in
-                    login(request, user)
-                else:
-                    return HttpResponse("Not active")
-            else:
-                return HttpResponse("Wrong username/password")
-    return render(request, 'myapp/login_error.html')
-    
-
-
-    #return HttpResponseRedirect("/")
-
-# User Logout View
-def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect('/')
 
 # User Register View
 def user_register(request):
