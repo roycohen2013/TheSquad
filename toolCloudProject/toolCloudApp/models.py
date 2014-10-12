@@ -24,7 +24,7 @@ class Profile(models.Model):
 	def __str__(self):
 		myList = ["Name: " + self.user.first_name + " " + self.user.last_name, \
 					"Sharezone: " + self.sharezone]
-		return " ".join(myList)
+		return ",".join(myList)
 
 
 class Shed(models.Model):
@@ -43,7 +43,7 @@ class Shed(models.Model):
 
 	def __str__(self):
 		myList = ["Name: " + self.name, "Sharezone: " + self.sharezone, \
-						"Owned by " + self.ownerID.user.username]
+						"Owned by " + self.owner.user.username]
 		return ",".join(myList)
 
 class Tool(models.Model):
@@ -52,9 +52,9 @@ class Tool(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
 	tags = models.CharField(max_length=200) #categories that apply to this tool object
-	owner = models.OneToOneField('Profile', related_name='owner_ID') #the Profile who owns this tool
-	borrower = models.OneToOneField('Profile',null=True, related_name='borrower_ID') # the Profile who is borrowing the tool
-	myShed = models.OneToOneField('Shed',null=True) #the Shed this tool is apart of
+	owner = models.ForeignKey('Profile', related_name='ownerOfTool') #the Profile who owns this tool
+	borrower = models.ForeignKey('Profile',null=True, related_name='borrowerOfTool') # the Profile who is borrowing the tool
+	myShed = models.ForeignKey('Shed',null=True) #the Shed this tool is apart of
 	location = models.CharField(max_length=75) #current location of the tool
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	condition = models.IntegerField(default=0) #0-10 scale
@@ -64,10 +64,9 @@ class Tool(models.Model):
 	preferences = models.CharField(max_length=50) #serialized JSON object
 
 
-
 	def __str__(self):
-		myList = ["Name: " + self.name, "Owned by " + self.ownerID.user.username, \
-					"Borrowed by" + self.borrowerID, "My shed: " + self.myShed.name]
+		myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
+					"Borrowed by" + self.borrower, "My shed: " + self.myShed.name]
 		return ",".join(myList)
 
 
