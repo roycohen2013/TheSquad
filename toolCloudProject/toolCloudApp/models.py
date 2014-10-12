@@ -48,6 +48,7 @@ class Shed(models.Model):
 
 class Tool(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
+	timeLastEdited = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
 	tags = models.CharField(max_length=200) #categories that apply to this tool object
@@ -61,6 +62,8 @@ class Tool(models.Model):
 	borrowedCount = models.IntegerField(default=0) # times Tool borrowed
 	requestedCount = models.IntegerField(default=0) # times Tool requested
 	preferences = models.CharField(max_length=50) #serialized JSON object
+
+
 
 	def __str__(self):
 		myList = ["Name: " + self.name, "Owned by " + self.ownerID.user.username, \
