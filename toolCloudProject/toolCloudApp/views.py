@@ -14,7 +14,7 @@ import utilities.extraUtilities, utilities.profileUtilities, utilities.shedUtili
 import utilities.content as content
 
 def home(request):
-	return render(request, 'base.html', content.getDefaults())
+    return render(request, 'base.html', content.genContent(request))
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm
