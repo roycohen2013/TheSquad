@@ -30,7 +30,7 @@ class Profile(models.Model):
 class Shed(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=50)
-	ownerID = models.OneToOneField('Profile') #the Profile who owns this shed
+	owner = models.OneToOneField('Profile') #the Profile who owns this shed
 	admins = models.ManyToManyField('Profile',related_name='adminOfShed',null=True) #admins of shed
 	members = models.ManyToManyField('Profile',related_name='memberOfShed',null=True) #members of shed
 	location = models.CharField(max_length=75) #address of the shed
@@ -51,8 +51,8 @@ class Tool(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
 	tags = models.CharField(max_length=200) #categories that apply to this tool object
-	ownerID = models.OneToOneField('Profile', null=True, related_name='owner_ID') #the Profile who owns this tool
-	borrowerID = models.OneToOneField('Profile',null=True, related_name='borrower_ID') # the Profile who is borrowing the tool
+	owner = models.OneToOneField('Profile', related_name='owner_ID') #the Profile who owns this tool
+	borrower = models.OneToOneField('Profile',null=True, related_name='borrower_ID') # the Profile who is borrowing the tool
 	myShed = models.OneToOneField('Shed',null=True) #the Shed this tool is apart of
 	location = models.CharField(max_length=75) #current location of the tool
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED

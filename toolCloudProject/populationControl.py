@@ -17,7 +17,7 @@ for x in range(10):
 			sharezone = '14623' + x, status = 'New User' + x, preferences = 'Test' + x)
 	newProfile.save()
 	
-	newShed = Shed(name = "Test" + x, ownerID = newProfile, location = x, sharezone = x, status = x, preferences = x)
+	newShed = Shed(name = "Test" + x, owner = newProfile, location = x, sharezone = x, status = x, preferences = x)
 	newShed.save()
 	
 	if (int(x) % 2 == 0):
@@ -26,7 +26,7 @@ for x in range(10):
 		isToolAvailable = 0
 
 	newTool = Tool(name = tools[int(x)], description = x, location = x, isAvailable = isToolAvailable, preferences = x, \
-		ownerID = newProfile, borrowerID = newProfile)
+		owner = newProfile, tags = x)
 	newTool.save()
 	
 	

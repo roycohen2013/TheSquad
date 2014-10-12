@@ -2,6 +2,7 @@
 $Date $
 $Revision $
 $Author $
+
 Provides functionality for all front end requests regarding tools.
 """
 
@@ -17,13 +18,14 @@ from toolCloudApp.models import Profile, Tool, Shed
 """
 	Creates a new Tool and saves it to the database.
 """
-def newTool(name, description, ownerID, location, picture, isAvailable, preferences):
+def createNewTool(name, description, ownerObj, location, picture, isAvailable, \
+					preferences, tags):
 	toolObject = Tool()
 	toolObject.name = name
 	toolObject.description = description
-	toolObject.ownerID = ownerID
+	toolObject.tags = tags
+	toolObject.owner = ownerObj
 	toolObject.location = location
-	toolObject.picture = picture
 	toolObject.isAvailable = isAvailable
 	toolObject.preferences = preferences
 	toolObject.save()
@@ -70,14 +72,14 @@ def	listAllAvailToolsInShed(shedID):
 	Return a list of all tools owned by a specific person.
 """
 def listAllToolsOwnedBy(profileID):
-	return Tool.objects.filter(ownerID=profileID)
+	return Tool.objects.filter(owner=profileID)
 
 
 """
 	Return a list of all tools being borrowed by a specific person.
 """
 def listAllToolsBorrowedBy(profileID):
-	return Tool.objects.filter(borrowerID=profileID)
+	return Tool.objects.filter(borrower=profileID)
 
 
 """

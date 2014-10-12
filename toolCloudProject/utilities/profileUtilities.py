@@ -16,6 +16,21 @@ from toolCloudApp.models import Profile, Tool, Shed
 
 
 """
+	Create a new Profile and save it to the database.
+"""
+def createNewProfile(firstName,lastName,username,email,password,phoneNumber, \
+										address,sharezone,status,preferences):
+	newProfile = Profile(user = User.objects.create_user(username,email,password), \
+						phoneNumber = phoneNumber, address = address, sharezone = sharezone, \
+						status = status, preferences = preferences)
+	newProfile.user.first_name = firstName
+	newProfile.user.last_name = lastName
+	newProfile.user.save()
+	newProfile.save()
+	return newProfile
+
+
+"""
 	Return a list of all profile objects in the entire database.
 	(regardless of sharezone)
 """

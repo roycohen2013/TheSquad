@@ -16,7 +16,25 @@ from toolCloudApp.models import Profile, Tool, Shed
 
 
 """
-	Get all sheds in a sharezone.
+	Create a new shed owned by a given Profile.
+"""
+def createNewShed(ownerProfileObj,name,location,sharezone,status,preferences):
+	newShed = Shed(name=name,owner=ownerProfileObj,location=location, \
+					sharezone=sharezone,status=status,preferences=preferences)
+	newShed.save()
+	return newShed
+
+
+"""
+	Get all sheds in the entire database.
+	(regardless of sharezone)
+"""
+def getAllShedsAllSharezones():
+	return Shed.objects.all()
+
+
+"""
+	Get all sheds in a given sharezone.
 """
 def getAllShedsInSharezone(sharezone):
 	return Shed.objects.filter(sharezone=sharezone)
@@ -92,7 +110,7 @@ def updateNameOfShed(shedObj, newName):
 	Get owner of shed.
 """
 def getOwnerOfShed(shedObj):
-	return shedObj.ownerID
+	return shedObj.owner
 
 
 """
