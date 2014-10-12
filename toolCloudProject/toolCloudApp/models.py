@@ -57,7 +57,7 @@ class Tool(models.Model):
 	location = models.CharField(max_length=75) #current location of the tool
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	condition = models.IntegerField(default=0) #0-10 scale
-	isAvailable = models.IntegerField() # 0 if not available, 1 if available
+	isAvailable = models.BooleanField()
 	borrowedCount = models.IntegerField(default=0) # times Tool borrowed
 	requestedCount = models.IntegerField(default=0) # times Tool requested
 	preferences = models.CharField(max_length=50) #serialized JSON object

@@ -21,9 +21,9 @@ for x in range(10):
 	newShed.save()
 	
 	if (int(x) % 2 == 0):
-		isToolAvailable = 1
+		isToolAvailable = True
 	else:
-		isToolAvailable = 0
+		isToolAvailable = False
 
 	newTool = Tool(name = tools[int(x)], description = x, location = x, isAvailable = isToolAvailable, preferences = x, \
 		owner = newProfile, tags = x)
