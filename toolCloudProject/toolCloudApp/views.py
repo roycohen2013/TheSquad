@@ -11,9 +11,10 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(1,parentdir) 
 """
 import utilities.extraUtilities, utilities.profileUtilities, utilities.shedUtilities, utilities.toolUtilities
+import utilities.content as content
 
 def home(request):
-	return render(request, 'base.html', {'heading' : 'ToolCloud'})
+	return render(request, 'base.html', content.getDefaults())
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm

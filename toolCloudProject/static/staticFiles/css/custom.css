@@ -38,3 +38,7 @@
 	min-width: 50%;
 	max-width: 80%;
 }
+
+#greeting {
+	color: rgba(3,3,150,.8);
+}
