@@ -44,7 +44,8 @@ elif mode == 2:
 
 
 print ("-->	Collecting static files...")
-os.system('manage.py collectstatic')
+#os.system('manage.py collectstatic')
+management.call_command('collectstatic',interactive=False)
 print ("-->	Static files collected")
 
 
