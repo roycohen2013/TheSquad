@@ -113,3 +113,6 @@ class Notification(models.Model):
 
 class Action(models.Model):
 	content = models.CharField(max_length=50) #serialized JSON object
+	#toolID
+	#RequesterID
+	#currrentState
