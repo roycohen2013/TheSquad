@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 toolCloudProject/static/staticRoot/*
+=======
+static/staticroot/
+>>>>>>> b78cf0ccc4b31011e5e0d4090f5f94873d0cfb99
 *.sqlite3
 *.pyc

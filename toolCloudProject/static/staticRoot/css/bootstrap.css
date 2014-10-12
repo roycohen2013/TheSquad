@@ -4188,32 +4188,32 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   color: #ccc;
 }
 .navbar-inverse {
-  background-color: #222;
+  background-color: rgba(205,205,205,.8);
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
-  color: #777;
+  color: rgba(20,20,20,.8);
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #fff;
+  color: rgba(80,30,200,.6);
   background-color: transparent;
 }
 .navbar-inverse .navbar-text {
-  color: #777;
+  color: rgba(150,20,205,.8);
 }
 .navbar-inverse .navbar-nav > li > a {
-  color: #777;
+  color: rgba(10,30,10,.8);
 }
 .navbar-inverse .navbar-nav > li > a:hover,
 .navbar-inverse .navbar-nav > li > a:focus {
-  color: #fff;
-  background-color: transparent;
+    color: rgba(5,5,5,.6);
+    background-color: transparent;
 }
 .navbar-inverse .navbar-nav > .active > a,
 .navbar-inverse .navbar-nav > .active > a:hover,
 .navbar-inverse .navbar-nav > .active > a:focus {
-  color: #fff;
+  color: #111;
   background-color: #080808;
 }
 .navbar-inverse .navbar-nav > .disabled > a,
