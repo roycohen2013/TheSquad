@@ -18,6 +18,12 @@ class Profile(models.Model):
 	reputation = models.IntegerField(default=50) #0..100 rating
 	preferences = models.CharField(max_length=50)
 
+	preferences_Privacy = models.IntegerField(default=0)
+	#publi   0 - you can see everything 
+	#private 1 - persons name
+	#secret  2 - initials
+
+
 	#registered = models.IntegerField(default=0) #0: user has not yet completed their profile, 1: user can login and use
 	# all features of site
 
@@ -41,6 +47,25 @@ class Shed(models.Model):
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	preferences = models.CharField(max_length=50)
 
+	preferences_Privacy = models.IntegerField(default=-1)				
+	#public: 0 - Open anyone can see the shed and borrow from it. Request to join is accepted automaticly
+		#NonMemberview - anyone in community can see, tools,members,address
+		#joining   	   - Request is accepted automaticly
+
+	#private 1 - Open to only people who have been authorized, See name,owner,number of members,number of tools but no particulars like specific tools,users
+		#NonMemberView - anyone in community can see, number of members, number of tools
+		#joining       - Request to join must be aproved by a shed admin
+
+	#secret  2 - no one can see the shed even exists but people who have been invited to it
+		#NonMemberView - no one that is not a shed member is even aware of this shed.
+		#joining 	   - Join is only on invite by a shed admin
+
+	preferences_MinumumReputation = models.IntegerField(default=-1) # this only applies to public sheds
+
+
+
+
+
 	def __str__(self):
 		myList = ["Name: " + self.name, "Sharezone: " + self.sharezone, \
 						"Owned by " + self.owner.user.username]
@@ -62,6 +87,18 @@ class Tool(models.Model):
 	borrowedCount = models.IntegerField(default=0) # times Tool borrowed
 	requestedCount = models.IntegerField(default=0) # times Tool requested
 	preferences = models.CharField(max_length=50) #serialized JSON object
+
+	preferences_Default_MaxBorrowTime = models.IntegerField(default=30) #time measured in days only 
+	#applies to tools if free to borrow is enabled 
+	#0 means unlimited time
+
+	preferences_DefaultFreeToBorrow = models.IntegerField(default=0)  
+	#0 means borrow request accepted automaticly
+	#1 means aproval of borrow request required
+
+	preferences_MinimumReputation = models.IntegerField(default=0) 
+	#if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
+
 
 
 	def __str__(self):
