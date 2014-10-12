@@ -32,9 +32,22 @@
 
     <!-- Navigation -->
     <nav id="nav">
-        <ul>
-            <li><a>{{ name }}</a></li>
-        </ul>
+        <div id="links">
+            <ul>
+                <li><a href="/accounts/logout">logout</a></li>
+            </ul>
+        </div>
+        <div id="userInfo">
+            <ul>
+                <li><a>{{ username }}</a></li>
+                <li><a>{{ first_name }}</a></li>
+                <li><a>{{ last_name }}</a></li>
+                <li><a>{{ address }}</a></li>
+            </ul>
+            <a>Notifications</a>
+            <ul id="notis">
+            </ul>
+        </div>
     </nav>
 
     <!-- Page Content -->

@@ -116,3 +116,9 @@
   padding:.25vw;
   height:2.5vw;
 }
+
+#userInfo {
+	margin-top: 10%;
+	background-color: rgba(120,120,120,.2);
+	height: 35%;
+}
