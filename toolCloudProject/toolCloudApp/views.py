@@ -59,5 +59,5 @@ def tool_submission(request):
             form = ToolCreationForm()
         context = {}
         context.update(csrf(request))
-        conext['form'] = form
+        context['form'] = form
         return render_to_response('tool_creation.html', context)
