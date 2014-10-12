@@ -1,9 +1,11 @@
+"""
+	Our database tables.
+"""
+
+
 from django.db import models
 from django.contrib.auth.models import User
 
-"""
-	Our database tables
-"""
 
 class Profile(models.Model):
 	user = models.OneToOneField(User)
@@ -20,8 +22,10 @@ class Profile(models.Model):
 	# all features of site
 
 	def __str__(self):
-		myList = [self.user.first_name, self.user.last_name]
+		myList = ["Name: " + self.user.first_name + " " + self.user.last_name, \
+					"Sharezone: " + self.sharezone]
 		return " ".join(myList)
+
 
 class Shed(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
@@ -38,7 +42,8 @@ class Shed(models.Model):
 	preferences = models.CharField(max_length=50)
 
 	def __str__(self):
-		myList = [self.name, self.sharezone, self.ownerID.user.username]
+		myList = ["Name: " + self.name, "Sharezone: " + self.sharezone, \
+						"Owned by " + self.ownerID.user.username]
 		return ",".join(myList)
 
 class Tool(models.Model):
@@ -58,12 +63,14 @@ class Tool(models.Model):
 	preferences = models.CharField(max_length=50) #serialized JSON object
 
 	def __str__(self):
-		myList = [self.name, self.ownerID, self.borrowerID, self.myShed, \
-					self.condition, self.isAvailable, self.timeCreated]
+		myList = ["Name: " + self.name, "Owned by " + self.ownerID.user.username, \
+					"Borrowed by" + self.borrowerID, "My shed: " + self.myShed.name]
 		return ",".join(myList)
+
 
 class Notification(models.Model):
 	content = models.CharField(max_length=50) #serialized JSON object
+
 
 class Action(models.Model):
 	content = models.CharField(max_length=50) #serialized JSON object
