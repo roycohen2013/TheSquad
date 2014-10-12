@@ -17,7 +17,7 @@
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
-    <link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,40 +31,10 @@
 <body>
 
     <!-- Navigation -->
-    <nav id="nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">{{ heading }}
-                <img id="icon" src="{% static 'img/shed.png' %}"/></a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a id="greeting">Hello {{ name }}!</a>
-                    </li>
-                    <li>
-                        <a id="registerBtn" href="/accounts/register">Register</a>
-                    </li>
-                    <li>
-                        <a id="loginBtn" href="/accounts/login">Login</a>
-                    </li>
-                    <li>
-                        <a id="logoutBtn" href="/accounts/logout">Logout</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
+    <nav id="nav">
+        <ul>
+            <li><a>{{ name }}</a></li>
+        </ul>
     </nav>
 
     <!-- Page Content -->

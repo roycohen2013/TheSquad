@@ -1,0 +1,45 @@
+#nav {
+	height: 5vw;
+	min-height: 45px;
+	background-color: rgba(0,0,0,.4);
+}
+
+#icon {
+	height: 20px;
+	height: 1.56vw;
+	width: 20px;
+	width: 1.56vw;
+}
+
+#content #heading {
+	font-size: 4.6vw;
+	padding-top: 8vw;
+}
+
+#iconMain {
+	height: 5%;
+	width: 5%;
+}
+
+* {
+	-webkit-transition: .45s;
+	-moz-transition: .45s;
+	transition: .45s;
+}
+
+#contentBlock {
+	width: 80%;
+	margin-left: 20%;
+	margin-right: 20%;
+	max-width: 60%;
+	text-align: left;
+}
+
+#contentBlock input {
+	min-width: 50%;
+	max-width: 80%;
+}
+
+#greeting {
+	color: rgba(3,3,150,.8);
+}
