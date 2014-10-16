@@ -20,6 +20,10 @@ def genContent(request):
 	custom = defaults.copy()
 	name = request.user.username
 	replace(custom, 'name', name)
+	custom['first_name']=request.user.first_name
+	custom['last_name']=request.user.last_name
+	profile = profileUtil.getProfileFromUser(request.user)
+	custom['address']=profileUtil.getAddress(profile)
 	return custom
 
 def getDefaults():
