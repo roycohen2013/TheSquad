@@ -47,13 +47,11 @@ def tool_submission(request):
         return HttpResponseRedirect('/') #redirect to login page
     else:
         if request.method == 'POST':
-            form = ToolCreationForm(request.POST)
+            form = ToolCreationForm(request.user, request.POST)
             if form.is_valid:
-                tool = form.save()
-                tool.ownerID = profileUtilities.getProfileFromUser(request.user)
-                tool.save()
+                form.save()
                 #send email
-                #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data[] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
+                #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 return HttpResponse('Tool submitted successfully.')
         else:
             form = ToolCreationForm()

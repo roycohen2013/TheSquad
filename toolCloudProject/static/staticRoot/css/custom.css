@@ -1,6 +1,5 @@
 #nav {
-	height: 5vw;
-	min-height: 45px;
+	background-color: rgba(0,0,0,.4);
 }
 
 #icon {
@@ -26,8 +25,15 @@
 	transition: .45s;
 }
 
+#content {
+	width: 85%;
+	margin-left: 15%;
+	padding-right: 15%;
+	padding-left: 0;
+}
+
 #contentBlock {
-	width: 80%;
+	width: 80%;/*contradiction TODO fix this*/
 	margin-left: 20%;
 	margin-right: 20%;
 	max-width: 60%;
@@ -41,4 +47,78 @@
 
 #greeting {
 	color: rgba(3,3,150,.8);
+}
+
+#nav a {
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #151515;
+  
+  transition-delay: 0s;
+  transition-duration: 0.36s;
+  transition-property: all;
+  transition-timing-function: line;
+}
+
+#nav a:hover { font-weight: 400; }
+
+#nav,
+#nav:hover { padding: 1vw; }
+
+#nav a { text-indent: -15.6vw; }
+
+#nav:hover a {
+  text-indent:0px;
+  color: #EEFFE5;
+}
+
+#nav {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+  height: 100%;
+  width: 3%;
+  background-color: #ccc;
+  
+  transition-delay: 0s;
+  transition-duration: 0.4s;
+  transition-property: all;
+  transition-timing-function: line;
+}
+
+#nav:hover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 15%;
+  background-color: #9ED29E;
+}
+
+#nav a {
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity:0;
+  margin-left: 1vw;
+}
+
+#nav:hover a {
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: alpha(opacity=100);
+  opacity:1;
+}
+
+#nav li {
+  display: block;
+  padding:.25vw;
+  height:2.5vw;
+}
+
+#userInfo {
+	margin-top: 10%;
+	background-color: rgba(120,120,120,.2);
+	height: 35%;
 }
