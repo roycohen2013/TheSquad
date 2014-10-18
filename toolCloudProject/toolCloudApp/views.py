@@ -44,7 +44,7 @@ def user_register(request):
 def tool_submission(request):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
-        return HttpResponseRedirect('/') #redirect to login page
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
@@ -63,22 +63,23 @@ def tool_submission(request):
 def view_profile(request):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
-        return HttpResponseRedirect('/') #redirect to login page
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInShareZone = profileUtil.getAllProfilesInShareZone(profileUtil.getShareZone(userProfile))
+            profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
         else:
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInSharezone = profileUtil.getAllProfilesInSharezone(profileUtil.getSharezone(userProfile))
+            profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
         context = {}
         context.update(csrf(request))
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
-        context['profilesInShareZone'] = profilesInSharezone
+        context['profilesInSharezone'] = profilesInSharezone
+        print(profilesInSharezone)
         return render_to_response('view_profile.html', context)

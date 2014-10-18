@@ -46,6 +46,14 @@ def getAllProfilesInSharezone(sharezone):
 
 
 """
+	Returns a list of all profiles in a specific sharezone other than me.
+"""
+def getAllOtherProfilesInSharezone(profileObj):
+	sharezone = profileObj.sharezone
+	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username)
+
+
+"""
 	Get the Django User object related to this Profile object.
 """
 def getUserofProfile(profileObj):
