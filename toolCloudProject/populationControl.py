@@ -23,7 +23,7 @@ for x in range(len(names)):
 	x = str(x)
 	newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
 						 phoneNumber = '0000000000', address = 'address', sharezone = '14623', \
-						 status = 'status', preferences = 'preferences')
+						 status = 'status')
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
 	newProfile.user.save()
@@ -39,7 +39,7 @@ shedObjects = []
 for x in range(len(shedNames)):
 
 	newShed = Shed(name=shedNames[x], owner=profileObjects[x], location='location', \
-					sharezone='14623', status='status', preferences='preferences')
+					sharezone='14623', status='status')
 	newShed.save()
 	shedObjects.append(newShed)
 
@@ -52,7 +52,7 @@ toolObjects = []
 for x in range(len(toolNames)):
 
 	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
-					isAvailable = True, preferences = 'preferences', tags = 'tags')
+					isAvailable = True, tags = 'tags')
 	newTool.owner = profileObjects[x%len(profileObjects)]
 	newTool.save()
 	toolObjects.append(newTool)

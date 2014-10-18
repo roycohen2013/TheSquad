@@ -17,7 +17,6 @@ class Profile(models.Model):
 	status = models.CharField(max_length=50)
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	reputation = models.IntegerField(default=50) #0..100 rating
-	preferences = models.CharField(max_length=50)
 
 	preferences_Privacy = models.IntegerField(default=0)
 	#publi   0 - you can see everything 
