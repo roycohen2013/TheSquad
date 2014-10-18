@@ -44,6 +44,7 @@ def getAllProfiles():
 def getAllProfilesInSharezone(sharezone):
 	return Profile.objects.filter(sharezone=sharezone)
 
+
 def getAllOtherProfilesInSharezone(profileObj):
 	sharezone = profileObj.sharezone
 	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username)
