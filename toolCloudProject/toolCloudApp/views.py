@@ -44,7 +44,7 @@ def user_register(request):
 def tool_submission(request):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
-        return HttpResponseRedirect('/') #redirect to login page
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
@@ -63,7 +63,7 @@ def tool_submission(request):
 def view_profile(request):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
-        return HttpResponseRedirect('/') #redirect to login page
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
             userProfile = profileUtil.getProfileFromUser(request.user)
