@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-	user = models.OneToOneField(User, related_name='myProfile')
+	user = models.OneToOneField('User', related_name='myProfile')
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	phoneNumber = models.CharField(max_length=50)
 	address = models.CharField(max_length=100)
@@ -36,7 +36,7 @@ class Profile(models.Model):
 class Shed(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=50)
-	owner = models.OneToOneField('Profile') #the Profile who owns this shed
+	owner = models.ManyToManyField('Profile',related_name='mySheds') #the Profile who owns this shed
 	admins = models.ManyToManyField('Profile',related_name='adminOfShed',null=True) #admins of shed
 	members = models.ManyToManyField('Profile',related_name='memberOfShed',null=True) #members of shed
 	location = models.CharField(max_length=75) #address of the shed
@@ -77,9 +77,9 @@ class Tool(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
 	tags = models.CharField(max_length=200) #categories that apply to this tool object
-	owner = models.ForeignKey('Profile', related_name='ownerOfTool') #the Profile who owns this tool
-	borrower = models.ForeignKey('Profile',null=True, related_name='borrowerOfTool') # the Profile who is borrowing the tool
-	myShed = models.ForeignKey('Shed',null=True) #the Shed this tool is apart of
+	owner = models.ManyToManyField('Profile', related_name='toolsOwned') #the Profile who owns this tool
+	borrower = models.ManyToManyField('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
+	myShed = models.ManyToManyField('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
 	location = models.CharField(max_length=75) #current location of the tool
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	condition = models.IntegerField(default=0) #0-10 scale
