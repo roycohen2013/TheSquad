@@ -69,16 +69,17 @@ def view_profile(request):
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInShareZone = profileUtil.getAllProfilesInShareZone(profileUtil.getShareZone(userProfile))
+            profilesInShareZone = profileUtil.getAllProfilesInShareZone(userProfile.sharezone)
         else:
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInSharezone = profileUtil.getAllProfilesInSharezone(profileUtil.getSharezone(userProfile))
+            profilesInSharezone = profileUtil.getAllProfilesInSharezone(userProfile.sharezone)
         context = {}
         context.update(csrf(request))
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
-        context['profilesInShareZone'] = profilesInSharezone
+        context['profilesInSharezone'] = profilesInSharezone
+        print(profilesInSharezone)
         return render_to_response('view_profile.html', context)
