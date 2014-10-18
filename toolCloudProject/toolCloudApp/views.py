@@ -66,18 +66,19 @@ def view_profile(request):
         return HttpResponseRedirect('/') #redirect to login page
     else:
         if request.method == 'POST':
-            username = request.user.username
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
             profilesInShareZone = profileUtil.getAllProfilesInShareZone(profileUtil.getShareZone(userProfile))
         else:
-            pass
+            userProfile = profileUtil.getProfileFromUser(request.user)
+            toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
+            toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
+            profilesInSharezone = profileUtil.getAllProfilesInSharezone(profileUtil.getSharezone(userProfile))
         context = {}
-        context.update(crsf(request))
-        context['username'] = username
+        context.update(csrf(request))
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
-        context['profilesInShareZone'] = profilesInShareZone
+        context['profilesInShareZone'] = profilesInSharezone
         return render_to_response('view_profile.html', context)

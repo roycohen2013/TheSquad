@@ -3,13 +3,22 @@
 {% block title %}{{ section.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ username }}'s Profile</h1>
+<h1>{{ userProfile.user.username }}'s Profile</h1>
+<h2>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h2>
 <ul>
+  <h2>Tools owned: </h2>
   {% for tool in toolsOwned %}
     <li>{{ tool.name }}</li>
   {% endfor %}
 
+  <h2>Tools borrowed: </h2>
   {% for tool in toolsBorrowed %}
     <li>{{ tool.name }}</li>
   {% endfor %}
+
+  <h2>Users in your ShareZone: </h2>
+  {% for profile in profilesInSharezone %}
+    <li>{{ profile.user.username }}</li>
+  {% endfor %}
 </ul>
+{% endblock %}
