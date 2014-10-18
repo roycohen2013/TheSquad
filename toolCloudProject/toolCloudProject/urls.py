@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 	url(r'^accounts/auth/$', 'toolCloudProject.views.auth_view'),
 	url(r'^accounts/loggedin/$', 'toolCloudProject.views.loggedin'),
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
-	url(r'^accounts/profile/', 'toolCloudApp.views.view_profile')
+	url(r'^accounts/profile/', 'toolCloudApp.views.view_profile'),
 
 	# Tool urls
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission')
