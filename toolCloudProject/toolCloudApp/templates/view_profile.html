@@ -1,0 +1,15 @@
+{% extends "custom.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ username }}'s Profile</h1>
+<ul>
+  {% for tool in toolsOwned %}
+    <li>{{ tool.name }}</li>
+  {% endfor %}
+
+  {% for tool in toolsBorrowed %}
+    <li>{{ tool.name }}</li>
+  {% endfor %}
+</ul>

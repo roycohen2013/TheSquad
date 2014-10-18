@@ -10,7 +10,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(1,parentdir) 
 """
-import utilities.extraUtilities, utilities.profileUtilities, utilities.shedUtilities, utilities.toolUtilities
+import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
 import utilities.content as content
 
 def home(request):
@@ -54,8 +54,30 @@ def tool_submission(request):
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 return HttpResponse('Tool submitted successfully.')
         else:
-            form = ToolCreationForm()
+            form = ToolCreationForm(request.user)
         context = {}
         context.update(csrf(request))
         context['form'] = form
         return render_to_response('tool_creation.html', context)
+
+def view_profile(request):
+    if request.user.is_anonymous():
+        #tell user they need to be logged in to do that
+        return HttpResponseRedirect('/') #redirect to login page
+    else:
+        if request.method == 'POST':
+            username = request.user.username
+            userProfile = profileUtil.getProfileFromUser(request.user)
+            toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
+            toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
+            profilesInShareZone = profileUtil.getAllProfilesInShareZone(profileUtil.getShareZone(userProfile))
+        else:
+            pass
+        context = {}
+        context.update(crsf(request))
+        context['username'] = username
+        context['userProfile'] = userProfile
+        context['toolsOwned'] = toolsOwned
+        context['toolsBorrowed'] = toolsBorrowed
+        context['profilesInShareZone'] = profilesInShareZone
+        return render_to_response('view_profile.html', context)

@@ -65,14 +65,14 @@ class ToolCreationForm(ModelForm):
         tool = super(ToolCreationForm, self).save(commit = False)
         tool.timeCreated = timezone.now()
         tool.timeLastEdited = timezone.now()
-        tool.owner = profileUtil.getProfileFromUser(userObject)
+        tool.owner = profileUtil.getProfileFromUser(self.userObject)
         tool.isAvailable = 1
         tool.location = ''
         tool.picture = ''
         tool.borrowedCount = 0
         tool.requestedCount = 0
         tool.preferences = ''
-        tool.myShed = null
+        tool.myShed = None
         if commit:
             tool.save()
         return tool
