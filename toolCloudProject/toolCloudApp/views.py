@@ -69,12 +69,12 @@ def view_profile(request):
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInShareZone = profileUtil.getAllProfilesInShareZone(userProfile.sharezone)
+            profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
         else:
             userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInSharezone = profileUtil.getAllProfilesInSharezone(userProfile.sharezone)
+            profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
         context = {}
         context.update(csrf(request))
         context['userProfile'] = userProfile
