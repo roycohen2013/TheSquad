@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-	user = models.OneToOneField('User', related_name='myProfile')
+	user = models.OneToOneField(User, related_name='myProfile')
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	phoneNumber = models.CharField(max_length=50)
 	address = models.CharField(max_length=100)
@@ -36,7 +36,7 @@ class Profile(models.Model):
 class Shed(models.Model):
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	name = models.CharField(max_length=50)
-	owner = models.ManyToManyField('Profile',related_name='mySheds') #the Profile who owns this shed
+	owner = models.ForeignKey('Profile',related_name='mySheds') #the Profile who owns this shed (sueprAdmin)
 	admins = models.ManyToManyField('Profile',related_name='adminOfShed',null=True) #admins of shed
 	members = models.ManyToManyField('Profile',related_name='memberOfShed',null=True) #members of shed
 	location = models.CharField(max_length=75) #address of the shed
@@ -77,9 +77,9 @@ class Tool(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=200)
 	tags = models.CharField(max_length=200) #categories that apply to this tool object
-	owner = models.ManyToManyField('Profile', related_name='toolsOwned') #the Profile who owns this tool
-	borrower = models.ManyToManyField('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
-	myShed = models.ManyToManyField('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
+	owner = models.ForeignKey('Profile', related_name='toolsOwned') #the Profile who owns this tool
+	borrower = models.ForeignKey('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
+	myShed = models.ForeignKey('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
 	location = models.CharField(max_length=75) #current location of the tool
 	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
 	condition = models.IntegerField(default=0) #0-10 scale
@@ -108,11 +108,22 @@ class Tool(models.Model):
 
 
 class Notification(models.Model):
-	content = models.CharField(max_length=50) #serialized JSON object
-
+	content = models.CharField(max_length=280)
+	#if type == info: content is string of text
+	#elif type == request: content is
+		#-multiple choice - question, then choices in CSV form
+		#-open ended - user prompt text
+	recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
+	notificationType = models.CharField(max_length="20")#type of notification can be either info or request ex. TCP vs UDP
+	source = models.ForeignKey('Action', related_name='source')#action that caused it
+	timestamp = models.DateTimeField(auto_now_add=True)
 
 class Action(models.Model):
-	content = models.CharField(max_length=50) #serialized JSON object
-	#toolID
-	#RequesterID
-	#currrentState
+	actionType = models.CharField(max_length=20)#either tool, or shed
+	tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
+	shed = models.ForeignKey('Shed', related_name='shedActions')#if shed, send to all admins of shed
+	admin = models.ForeignKey('Profile', related_name='adminActions')#returns list of actions that a user is controlling of
+	requester = models.ForeignKey('Profile', related_name='requesterActions')
+	currrentState = models.CharField(max_length=20)
+	timestamps = models.CharField(max_length=560)#CSV timestamps for every state
+	workSpace = models.CharField(max_length=200)#for use in state machine
