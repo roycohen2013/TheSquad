@@ -56,7 +56,7 @@ def getUserofProfile(profileObj):
 	Get the Profile object related to this User object.
 """
 def getProfileFromUser(userObj):
-	return Profile.objects.get(user=userObj)
+	return userObj.myProfile
 
 
 """

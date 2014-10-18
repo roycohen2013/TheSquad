@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from toolCloudApp.models import Profile, Tool
 from django.utils import timezone
+import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
+import utilities.content as content
 
 """This form will create a new user and linked profile
 
@@ -51,6 +53,10 @@ class UserRegistrationForm(UserCreationForm):
 
 class ToolCreationForm(ModelForm):
 
+    def __init__(self, user, *args, **kwargs):
+        self.userObject = user
+        super(ToolCreationForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Tool
         fields = ('name', 'description', 'tags', 'condition')
@@ -58,12 +64,15 @@ class ToolCreationForm(ModelForm):
     def save(self,commit = True):
         tool = super(ToolCreationForm, self).save(commit = False)
         tool.timeCreated = timezone.now()
+        tool.timeLastEdited = timezone.now()
+        tool.owner = profileUtil.getProfileFromUser(userObject)
         tool.isAvailable = 1
         tool.location = ''
         tool.picture = ''
         tool.borrowedCount = 0
         tool.requestedCount = 0
         tool.preferences = ''
+        tool.myShed = null
         if commit:
             tool.save()
         return tool
