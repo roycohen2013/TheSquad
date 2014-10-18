@@ -25,6 +25,47 @@ def genContent(request):
 	profile = profileUtil.getProfileFromUser(request.user)
 	custom['address']=profileUtil.getAddress(profile)
 	return custom
+"""
+	Header - String
+	Footer - String
+	copyrightYear - String
+	company - String
+"""
+def genSuper():
+	return {'heading' : "ToolCloud",
+			'footer'  : "made with <3 from the squad",
+	'copyrightYear'	  : "2014",
+			'company' : "Investiny Corp."}
+"""
+	username - String
+	first_name - String
+	last_name - String
+	picture - String
+	topSheds - object[]
+	notifications - object[]
+"""
+def genBaseLoggedIn(request):
+	results = new dict()
+	results['username'] = request.username
+	results['first_name'] = request.first_name
+	results['last_name'] = request.last_name
+	results['picture'] = #get pict location
+	results['topSheds'] = #get top sheds
+	results['notifications'] = #get notifications
+	return results
+
+"""
+	tools - object (name, status, desc, pict, borrowcount,
+					requestcount, location)
+	sheds - object (name, location, numOfUsers, privacy level,
+					sharezone, minRepuation)
+	community - object (map code, list of sheds, numOfToolsOut,
+					numOfToolsTotal)
+	toolsBorrowed - object (array of tool objects)
+			each as (name, time left, time borrowed, timestamp)
+"""
+def genUserHome(request):
+	#complex shit
 
 def getDefaults():
 	return defaults
