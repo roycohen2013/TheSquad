@@ -43,10 +43,13 @@ elif mode == 2:
 	print ("--> minimal Newslate mode selected")
 
 
-print ("-->	Collecting static files...")
-#os.system('manage.py collectstatic')
-management.call_command('collectstatic',interactive=False)
-print ("-->	Static files collected")
+try:
+	print ("-->	Collecting static files...")
+	#os.system('manage.py collectstatic')
+	management.call_command('collectstatic',interactive=False)
+	print ("-->	Static files collected")
+except Exception z:
+	print ("FAILED collecting static files " + z)
 
 
 print ("-->	Deleting old database file...")
