@@ -29,7 +29,7 @@ def auth_view(request):
 
 
 def loggedin(request):
-	return render_to_response('loggedin.html',{'full_name': request.user.username})
+	return render_to_response('loggedin.html',{'name': request.user.first_name})
 
 
 def invalid_login(request):
