@@ -7,18 +7,30 @@
 <h2>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h2>
 <ul>
   <h2>Tools owned: </h2>
-  {% for tool in toolsOwned %}
-    <li>{{ tool.name }}</li>
-  {% endfor %}
+  {% if toolsOwned %}
+    {% for tool in toolsOwned %}
+      <li>{{ tool.name }}</li>
+    {% endfor %}
+  {% else %}
+    <i>You haven't submitted any tools yet!</i>
+  {% endif %}
 
   <h2>Tools borrowed: </h2>
-  {% for tool in toolsBorrowed %}
-    <li>{{ tool.name }}</li>
-  {% endfor %}
+  {% if toolsBorrowed %}
+    {% for tool in toolsBorrowed %}
+      <li>{{ tool.name }}</li>
+    {% endfor %}
+  {% else %}
+    <i>You aren't currently borrowing any tools!</i>
+  {% endif %}
 
   <h2>Users in your ShareZone: </h2>
-  {% for profile in profilesInSharezone %}
-    <li>{{ profile.user.username }}</li>
-  {% endfor %}
+  {% if profilesInSharezone %}
+    {% for profile in profilesInSharezone %}
+      <li>{{ profile.user.username }}</li>
+    {% endfor %}
+  {% else %}
+    <i>There are currently no other users in your ShareZone!</i>
+  {% endif %} 
 </ul>
 {% endblock %}
