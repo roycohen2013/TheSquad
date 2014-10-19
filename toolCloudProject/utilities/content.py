@@ -45,13 +45,15 @@ def genSuper():
 	notifications - object[]
 """
 def genBaseLoggedIn(request):
-	results = new dict()
+	results = dict()
 	results['username'] = request.username
 	results['first_name'] = request.first_name
 	results['last_name'] = request.last_name
-	results['picture'] = #get pict location
-	results['topSheds'] = #get top sheds
-	results['notifications'] = #get notifications
+	#get pict location
+	#results['picture'] = 
+	#get top sheds#results['topSheds'] = 
+	#get notifications
+	#results['notifications'] = 
 	return results
 
 """
@@ -64,7 +66,7 @@ def genBaseLoggedIn(request):
 	toolsBorrowed - object (array of tool objects)
 			each as (name, time left, time borrowed, timestamp)
 """
-def genUserHome(request):
+#def genUserHome(request):
 	#complex shit
 
 def getDefaults():
