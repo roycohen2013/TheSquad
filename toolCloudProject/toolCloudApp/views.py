@@ -84,5 +84,9 @@ def view_profile(request):
         print(profilesInSharezone)
         return render_to_response('view_profile.html', context)
 
+#DO NOT TOUCH - team leader
 def spooked(request):
     return render_to_response('spoopy.html')
+
+def spooky(request):
+    return render_to_response('spagett.html')
