@@ -83,3 +83,6 @@ def view_profile(request):
         context['profilesInSharezone'] = profilesInSharezone
         print(profilesInSharezone)
         return render_to_response('view_profile.html', context)
+
+def spooked(request):
+    return render_to_response('spoopy.html')

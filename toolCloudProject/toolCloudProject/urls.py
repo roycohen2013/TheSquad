@@ -20,5 +20,8 @@ urlpatterns = patterns('',
 	url(r'^accounts/profile/', 'toolCloudApp.views.view_profile'),
 
 	# Tool urls
-	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission')
+	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
+
+	# sekret
+	url(r'^3spooky5me/', 'toolCloudApp.views.spooked')
 )
