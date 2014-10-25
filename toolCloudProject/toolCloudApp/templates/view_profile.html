@@ -12,7 +12,11 @@
       <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
-    <i>You haven't submitted any tools yet!</i>
+    {% if userProfile.user == currentUser %}
+      <i>You haven't submitted any tools yet!</i>
+    {% else %}
+      <i>This user hasn't submitted any tools yet!</i>
+    {% endif %}
   {% endif %}
 
   <h2>Tools borrowed: </h2>
@@ -21,16 +25,28 @@
       <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
-    <i>You aren't currently borrowing any tools!</i>
+    {% if userProfile.user == currentUser %}
+      <i>You aren't currently borrowing any tools!</i>
+    {% else %}
+      <i>This user isn't currently borrowing any tools!</i>
+    {% endif %}
   {% endif %}
-
-  <h2>Users in your ShareZone: </h2>
+  
+  {% if userProfile.user == currentUser %}
+    <h2>Other users in your ShareZone: </h2>
+  {% else %}
+    <h2>Other users in this user's ShareZone: </h2>
+  {% endif %}
   {% if profilesInSharezone %}
     {% for profile in profilesInSharezone %}
       <li><a href = "/accounts/profile/{{ profile.user.username }}">{{ profile.user.username }}</a></li>
     {% endfor %}
   {% else %}
-    <i>There are currently no other users in your ShareZone!</i>
+    {% if userProfile.user == currentUser %}
+      <i>There are currently no other users in your ShareZone!</i>
+    {% else %}
+      <i>There are currently no other users in this user's ShareZone!</i>
+    {% endif %}
   {% endif %} 
 </ul>
 {% endblock %}

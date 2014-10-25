@@ -1,7 +1,7 @@
 {% extends "custom.html" %}
 
 {% block content %}
-<h1>All Tools on ToolCloud</h1>
+<h1>All Tools on ToolCloud:</h1>
 {% if tools %}
   {% for tool in tools %}
     <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>

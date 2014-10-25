@@ -35,7 +35,9 @@ def user_register(request):
                 form.save()
                 #send confirmation email
                 #sendMail(form.cleaned_data['email'],"Welcome to ToolCloud! ", "Hi " + form.cleaned_data['first_name'] + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
-                return HttpResponse('User created succcessfully.')
+                context = {}
+                context['name'] = form.cleaned_data['username']
+                return render_to_response('register_success.html', context)
         else:
             form = UserRegistrationForm()
         context = {}
@@ -70,7 +72,9 @@ def tool_submission(request):
                     break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-                return HttpResponse('Tool submitted successfully.')
+                context = {}
+                context['name'] = form.cleaned_data['name']
+                return render_to_response('submission_success.html', context)
         else:
             form = ToolCreationForm(request.user)
         context = {}
@@ -102,6 +106,7 @@ def view_profile(request, username=None):
             profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
         context = {}
         context.update(csrf(request))
+        context['currentUser'] = request.user
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
