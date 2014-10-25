@@ -1,0 +1,26 @@
+{% extends "custom.html" %}
+
+{% block content %}
+
+<h1>{{name}}</h1>
+<h2>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h2>
+<p>{{description}}</p>
+<h2>Tags: </h2>
+{% if tags %}
+  {% for tag in tags %}
+    <li>{{tag}}</li>
+  {% endfor %}
+{% else %}
+  <i>The owner has not tagged this tool with anything.</i>
+{% endif %}
+
+{% if available %}
+  <h2>This tool is available to borrow!</h2>
+{% else %}
+  <h2>Sorry, but this tool is currently not available to borrow.</h2>
+  {% if borrower %}
+    <h1>Current borrower: <a href = "/accounts/profile/{{borrower.user.username}}">{{borrower.user.username}}</a></h1>
+  {% endif %}
+{% endif %}
+
+{% endblock %}

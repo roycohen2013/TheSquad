@@ -7,6 +7,9 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from toolCloudApp.models import Profile, Tool, Shed
 from django.contrib.auth.models import User
+import django.db
+import string
+import random
 
 print("--> Populating Database...")
 
@@ -54,7 +57,17 @@ for x in range(len(toolNames)):
 	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
 					isAvailable = True, tags = 'tags')
 	newTool.owner = profileObjects[x%len(profileObjects)]
-	newTool.save()
+	"""this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
+                attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
+                identical ID, if this happens,  a new one is generated until no error is raised.
+    """
+	while (True):
+		try:
+			newTool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+			newTool.save()
+		except django.db.IntegrityError:
+			continue
+		break
 	toolObjects.append(newTool)
 
 print("--> Database populated")

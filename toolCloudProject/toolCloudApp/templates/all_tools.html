@@ -1,0 +1,12 @@
+{% extends "custom.html" %}
+
+{% block content %}
+<h1>All Tools on ToolCloud</h1>
+{% if tools %}
+  {% for tool in tools %}
+    <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
+  {% endfor %}
+{% else %}
+  <i>Something's not right here...no tools found on the site!</i>
+{% endif %}
+{% endblock %}

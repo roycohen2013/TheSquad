@@ -1,10 +1,15 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+import django.core.exceptions
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
+import django.db
 from toolCloudApp.models import Profile, User
 from toolCloudApp.mailSend import sendMail
+import string
+import random
+
 """
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -45,12 +50,24 @@ def user_register(request):
 def tool_submission(request):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
+        #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
             if form.is_valid:
-                form.save()
+                tool = form.save()
+                """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
+                attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
+                identical ID, if this happens,  a new one is generated until no error is raised.
+                """
+                while (1==1):
+                    try:
+                        tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+                        tool.save()
+                    except django.db.IntegrityError:
+                        continue
+                    break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 return HttpResponse('Tool submitted successfully.')
@@ -64,6 +81,7 @@ def tool_submission(request):
 def view_profile(request, username=None):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
+        #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
@@ -100,6 +118,63 @@ def view_current_profile(request):
         username = request.user.username
         print(' ')
         return HttpResponseRedirect(reverse('profile', args=(username,))) #comma for args to make string not look like a list of characters
+
+def view_tool_page(request, toolID):
+    if request.user.is_anonymous():
+        #tell user they need to be logged in to that
+        #add message flag that will display to user "you must be logged in to..."
+        return HttpResponseRedirect('/accounts/login') #redirect to login page
+    else:
+        if request.method == 'POST':
+            if toolID is not None:
+                try:
+                    toolObj = toolUtil.getToolFromID(toolID)
+                except django.core.exceptions.ObjectDoesNotExist:
+                    return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+            else:
+                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+            owner = toolUtil.getToolOwner(toolObj)
+            name = toolUtil.getToolName(toolObj)
+            description = toolUtil.getToolDescription(toolObj)
+            tags = toolUtil.getToolTags(toolObj)
+            borrower = toolUtil.getToolBorrower(toolObj)
+            condition = toolUtil.getToolCondition(toolObj)
+            available = toolUtil.isToolAvailable(toolObj)
+        else:
+            if toolID is not None:
+                try:
+                    toolObj = toolUtil.getToolFromID(toolID)
+                except django.core.exceptions.ObjectDoesNotExist:
+                    return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+            else:
+                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+            owner = toolUtil.getToolOwner(toolObj)
+            name = toolUtil.getToolName(toolObj)
+            description = toolUtil.getToolDescription(toolObj)
+            tags = toolUtil.getToolTags(toolObj)
+            borrower = toolUtil.getToolBorrower(toolObj)
+            condition = toolUtil.getToolCondition(toolObj)
+            available = toolUtil.isToolAvailable(toolObj)
+        context = {}
+        context.update(csrf(request))
+        context['name'] = name
+        context['owner'] = owner
+        context['description'] = description
+        context['tags'] = tags
+        context['borrower'] = borrower
+        context['condition'] = condition
+        context['available'] = available
+        return render_to_response('tool_page.html', context)
+
+def all_tools(request):
+    tools = toolUtil.getAllTools()
+    context = {}
+    context.update(csrf(request))
+    context['tools'] = tools
+    return render_to_response('all_tools.html', context)
+
+def tool_dne(request):
+    return render_to_response('tool_dne.html')
 
 #DO NOT TOUCH - team leader
 def spooked(request):

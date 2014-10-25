@@ -38,6 +38,11 @@ def createNewTool(name, description, ownerObj, location, picture, isAvailable, \
 def getToolName(toolObj):
 	return toolObj.name
 
+"""
+	Get a tool object with the Tool's ID
+"""
+def getToolFromID(toolID):
+	return Tool.objects.get(toolID = toolID)
 
 """
 	Update tool name.

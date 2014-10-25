@@ -21,7 +21,10 @@ urlpatterns = patterns('',
 	url(r'^accounts/profile/$', 'toolCloudApp.views.view_current_profile'), #current user profile, redirect to URL above
 
 	# Tool urls
+	url(r'^tools/$', 'toolCloudApp.views.all_tools'),
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
+	url(r'^tools/toolnotfound/$', 'toolCloudApp.views.tool_dne'),
+	url(r'^tools/(?P<toolID>[a-zA-Z]{8})/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 
 	# sekret
 	url(r'^3spooky5me/$', 'toolCloudApp.views.spooked'),

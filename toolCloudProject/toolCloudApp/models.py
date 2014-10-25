@@ -72,6 +72,8 @@ class Tool(models.Model):
 	owner = models.ForeignKey('Profile', related_name='toolsOwned') #the Profile who owns this tool
 	borrower = models.ForeignKey('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
 	myShed = models.ForeignKey('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
+	
+	toolID = models.CharField(max_length=8,unique=True) #string of characters referring to this tool
 
 	timeCreated = models.DateTimeField(auto_now_add=True)
 	timeLastEdited = models.DateTimeField(auto_now_add=True)

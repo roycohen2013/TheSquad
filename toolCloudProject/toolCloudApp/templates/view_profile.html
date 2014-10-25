@@ -9,7 +9,7 @@
   <h2>Tools owned: </h2>
   {% if toolsOwned %}
     {% for tool in toolsOwned %}
-      <li>{{ tool.name }}</li>
+      <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
     <i>You haven't submitted any tools yet!</i>
@@ -18,7 +18,7 @@
   <h2>Tools borrowed: </h2>
   {% if toolsBorrowed %}
     {% for tool in toolsBorrowed %}
-      <li>{{ tool.name }}</li>
+      <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
     <i>You aren't currently borrowing any tools!</i>
@@ -27,7 +27,7 @@
   <h2>Users in your ShareZone: </h2>
   {% if profilesInSharezone %}
     {% for profile in profilesInSharezone %}
-      <li>{{ profile.user.username }}</li>
+      <li><a href = "/accounts/profile/{{ profile.user.username }}">{{ profile.user.username }}</a></li>
     {% endfor %}
   {% else %}
     <i>There are currently no other users in your ShareZone!</i>

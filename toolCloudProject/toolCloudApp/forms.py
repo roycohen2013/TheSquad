@@ -17,6 +17,8 @@ from toolCloudApp.models import Profile, Tool
 from django.utils import timezone
 import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
 import utilities.content as content
+import string
+import random
 
 """This form will create a new user and linked profile
 
@@ -63,6 +65,7 @@ class ToolCreationForm(ModelForm):
 
     def save(self,commit = True):
         tool = super(ToolCreationForm, self).save(commit = False)
+        tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(7))
         tool.timeCreated = timezone.now()
         tool.timeLastEdited = timezone.now()
         tool.owner = profileUtil.getProfileFromUser(self.userObject)
