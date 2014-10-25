@@ -1,8 +1,9 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
-from toolCloudApp.models import Profile
+from toolCloudApp.models import Profile, User
 from toolCloudApp.mailSend import sendMail
 """
 import os,sys,inspect
@@ -60,18 +61,24 @@ def tool_submission(request):
         context['form'] = form
         return render_to_response('tool_creation.html', context)
 
-def view_profile(request):
+def view_profile(request, username=None):
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         if request.method == 'POST':
-            userProfile = profileUtil.getProfileFromUser(request.user)
+            if username is not None:
+                userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+            else:
+                userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
             profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
         else:
-            userProfile = profileUtil.getProfileFromUser(request.user)
+            if username is not None:
+                userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+            else:
+                userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
             profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
@@ -81,8 +88,18 @@ def view_profile(request):
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
         context['profilesInSharezone'] = profilesInSharezone
-        print(profilesInSharezone)
         return render_to_response('view_profile.html', context)
+
+def view_current_profile(request):
+    """this view redirects accounts/profile to the profile of the current logged in user
+    """
+    if request.user.is_anonymous():
+        #tell user they need to be logged in to do that
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
+    else:
+        username = request.user.username
+        print(' ')
+        return HttpResponseRedirect(reverse('profile', args=(username,))) #comma for args to make string not look like a list of characters
 
 #DO NOT TOUCH - team leader
 def spooked(request):

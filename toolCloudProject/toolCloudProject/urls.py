@@ -17,12 +17,13 @@ urlpatterns = patterns('',
 	url(r'^accounts/auth/$', 'toolCloudProject.views.auth_view'),
 	url(r'^accounts/loggedin/$', 'toolCloudProject.views.loggedin'),
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
-	url(r'^accounts/profile/', 'toolCloudApp.views.view_profile'),
+	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
+	url(r'^accounts/profile/$', 'toolCloudApp.views.view_current_profile'), #current user profile, redirect to URL above
 
 	# Tool urls
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 
 	# sekret
-	url(r'^3spooky5me/', 'toolCloudApp.views.spooked'),
-	url(r'^aspookedeh/', 'toolCloudApp.views.spooky')
+	url(r'^3spooky5me/$', 'toolCloudApp.views.spooked'),
+	url(r'^aspookedeh/$', 'toolCloudApp.views.spooky')
 )
