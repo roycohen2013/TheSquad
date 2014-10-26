@@ -51,17 +51,18 @@
                     <li>
                         <a id="greeting">Hello {{ name }}!</a>
                     </li>
-                    {% if name == None or name == Anonymous %}
+                    {% if name == None or name == 'Anonymous' %}
                     <li>
                         <a id="registerBtn" href="/accounts/register">Register</a>
                     </li>
                     <li>
                         <a id="loginBtn" href="/accounts/login">Login</a>
                     </li>
-                    {% endif %}
+                    {% else %}
                     <li>
                         <a id="logoutBtn" href="/accounts/logout">Logout</a>
                     </li>
+                    {% endif %}
                     <li>
                         <a id="spookBtn" href="/aspookedeh">Get Spooked!</a>
                     </li>
