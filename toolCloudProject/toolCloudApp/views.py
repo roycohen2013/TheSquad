@@ -33,6 +33,9 @@ def user_register(request):
             form = UserRegistrationForm(request.POST)
             if form.is_valid:
                 form.save()
+                user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+                if user is not None:
+                    login(request, user)
                 #send confirmation email
                 #sendMail(form.cleaned_data['email'],"Welcome to ToolCloud! ", "Hi " + form.cleaned_data['first_name'] + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
                 context = {}
