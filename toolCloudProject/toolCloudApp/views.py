@@ -63,7 +63,7 @@ def tool_submission(request):
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
                 """
-                while (1==1):
+                while (True):
                     try:
                         tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
                         tool.save()

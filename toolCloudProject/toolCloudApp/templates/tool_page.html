@@ -7,9 +7,7 @@
 <p>{{description}}</p>
 <h2>Tags: </h2>
 {% if tags %}
-  {% for tag in tags %}
-    <li>{{tag}}</li>
-  {% endfor %}
+  <p>{{ tags }}</p>
 {% else %}
   <i>The owner has not tagged this tool with anything.</i>
 {% endif %}
