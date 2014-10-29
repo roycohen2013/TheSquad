@@ -1,0 +1,13 @@
+{% extends "custom.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<form action="/shed/ShedCreation" method="POST"> {% csrf_token %}
+<div align="center">
+<h2>Please Create your Shed . . .</h2>
+    {{ form.as_p }}
+<input type="submit" value="Create New Shed">
+</div>
+</form>
+{% endblock %}

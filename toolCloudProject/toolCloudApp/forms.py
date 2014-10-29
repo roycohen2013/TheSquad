@@ -13,7 +13,7 @@ from django.forms import ModelForm
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from toolCloudApp.models import Profile, Tool
+from toolCloudApp.models import Profile, Tool, Shed
 from django.utils import timezone
 import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
 import utilities.content as content
@@ -79,3 +79,30 @@ class ToolCreationForm(ModelForm):
         if commit:
             tool.save()
         return tool
+	
+"""
+This form will create a new Shed
+"""	
+class ShedCreationForm(ModelForm):
+	def __init__(self, user, *args, **kwargs):
+		self.userObject = user
+		super(ShedCreationForm, self).__init__(*args, **kwargs)
+		
+	class Meta:
+		model = Shed
+		fields = ('name', 'sharezone')
+		
+	def save(self,commit = True):
+		shed = super(ShedCreationForm, self).save(commit = Flase)
+		shed.shedID = ''.join(random.choice(string.ascii_letters) for i in range(7))
+		shed.timeCreated = timezone.now()
+		shed.timeLastEdited = timezone.now()
+		shed.owner = profileUtil.getProfileFromUser(self.userObject)
+		shed.location = ''
+		shed.latitude = ''
+		shed.longitude = ''
+		shed.status = ''
+		shed.admins = ''
+		shed.members = ''
+		shed.privacy = ''
+		shed.minimumReputation = 0
