@@ -1,7 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-import django.core.exceptions
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 import django.db
@@ -62,6 +62,9 @@ def tool_submission(request):
             form = ToolCreationForm(request.user, request.POST)
             if form.is_valid:
                 tool = form.save()
+                for toolObject in Tool.objects.all():
+                    if tool == toolObject:
+                        return render_to_response('tool_already_exists.html')      
                 """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
@@ -95,7 +98,10 @@ def view_profile(request, username=None):
     else:
         if request.method == 'POST':
             if username is not None:
-                userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+                try:
+                    userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+                except ObjectDoesNotExist:
+                    return render_to_response("profile_dne.html")
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
@@ -103,7 +109,10 @@ def view_profile(request, username=None):
             profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
         else:
             if username is not None:
-                userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+                try:
+                    userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+                except ObjectDoesNotExist:
+                    return render_to_response("profile_dne.html")
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
@@ -140,10 +149,10 @@ def view_tool_page(request, toolID):
             if toolID is not None:
                 try:
                     toolObj = toolUtil.getToolFromID(toolID)
-                except django.core.exceptions.ObjectDoesNotExist:
-                    return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+                except ObjectDoesNotExist:
+                    return render_to_response("tool_dne.html")
             else:
-                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+                return render_to_response("tool_dne.html")
             owner = toolUtil.getToolOwner(toolObj)
             name = toolUtil.getToolName(toolObj)
             description = toolUtil.getToolDescription(toolObj)
@@ -155,10 +164,10 @@ def view_tool_page(request, toolID):
             if toolID is not None:
                 try:
                     toolObj = toolUtil.getToolFromID(toolID)
-                except django.core.exceptions.ObjectDoesNotExist:
-                    return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+                except ObjectDoesNotExist:
+                    return render_to_response("tool_dne.html")
             else:
-                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+                return render_to_response("tool_dne.html")
             owner = toolUtil.getToolOwner(toolObj)
             name = toolUtil.getToolName(toolObj)
             description = toolUtil.getToolDescription(toolObj)
@@ -177,7 +186,7 @@ def view_tool_page(request, toolID):
         context['available'] = available
         return render_to_response('tool_page.html', context)
 
-		
+        
 #a view that will display all tools
 def all_tools(request):
     tools = toolUtil.getAllTools()
@@ -186,45 +195,48 @@ def all_tools(request):
     context['tools'] = tools
     return render_to_response('all_tools.html', context)
 
-	
+    
 #a view for if a tool does not exist
 def tool_dne(request):
     return render_to_response('tool_dne.html')
 
-	
+    
 #a view for the creation of a new Shed
 def create_toolShed(request):
-	if request.user.is_anonymous():
+    if request.user.is_anonymous():
         #tell user they need to be logged in to do that
         #add message flag that will display to user "you must be logged in to..."
-		return HttpResponseRedirect('/accounts/login/') #redirect to login page
-	else:
-		if request.method == 'POST':
-			form = ShedCreationForm(request.user, request.POST)
-			if form.is_valid:
-				shed = form.save()
-				"""this loop will ensure that there are no identical shedIDs. After generating a permanent shedID, it 
-				attempts to catch an IntegrityError raised by django, which means that there is already a shed with an
-				identical ID, if this happens,  a new one is generated until no error is raised.
-				"""
-				while (True):
-					try:
-						shed.shedID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-						shed.save()
-					except django.db.IntegrityError:
-						continue
-					break
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
+    else:
+        if request.method == 'POST':
+            form = ShedCreationForm(request.user, request.POST)
+            if form.is_valid:
+                shed = form.save()
+                for shedObject in Shed.objects.all():
+                    if shed == shedObject:
+                        return render_to_response('shed_already_exists.html')        
+                """this loop will ensure that there are no identical shedIDs. After generating a permanent shedID, it 
+                attempts to catch an IntegrityError raised by django, which means that there is already a shed with an
+                identical ID, if this happens,  a new one is generated until no error is raised.
+                """
+                while (True):
+                    try:
+                        shed.shedID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+                        shed.save()
+                    except django.db.IntegrityError:
+                        continue
+                    break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-				context = {}
-				context['name'] = form.cleaned_data['name']
-				return render_to_response('shed_registration_success.html', context)
-		else:
-			form = ShedCreationForm(request.user)
-		context = {}
-		context.update(csrf(request))
-		context['form'] = form
-		return render_to_response('shed_creation.html', context)
+                context = {}
+                context['name'] = form.cleaned_data['name']
+                return render_to_response('shed_registration_success.html', context)
+        else:
+            form = ShedCreationForm(request.user)
+        context = {}
+        context.update(csrf(request))
+        context['form'] = form
+        return render_to_response('shed_creation.html', context)
 
 #DO NOT TOUCH - team leader
 def spooked(request):
