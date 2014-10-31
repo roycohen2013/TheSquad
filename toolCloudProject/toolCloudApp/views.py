@@ -61,10 +61,7 @@ def tool_submission(request):
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
             if form.is_valid:
-                tool = form.save()
-                for toolObject in Tool.objects.all():
-                    if tool == toolObject:
-                        return render_to_response('tool_already_exists.html')      
+                tool = form.save()     
                 """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
@@ -211,10 +208,7 @@ def create_toolShed(request):
         if request.method == 'POST':
             form = ShedCreationForm(request.user, request.POST)
             if form.is_valid:
-                shed = form.save()
-                for shedObject in Shed.objects.all():
-                    if shed == shedObject:
-                        return render_to_response('shed_already_exists.html')        
+                shed = form.save()    
                 """this loop will ensure that there are no identical shedIDs. After generating a permanent shedID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a shed with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
