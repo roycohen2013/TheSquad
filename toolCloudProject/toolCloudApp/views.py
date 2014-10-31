@@ -31,7 +31,7 @@ def user_register(request):
     if request.user.is_anonymous():
         if request.method == 'POST':
             form = UserRegistrationForm(request.POST)
-            if form.is_valid:
+            if form.is_valid == True:
                 form.save()
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
                 if user is not None:
