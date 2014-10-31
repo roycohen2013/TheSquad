@@ -60,7 +60,7 @@ def tool_submission(request):
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
-            if form.is_valid:
+            if form.is_valid == True:
                 tool = form.save()     
                 """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
@@ -207,7 +207,7 @@ def create_toolShed(request):
     else:
         if request.method == 'POST':
             form = ShedCreationForm(request.user, request.POST)
-            if form.is_valid:
+            if form.is_valid == True:
                 shed = form.save()    
                 """this loop will ensure that there are no identical shedIDs. After generating a permanent shedID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a shed with an
