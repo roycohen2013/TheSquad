@@ -9,7 +9,7 @@
   <h2>Tools owned: </h2>
   {% if toolsOwned %}
     {% for tool in toolsOwned %}
-      <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
+      <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
     {% if userProfile.user == currentUser %}
@@ -22,7 +22,7 @@
   <h2>Tools borrowed: </h2>
   {% if toolsBorrowed %}
     {% for tool in toolsBorrowed %}
-      <li><a href = "/tools/{{tool.toolID}}">{{ tool.name }}</a></li>
+      <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
     {% endfor %}
   {% else %}
     {% if userProfile.user == currentUser %}

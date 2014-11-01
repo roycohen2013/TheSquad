@@ -31,7 +31,7 @@ def user_register(request):
     if request.user.is_anonymous():
         if request.method == 'POST':
             form = UserRegistrationForm(request.POST)
-            if form.is_valid == True:
+            if form.is_valid==True:
                 form.save()
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
                 if user is not None:
@@ -60,19 +60,17 @@ def tool_submission(request):
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
-            if form.is_valid == True:
-                tool = form.save()     
-                """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
-                attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
-                identical ID, if this happens,  a new one is generated until no error is raised.
-                """
-                while (True):
-                    try:
-                        tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-                        tool.save()
-                    except django.db.IntegrityError:
-                        continue
-                    break
+            if form.is_valid==True:
+                tool = form.save()
+                tool.save()
+
+                # while (True):
+                #     try:
+                #         tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+                #         tool.save()
+                #     except django.db.IntegrityError:
+                #         continue
+                #     break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 context = {}
@@ -138,20 +136,20 @@ def view_current_profile(request):
         return HttpResponseRedirect(reverse('profile', args=(username,))) #comma for args to make string not look like a list of characters
 
 #a view that will allow us to see an individual tool
-def view_tool_page(request, toolID):
+def view_tool_page(request, id):
     if request.user.is_anonymous():
         #tell user they need to be logged in to that
         #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login') #redirect to login page
     else:
         if request.method == 'POST':
-            if toolID is not None:
+            if id is not None:
                 try:
-                    toolObj = toolUtil.getToolFromID(toolID)
+                    toolObj = toolUtil.getToolFromID(id)
                 except ObjectDoesNotExist:
                     return render_to_response("tool_dne.html")
             else:
-                return render_to_response("tool_dne.html")
+                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             owner = toolUtil.getToolOwner(toolObj)
             name = toolUtil.getToolName(toolObj)
             description = toolUtil.getToolDescription(toolObj)
@@ -160,13 +158,13 @@ def view_tool_page(request, toolID):
             condition = toolUtil.getToolCondition(toolObj)
             available = toolUtil.isToolAvailable(toolObj)
         else:
-            if toolID is not None:
+            if id is not None:
                 try:
-                    toolObj = toolUtil.getToolFromID(toolID)
+                    toolObj = toolUtil.getToolFromID(id)
                 except ObjectDoesNotExist:
                     return render_to_response("tool_dne.html")
             else:
-                return render_to_response("tool_dne.html")
+                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             owner = toolUtil.getToolOwner(toolObj)
             name = toolUtil.getToolName(toolObj)
             description = toolUtil.getToolDescription(toolObj)
@@ -185,13 +183,13 @@ def view_tool_page(request, toolID):
         context['available'] = available
         return render_to_response('tool_page.html', context)
 
-def view_shed_page(request, shedID):
+def view_shed_page(request, id):
     if request.user.is_anonymous():
         return HttpResponseRedirect("/accounts/login")
     else:
         if shedID is not None:
             try:
-                shedObj = shedUtil.getShedFromID(shedID)
+                shedObj = shedUtil.getShedFromID(id)
             except ObjectDoesNotExist:
                 return render_to_response("shed_dne.html")
         else:
@@ -213,8 +211,6 @@ def view_shed_page(request, shedID):
         context['meetsMin'] = meetsMinRep
         return render_to_response('tool_page.html', context)
 
-
-        
 #a view that will display all tools
 def all_tools(request):
     if request.user.is_anonymous():
@@ -243,45 +239,34 @@ def all_sheds(request):
         context['ownedSheds'] = ownedSheds
         context['mySheds'] = memberSheds
         return render_to_response('all_sheds.html', context)
-    
+
 #a view for if a tool does not exist
 def tool_dne(request):
     return render_to_response('tool_dne.html')
 
-    
+	
 #a view for the creation of a new Shed
-def create_toolShed(request):
-    if request.user.is_anonymous():
+def create_tool_shed(request):
+	if request.user.is_anonymous():
         #tell user they need to be logged in to do that
         #add message flag that will display to user "you must be logged in to..."
-        return HttpResponseRedirect('/accounts/login/') #redirect to login page
-    else:
-        if request.method == 'POST':
-            form = ShedCreationForm(request.user, request.POST)
-            if form.is_valid == True:
-                shed = form.save()    
-                """this loop will ensure that there are no identical shedIDs. After generating a permanent shedID, it 
-                attempts to catch an IntegrityError raised by django, which means that there is already a shed with an
-                identical ID, if this happens,  a new one is generated until no error is raised.
-                """
-                while (True):
-                    try:
-                        shed.shedID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-                        shed.save()
-                    except django.db.IntegrityError:
-                        continue
-                    break
+		return HttpResponseRedirect('/accounts/login/') #redirect to login page
+	else:
+		if request.method == 'POST':
+			form = ShedCreationForm(request.user, request.POST)
+			if form.is_valid==True:
+				shed = form.save()
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-                context = {}
-                context['name'] = form.cleaned_data['name']
-                return render_to_response('shed_registration_success.html', context)
-        else:
-            form = ShedCreationForm(request.user)
-        context = {}
-        context.update(csrf(request))
-        context['form'] = form
-        return render_to_response('shed_creation.html', context)
+				context = {}
+				context['name'] = form.cleaned_data['name']
+				return render_to_response('shed_registration_success.html', context)
+		else:
+			form = ShedCreationForm(request.user)
+		context = {}
+		context.update(csrf(request))
+		context['form'] = form
+		return render_to_response('shed_creation.html', context)
 
 #DO NOT TOUCH - team leader
 def spooked(request):

@@ -65,7 +65,7 @@ class ToolCreationForm(ModelForm):
 
     def save(self,commit = True):
         tool = super(ToolCreationForm, self).save(commit = False)
-        tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(7))
+        #tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(7))
         tool.timeCreated = timezone.now()
         tool.timeLastEdited = timezone.now()
         tool.owner = profileUtil.getProfileFromUser(self.userObject)
