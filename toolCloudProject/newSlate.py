@@ -16,6 +16,10 @@ from subprocess import *
 
 
 
+from colorama import init, Fore, Back, Style
+
+init()
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 
 from django.conf import settings
@@ -24,6 +28,12 @@ from django.contrib.auth.models import User
 
 print ("========== NEW SLATE PROGRAM INITIATING ==========")
 print ("")
+
+
+print(Fore.GREEN + 'THE SQUAD NOW IN COLOR, '
+    + Fore.RED + 'red, '
+    + Fore.RESET + 'normal, '
+    , end='')
 
 # Get the arguments list 
 #cmdargs = str(sys.argv)
