@@ -52,7 +52,7 @@ print ("-->	Static files collected")
 
 
 print ("-->	Deleting old database file...")
-if platform.release() == 8:					#checks to see what windows version is running
+if platform.release() == "8":					#checks to see what windows version is running
 	os.system('del db.sqlite3')
 else:
 	os.system('rm db.sqlite3')
