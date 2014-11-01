@@ -38,39 +38,39 @@ print(Fore.GREEN + 'THE SQUAD NOW IN COLOR, '
 # Get the arguments list 
 #cmdargs = str(sys.argv)
 total = len(sys.argv)
-mode = 1 					#default arguments list
+mode = 1                    #default arguments list
 
 if total > 1:
-	if sys.argv[1]== "1":
-		mode = 1 			#full automatic mode
-	elif sys.argv[1]== "2":
-		mode = 2			#newslate with no repopulation
+    if sys.argv[1]== "1":
+        mode = 1            #full automatic mode
+    elif sys.argv[1]== "2":
+        mode = 2            #newslate with no repopulation
 else:
-	mode = 1 			#full automatic mode selected in case no arguments passed
+    mode = 1            #full automatic mode selected in case no arguments passed
 
 
 if mode == 1:
-	print ("--> Full automatic mode selected")
+    print ("--> Full automatic mode selected")
 elif mode == 2:
-	print ("--> minimal Newslate mode selected")
+    print ("--> minimal Newslate mode selected")
 
 
-print ("-->	Collecting static files...")
+print ("--> Collecting static files...")
 #os.system('manage.py collectstatic')
 management.call_command('collectstatic',interactive=False)
-print ("-->	Static files collected")
+print ("--> Static files collected")
 
 
-print ("-->	Deleting old database file...")
-if platform.release() == "8":					#checks to see what windows version is running
-	os.system('del db.sqlite3')
+print ("--> Deleting old database file...")
+if platform.release() == "8":                   #checks to see what windows version is running
+    os.system('del db.sqlite3')
 else:
-	os.system('rm db.sqlite3')
-print ("-->	Delete Complete")
+    os.system('rm db.sqlite3')
+print ("--> Delete Complete")
 
 print ("")
 
-print ("-->	DataBase syncronization starting...")
+print ("--> DataBase syncronization starting...")
 management.call_command('syncdb', interactive=False)
 print ("-->DataBase sync Complete")
 
@@ -95,11 +95,11 @@ print ("--> User generation complete")
 print ("")
 
 if mode == 1:
-	if platform.system() == 'Linux' or platform.system() == 'Darwin':
-		os.system('python3 populationControl.py')
-	else:
-		os.system('python populationControl.py')
-	print("")
+    if platform.system() == 'Linux' or platform.system() == 'Darwin':
+        os.system('python3 populationControl.py')
+    else:
+        os.system('python populationControl.py')
+    print("")
 
 
 
@@ -124,7 +124,7 @@ print ("Have a nice day friend :)")
 
 
 
-#call(["pythonPath","manage.py",'flush'," --username=root","--email=thesquad.toolcloud@gmail.com"])	#flush command to wipe db
+#call(["pythonPath","manage.py",'flush'," --username=root","--email=thesquad.toolcloud@gmail.com"]) #flush command to wipe db
 
 
 #call(["pythonPath","manage.py","createsuperuser"])
