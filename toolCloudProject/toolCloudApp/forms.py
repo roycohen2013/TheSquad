@@ -5,7 +5,7 @@ $Author: $
 
 """
 
-"""This file contains all forms for User, Profile, and Tool creation.
+"""This file contains all forms for User, Profile, Tool, and shed creation.
 
 """
 from django import forms
@@ -79,29 +79,32 @@ class ToolCreationForm(ModelForm):
         if commit:
             tool.save()
         return tool
-	
+    
 """
 This form will create a new Shed
-"""	
+""" 
 class ShedCreationForm(ModelForm):
-	def __init__(self, user, *args, **kwargs):
-		self.userObject = user
-		super(ShedCreationForm, self).__init__(*args, **kwargs)
-		
-	class Meta:
-		model = Shed
-		fields = ('name', 'sharezone')
-		
-	def save(self,commit = True):
-		shed = super(ShedCreationForm, self).save(commit = False)
-		shed.timeCreated = timezone.now()
-		shed.timeLastEdited = timezone.now()
-		shed.owner = profileUtil.getProfileFromUser(self.userObject)
-		shed.location = ''
-		shed.latitude = ''
-		shed.longitude = ''
-		shed.status = ''
-		shed.admins = ''
-		shed.members = ''
-		shed.privacy = ''
-		shed.minimumReputation = 0
+
+    def __init__(self, user, *args, **kwargs):
+        self.userObject = user
+        super(ShedCreationForm, self).__init__(*args, **kwargs)
+        
+    class Meta:
+        model = Shed
+        fields = ('name', 'sharezone', 'minimumReputation')
+        
+    def save(self,commit = True):
+        shed = super(ShedCreationForm, self).save(commit = False)
+        shed.timeCreated = timezone.now()
+        shed.timeLastEdited = timezone.now()
+        shed.owner = profileUtil.getProfileFromUser(self.userObject)
+        shed.location = ''
+        shed.latitude = ''
+        shed.longitude = ''
+        shed.status = ''
+        shed.admins = ''
+        shed.members = ''
+        shed.privacy = ''
+        if commit:
+            shed.save()
+        return shed

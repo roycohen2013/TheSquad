@@ -44,6 +44,9 @@ for x in range(len(shedNames)):
 	newShed = Shed(name=shedNames[x], owner=profileObjects[x], location='location', \
 					sharezone='14623', status='status')
 	newShed.save()
+	newShed.members.add(profileObjects[x])
+	newShed.admins.add(profileObjects[x])
+	newShed.save()
 	shedObjects.append(newShed)
 
 

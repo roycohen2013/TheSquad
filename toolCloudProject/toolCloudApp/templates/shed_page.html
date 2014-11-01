@@ -3,11 +3,11 @@
 {% block title %}{{ section.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ shed.name }}</h1>
-<h2>Owner: {{ shed.owner.user.username }}</h2>
+<h1>{{ name }}</h1>
+<h2>Owner: {{ owner.user.username }}</h2>
 <ul>
   <h2>Admins: </h2>
-  {% for admin in shed.admins %}
+  {% for admin in admins %}
     <li><a href = "/accounts/profile/{{admin.user.username}}">{{ admin.user.username }}</a></li>
   {% endfor %}
 </ul>  
