@@ -187,15 +187,15 @@ def view_shed_page(request, id):
     if request.user.is_anonymous():
         return HttpResponseRedirect("/accounts/login")
     else:
-        if shedID is not None:
+        if id is not None:
             try:
                 shedObj = shedUtil.getShedFromID(id)
             except ObjectDoesNotExist:
                 return render_to_response("shed_dne.html")
         else:
             return render_to_response("shed_dne.html")
-        owner = shedUtil.getShedOwner(shedObj)
-        name = shedUtil.getShedName(shedObj)
+        owner = shedUtil.getOwnerOfShed(shedObj)
+        name = shedUtil.getNameOfShed(shedObj)
         admins = shedUtil.getAllAdminsOfShed(shedObj)
         members = shedUtil.getAllMembersOfShed(shedObj)
         tools = toolUtil.getAllToolsInShed(shedObj)
@@ -209,7 +209,7 @@ def view_shed_page(request, id):
         context['members'] = members
         context['tools'] = tools
         context['meetsMin'] = meetsMinRep
-        return render_to_response('tool_page.html', context)
+        return render_to_response('shed_page.html', context)
 
 #a view that will display all tools
 def all_tools(request):

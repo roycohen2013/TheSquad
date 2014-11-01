@@ -25,11 +25,11 @@
   {% else %}
     <i>No one has submitted any tools to this shed yet!</i>
   {% endif %}
-  
-  {% if userProfile.user == currentUser %}
-    <button class="button">Join this shed</button>
-  {% else %}
-    <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>
-  {% endif %} 
-</ul>
+</ul>  
+{% if userProfile.user == currentUser %}
+  <button class="button">Join this shed</button>
+{% else %}
+  <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>
+{% endif %} 
+
 {% endblock %}

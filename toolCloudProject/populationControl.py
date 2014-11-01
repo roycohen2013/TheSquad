@@ -57,17 +57,7 @@ for x in range(len(toolNames)):
 	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
 					isAvailable = True, tags = 'tags')
 	newTool.owner = profileObjects[x%len(profileObjects)]
-	"""this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
-                attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
-                identical ID, if this happens,  a new one is generated until no error is raised.
-    	"""
-	while (True):
-		try:
-			newTool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-			newTool.save()
-		except django.db.IntegrityError:
-			continue
-		break
+	newTool.save()
 	toolObjects.append(newTool)
 
 print("--> Database populated")

@@ -36,8 +36,8 @@ def getAllShedsAllSharezones():
 """
 	Get a shed with its ID
 """
-def getShedFromID(shedID):
-	return Shed.objects.get(id=shedID)
+def getShedFromID(id):
+	return Shed.objects.get(id=id)
 
 	
 """

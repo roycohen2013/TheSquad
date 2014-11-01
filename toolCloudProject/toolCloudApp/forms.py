@@ -93,8 +93,7 @@ class ShedCreationForm(ModelForm):
 		fields = ('name', 'sharezone')
 		
 	def save(self,commit = True):
-		shed = super(ShedCreationForm, self).save(commit = Flase)
-		shed.shedID = ''.join(random.choice(string.ascii_letters) for i in range(7))
+		shed = super(ShedCreationForm, self).save(commit = False)
 		shed.timeCreated = timezone.now()
 		shed.timeLastEdited = timezone.now()
 		shed.owner = profileUtil.getProfileFromUser(self.userObject)

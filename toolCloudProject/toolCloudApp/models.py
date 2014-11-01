@@ -59,7 +59,7 @@ class Shed(models.Model):
 		#NonMemberView - no one that is not a shed member is even aware of this shed.
 		#joining 	   - Join is only on invite by a shed admin
 
-	minumumReputation = models.IntegerField(default=-1) # this only applies to public sheds
+	minimumReputation = models.IntegerField(default=-1) # this only applies to public sheds
 
 
 	def __str__(self):
