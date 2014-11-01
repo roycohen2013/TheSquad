@@ -1,0 +1,13 @@
+{% extends "custom.html" %}
+
+{% block content %}
+<h1>All Sheds on ToolCloud:</h1>
+{% if sheds %}
+  {% for shed in sheds %}
+    <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
+  {% endfor %}
+  <h2><a href = "/sheds/create">Create a new shed</a></h2>
+{% else %}
+  <i>Something's not right here...no sheds found on the site!</i>
+{% endif %}
+{% endblock %}

@@ -60,7 +60,7 @@ for x in range(len(toolNames)):
 	"""this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
-    """
+    	"""
 	while (True):
 		try:
 			newTool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))

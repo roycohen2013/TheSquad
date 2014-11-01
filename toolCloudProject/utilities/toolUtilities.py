@@ -96,7 +96,7 @@ def getToolOwner(toolObj):
         Get all tools belonging to a specific user
 """
 def getToolsBelongingToProfile(profileObj):
-	return Tool.objects.filter(owner=profileObj)
+	return Tool.objects.filter(owner=profileObj).order_by('name')
 
 """
 	Get the borrower of a tool.
@@ -215,35 +215,35 @@ def incrementRequestedCount(toolObj):
 	regardless of which shed it is in.
 """
 def getAllTools():
-	return Tool.objects.all()
+	return Tool.objects.all().order_by('name')
 
 
 """
 	Return a list of every tool in a specific shed.
 """
 def getAllToolsInShed(shedObj):
-	return Tool.objects.filter(myShed=shedObj)
+	return Tool.objects.filter(myShed=shedObj).order_by('name')
 
 
 """
 	Return a list of every available tool in a specific shed.
 """
-def	getAllAvailToolsInShed(shedObj):
-	return Tool.objects.filter(myShed=shedObj, isAvailable=True)
+def getAllAvailToolsInShed(shedObj):
+	return Tool.objects.filter(myShed=shedObj, isAvailable=True).order_by('name')
 
 
 """
 	Return a list of all tools owned by a specific person.
 """
 def getAllToolsOwnedBy(profileObj):
-	return Tool.objects.filter(owner=profileObj)
+	return Tool.objects.filter(owner=profileObj).order_by('name')
 
 
 """
 	Return a list of all tools being borrowed by a specific person.
 """
 def getAllToolsBorrowedBy(profileObj):
-	return Tool.objects.filter(borrower=profileObj)
+	return Tool.objects.filter(borrower=profileObj).order_by('name')
 
 
 """

@@ -115,6 +115,7 @@ def view_profile(request, username=None):
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
             toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
             profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
+            sheds = shedUtil.getAllShedsJoinedBy(userProfile)
         context = {}
         context.update(csrf(request))
         context['currentUser'] = request.user
@@ -122,6 +123,7 @@ def view_profile(request, username=None):
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
         context['profilesInSharezone'] = profilesInSharezone
+        context['sheds'] = sheds
         return render_to_response('view_profile.html', context)
 
 def view_current_profile(request):
@@ -183,15 +185,64 @@ def view_tool_page(request, toolID):
         context['available'] = available
         return render_to_response('tool_page.html', context)
 
+def view_shed_page(request, shedID):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect("/accounts/login")
+    else:
+        if shedID is not None:
+            try:
+                shedObj = shedUtil.getShedFromID(shedID)
+            except ObjectDoesNotExist:
+                return render_to_response("shed_dne.html")
+        else:
+            return render_to_response("shed_dne.html")
+        owner = shedUtil.getShedOwner(shedObj)
+        name = shedUtil.getShedName(shedObj)
+        admins = shedUtil.getAllAdminsOfShed(shedObj)
+        members = shedUtil.getAllMembersOfShed(shedObj)
+        tools = toolUtil.getAllToolsInShed(shedObj)
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        meetsMinRep = userProfile.reputation >= shedObj.minimumReputation
+        context = {}
+        context.update(csrf(request))
+        context['owner'] = owner
+        context['name'] = name
+        context['admins'] = admins
+        context['members'] = members
+        context['tools'] = tools
+        context['meetsMin'] = meetsMinRep
+        return render_to_response('tool_page.html', context)
+
+
         
 #a view that will display all tools
 def all_tools(request):
-    tools = toolUtil.getAllTools()
-    context = {}
-    context.update(csrf(request))
-    context['tools'] = tools
-    return render_to_response('all_tools.html', context)
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        tools = toolUtil.getAllTools()
+        context = {}
+        context.update(csrf(request))
+        context['tools'] = tools
+        return render_to_response('all_tools.html', context)
 
+def all_sheds(request):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        allSheds = shedUtil.getAllShedsAllSharezones()
+        shedsInMySharezone = shedUtil.getAllShedsInSharezone(userProfile.sharezone)
+        adminSheds = shedUtil.getAllShedsAdministratedBy(userProfile)
+        ownedSheds = shedUtil.getAllShedsOwnedBy(userProfile)
+        memberSheds = shedUtil.getAllShedsJoinedBy(userProfile)
+        context = {}
+        context.update(csrf(request))
+        context['sheds'] = allSheds
+        context['adminSheds'] = adminSheds
+        context['ownedSheds'] = ownedSheds
+        context['mySheds'] = memberSheds
+        return render_to_response('all_sheds.html', context)
     
 #a view for if a tool does not exist
 def tool_dne(request):

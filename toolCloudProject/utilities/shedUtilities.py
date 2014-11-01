@@ -34,11 +34,38 @@ def getAllShedsAllSharezones():
 
 
 """
+	Get a shed with its ID
+"""
+def getShedFromID(shedID):
+	return Shed.objects.get(id=shedID)
+
+	
+"""
 	Get all sheds in a given sharezone.
 """
 def getAllShedsInSharezone(sharezone):
 	return Shed.objects.filter(sharezone=sharezone)
 
+
+"""
+        Get all sheds a user owns
+"""
+def getAllShedsOwnedBy(profileObj):
+	return Shed.objects.filter(owner=profileObj)
+
+
+"""
+        Get all sheds a user is a member of
+"""
+def getAllShedsJoinedBy(profileObj):
+	return profileObj.memberOfShed
+
+
+"""
+        Get all sheds a user is an admin of
+"""
+def getAllShedsAdministratedBy(profileObj):
+        return profileObj.adminOfShed
 
 """
 	Get all members of a shed.

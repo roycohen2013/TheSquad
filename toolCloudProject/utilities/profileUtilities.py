@@ -35,14 +35,14 @@ def createNewProfile(firstName,lastName,username,email,password,phoneNumber, \
 	(regardless of sharezone)
 """
 def getAllProfiles():
-	return Profile.objects.all()
+	return Profile.objects.all().order_by('user__first_name')
 
 
 """
 	Return a list of all profiles in a specific sharezone.
 """
 def getAllProfilesInSharezone(sharezone):
-	return Profile.objects.filter(sharezone=sharezone)
+	return Profile.objects.filter(sharezone=sharezone).order_by('user__first_name')
 
 
 """
@@ -50,7 +50,7 @@ def getAllProfilesInSharezone(sharezone):
 """
 def getAllOtherProfilesInSharezone(profileObj):
 	sharezone = profileObj.sharezone
-	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username)
+	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username).order_by('user__first_name')
 
 
 """

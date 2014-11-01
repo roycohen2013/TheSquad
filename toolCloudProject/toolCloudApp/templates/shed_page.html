@@ -1,0 +1,35 @@
+{% extends "custom.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ shed.name }}</h1>
+<h2>Owner: {{ shed.owner.user.username }}</h2>
+<ul>
+  <h2>Admins: </h2>
+  {% for admin in shed.admins %}
+    <li><a href = "/accounts/profile/{{admin.user.username}}">{{ admin.user.username }}</a></li>
+  {% endfor %}
+</ul>  
+<ul>
+  <h2>Members: </h2>
+  {% for member in members %}
+    <li><a href = "/accounts/profile/{{member.user.username}}">{{ member.user.username }}</a></li>
+  {% endfor %}
+
+  <h2>Tools: </h2>
+  {% if tools %}
+    {% for tool in tools %}
+      <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
+    {% endfor %}
+  {% else %}
+    <i>No one has submitted any tools to this shed yet!</i>
+  {% endif %}
+  
+  {% if userProfile.user == currentUser %}
+    <button class="button">Join this shed</button>
+  {% else %}
+    <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>
+  {% endif %} 
+</ul>
+{% endblock %}
