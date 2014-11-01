@@ -68,37 +68,54 @@ class Shed(models.Model):
 		return ",".join(myList)
 
 class Tool(models.Model):
-	owner = models.ForeignKey('Profile', related_name='toolsOwned') #the Profile who owns this tool
-	borrower = models.ForeignKey('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
-	myShed = models.ForeignKey('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
+    #these two fields are used for creating GenericForeignKeys between notification system and notifyer
 
-	timeCreated = models.DateTimeField(auto_now_add=True)
-	timeLastEdited = models.DateTimeField(auto_now_add=True)
-	name = models.CharField(max_length=50)
-	description = models.CharField(max_length=200)
-	tags = models.CharField(max_length=200)#categories that apply to this tool object
-	location = models.CharField(max_length=75) #current location of the tool
-	#picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
-	condition = models.IntegerField(default=0) #0-10 scale
-	isAvailable = models.BooleanField()
-	borrowedCount = models.IntegerField(default=0) # times Tool borrowed
-	requestedCount = models.IntegerField(default=0) # times Tool requested
 
-	defaultMaxBorrowTime = models.IntegerField(default=30)#time measured in days only
-	#applies to tools if free to borrow is enabled 
-	#0 means unlimited time
+    owner = models.ForeignKey('Profile', related_name='toolsOwned') #the Profile who owns this tool
+    borrower = models.ForeignKey('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
+    myShed = models.ForeignKey('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
+    
 
-	defaultFreeToBorrow = models.IntegerField(default=0)#preferences
-	#0 means borrow request accepted automaticly
-	#1 means aproval of borrow request required
+    timeCreated = models.DateTimeField(auto_now_add=True)
+    timeLastEdited = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
+    tags = models.CharField(max_length=200)#categories that apply to this tool object
+    location = models.CharField(max_length=75) #current location of the tool
+    #picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
+    condition = models.IntegerField(default=0) #0-10 scale
+    isAvailable = models.BooleanField()
+    borrowedCount = models.IntegerField(default=0) # times Tool borrowed
+    requestedCount = models.IntegerField(default=0) # times Tool requested
 
-	minimumReputation = models.IntegerField(default=0)#preferences
-	#if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
+    defaultMaxBorrowTime = models.IntegerField(default=30)#time measured in days only
+    #applies to tools if free to borrow is enabled 
+    #0 means unlimited time
 
-	def __str__(self):
-		myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
-					"Borrowed by" + self.borrower, "My shed: " + self.myShed.name]
-		return ",".join(myList)
+    defaultFreeToBorrow = models.IntegerField(default=0)#preferences
+    #0 means borrow request accepted automaticly
+    #1 means aproval of borrow request required
+
+    minimumReputation = models.IntegerField(default=0)#preferences
+    #if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
+
+    content_type = models.ForeignKey(ContentType,null=True,blank=True)
+    object_id = models.PositiveIntegerField(null=True,default=1)
+
+    def __str__(self):
+        myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
+                    "Borrowed by" + self.borrower, "My shed: " + self.myShed.name]
+        return ",".join(myList)
+
+
+
+    def save(self, *args, **kwargs):
+        #do_something()
+        super(Tool, self).save(*args, **kwargs) # Call the "real" save() method.
+        
+        self.object_id = self.id
+        super(Tool, self).save(*args, **kwargs) # Call the "real" save() method.
+        #do_something_else()
 
 
 class Notification(models.Model):
