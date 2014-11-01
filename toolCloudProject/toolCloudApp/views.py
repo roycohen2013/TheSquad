@@ -66,13 +66,16 @@ def tool_submission(request):
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
                 """
-                while (True):
-                    try:
-                        tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-                        tool.save()
-                    except django.db.IntegrityError:
-                        continue
-                    break
+
+                tool.save()
+
+                # while (True):
+                #     try:
+                #         tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+                #         tool.save()
+                #     except django.db.IntegrityError:
+                #         continue
+                #     break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 context = {}
@@ -130,16 +133,16 @@ def view_current_profile(request):
         return HttpResponseRedirect(reverse('profile', args=(username,))) #comma for args to make string not look like a list of characters
 
 #a view that will allow us to see an individual tool
-def view_tool_page(request, toolID):
+def view_tool_page(request, id):
     if request.user.is_anonymous():
         #tell user they need to be logged in to that
         #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login') #redirect to login page
     else:
         if request.method == 'POST':
-            if toolID is not None:
+            if id is not None:
                 try:
-                    toolObj = toolUtil.getToolFromID(toolID)
+                    toolObj = toolUtil.getToolFromID(id)
                 except django.core.exceptions.ObjectDoesNotExist:
                     return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             else:
@@ -152,9 +155,9 @@ def view_tool_page(request, toolID):
             condition = toolUtil.getToolCondition(toolObj)
             available = toolUtil.isToolAvailable(toolObj)
         else:
-            if toolID is not None:
+            if id is not None:
                 try:
-                    toolObj = toolUtil.getToolFromID(toolID)
+                    toolObj = toolUtil.getToolFromID(id)
                 except django.core.exceptions.ObjectDoesNotExist:
                     return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             else:

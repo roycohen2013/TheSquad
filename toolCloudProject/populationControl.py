@@ -1,6 +1,6 @@
 """
-	Populates the database with THE SQUAD.
-	All 6 members of the squad will have their own account, shed, and tools.
+    Populates the database with THE SQUAD.
+    All 6 members of the squad will have their own account, shed, and tools.
 """
 
 import os
@@ -11,63 +11,69 @@ import django.db
 import string
 import random
 
+#from django.contrib.contenttypes.models import ContentType
+#from django.contrib.contenttypes import generic
+
+
 print("--> Populating Database...")
 
 names = [ ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', 'Bowen'] , \
-			['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
+            ['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
 
 profileObjects = []
 
 for x in range(len(names)):
 
-	firstName = names[x][0]
-	lastName = names[x][1]
-	userName = firstName+lastName
-	x = str(x)
-	newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
-						 phoneNumber = '0000000000', address = 'address', sharezone = '14623', \
-						 status = 'status')
-	newProfile.user.first_name = firstName
-	newProfile.user.last_name = lastName
-	newProfile.user.save()
-	newProfile.save()
-	profileObjects.append(newProfile)
+    firstName = names[x][0]
+    lastName = names[x][1]
+    userName = firstName+lastName
+    x = str(x)
+    newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
+                         phoneNumber = '0000000000', address = 'address', sharezone = '14623', \
+                         status = 'status')
+    newProfile.user.first_name = firstName
+    newProfile.user.last_name = lastName
+    newProfile.user.save()
+    newProfile.save()
+    profileObjects.append(newProfile)
 
-	
+    
 shedNames = ["Jake's Shed", "Roy's Shed", "Alex's Shed", "Taikhoom's Shed", \
-				"Jackson's Shed", "Adam's Shed"]
+                "Jackson's Shed", "Adam's Shed"]
 
 shedObjects = []
 
 for x in range(len(shedNames)):
 
-	newShed = Shed(name=shedNames[x], owner=profileObjects[x], location='location', \
-					sharezone='14623', status='status')
-	newShed.save()
-	shedObjects.append(newShed)
+    newShed = Shed(name=shedNames[x], owner=profileObjects[x], location='location', \
+                    sharezone='14623', status='status')
+    newShed.save()
+    shedObjects.append(newShed)
 
 
 toolNames = ['Hammer','Wrench','Screwdriver','Hoe','Drill','Impact Wrench', \
-		     'Shovel', 'Saw', 'Electric Screwdriver', 'Nail Gun']
+             'Shovel', 'Saw', 'Electric Screwdriver', 'Nail Gun']
 
 toolObjects = []
 
 for x in range(len(toolNames)):
 
-	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
-					isAvailable = True, tags = 'tags')
-	newTool.owner = profileObjects[x%len(profileObjects)]
-	"""this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
+    newTool = Tool(name = toolNames[x], description='description', location = 'location', \
+                    isAvailable = True, tags = 'tags')
+    newTool.owner = profileObjects[x%len(profileObjects)]
+    """this loop will ensure that there are no identical toolIDs. After generating a permanent toolID, it 
                 attempts to catch an IntegrityError raised by django, which means that there is already a tool with an
                 identical ID, if this happens,  a new one is generated until no error is raised.
     """
-	while (True):
-		try:
-			newTool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-			newTool.save()
-		except django.db.IntegrityError:
-			continue
-		break
-	toolObjects.append(newTool)
+    newTool.save()
+    
+    # while (True):
+    #     try:
+    #         newTool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
+    #         newTool.save()
+    #     except django.db.IntegrityError:
+    #         continue
+    #     break
+    toolObjects.append(newTool)
 
 print("--> Database populated")

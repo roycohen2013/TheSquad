@@ -42,7 +42,7 @@ def getToolName(toolObj):
 	Get a tool object with the Tool's ID
 """
 def getToolFromID(toolID):
-	return Tool.objects.get(toolID = toolID)
+	return Tool.objects.get(id = toolID)
 
 """
 	Update tool name.

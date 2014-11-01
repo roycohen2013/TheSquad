@@ -24,7 +24,7 @@ urlpatterns = patterns('',
 	url(r'^tools/$', 'toolCloudApp.views.all_tools'),
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/toolnotfound/$', 'toolCloudApp.views.tool_dne'),
-	url(r'^tools/(?P<toolID>[a-zA-Z]{8})/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
+	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 
 	#Shed urls
 	url(r'^shed/shedCreation', 'toolCloudApp.views.create_toolShed'),
