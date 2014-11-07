@@ -19,10 +19,10 @@ from toolCloudApp.models import Profile, Tool, Shed
 	Create a new Profile and save it to the database.
 """
 def createNewProfile(firstName,lastName,username,email,password,phoneNumber, \
-										address,sharezone,status,preferences):
+										address,sharezone,status,preferences_privacy):
 	newProfile = Profile(user = User.objects.create_user(username,email,password), \
 						phoneNumber = phoneNumber, address = address, sharezone = sharezone, \
-						status = status, preferences = preferences)
+						status = status, preferences_Privacy = preferences_privacy)
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
 	newProfile.user.save()
@@ -111,9 +111,18 @@ def getUsername(profileObj):
 """
 	Get email of a Profile object.
 """
-def getEmail(profileObject):
+def getEmail(profileObj):
 	return profileObj.user.email
 
+
+"""
+	Update email of a profile object.
+"""
+def updateEmail (profileObj, email):
+	profileObj.user.email = email
+	profileObj.user.save()
+	profileObj.save()
+	return profileObj
 
 """
 	Get the phone number of a Profile object.

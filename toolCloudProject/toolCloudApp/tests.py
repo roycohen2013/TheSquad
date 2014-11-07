@@ -7,6 +7,7 @@ import utilities.profileUtilities as profUtils
 import utilities.shedUtilities as shedUtils
 
 
+
 # Create your tests here.
 
 
@@ -158,7 +159,7 @@ class profileTests (TestCase):
 			code = compile(f.read(), "populationControl", 'exec')
 			exec(code)
 		try:
-			genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", "") #mk User
+			genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
 		except:
 			self.fail ("Error while generating user")
 			
@@ -168,7 +169,7 @@ class profileTests (TestCase):
 		
 		self.assertEqual (profUtils.getFirstName(getProfile), "Obi-Wan")  #make sure the name was actually saved as Obi-Wan
 		
-		profUtils.updateFirstName (genProfile, "Ben")
+		profUtils.updateFirstName (getProfile, "Ben")
 		self.assertEqual (profUtils.getFirstName(getProfile), "Ben") #change his name to Ben and then make sure it was saved
 		getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
 		
@@ -183,30 +184,30 @@ class profileTests (TestCase):
 		
 		self.assertNotIn (getProfile, profUtils.getAllOtherProfilesInSharezone (getProfile))
 		
-		self.assertIn (getProfile, profUtils.getAllProfilesInSharezone ("14623"))
+		self.assertIn (getProfile, profUtils.getAllProfilesInSharezone ("Jedi Temple"))
 		
-		self.assertEqual (profUtils.getProfileFromUser (profUtils.getUserOfProfile(genProfile)), genProfile)
+		self.assertEqual (profUtils.getProfileFromUser (profUtils.getUserofProfile(genProfile)), genProfile)
 		
-		self.updateAddress (getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
-		self.assertEqual (profUtils.getAddress (genProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
+		profUtils.updateAddress (getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
+		self.assertEqual (profUtils.getAddress (getProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updateSharezone (getProfile, "Sandpeople")
-		self.assertEqual (profUtils.getSharezone (genProfile), "Sandpeople")
+		self.assertEqual (profUtils.getSharezone (getProfile), "Sandpeople")
 		
 		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updateStatus (getProfile, "Exile")
-		self.assertEqual (profUtils.getStatus (genProfile), "Exile")
+		self.assertEqual (profUtils.getStatus (getProfile), "Exile")
 		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updateEmail (getProfile, "ben@moseisley.org")
-		self.assertEqual (profUtils.getEmail (genProfile), "ben@moseisley.org")
+		self.assertEqual (profUtils.getEmail (getProfile), "ben@moseisley.org")
 		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updatePhoneNumber (getProfile, "1111111111")
-		self.assertEqual (profUtils.getPhoneNumber (genProfile), "1111111111")
+		self.assertEqual (profUtils.getPhoneNumber (getProfile), "1111111111")
 		
 		
 				
