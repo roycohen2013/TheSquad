@@ -17,9 +17,6 @@ import utilities.shedUtilities as shedUtils
 
 class useCaseTests:
 	def testUC1 (self):
-		with open("populationControl.py") as f:
-			code = compile(f.read(), "populationControl", 'exec')
-			exec(code)
 		driver = webdriver.Firefox ()
 		driver.get ("http://localhost:8000")
 		
@@ -40,12 +37,28 @@ class useCaseTests:
 		
 		driver.find_element_by_id ("id_share_zone").send_keys ("Minas Tirith")
 		
-		driver.findElement(By.xpath("//*[@value='Sign Up']")).click();
+		driver.findElement(By.xpath("//*[@value='Sign Up']")).click()
 		
-		Profile.objects.get (username = "borofgondor")
+		body=driver.findElement(By.tagName("body")).getText()
 	
-	def testUC2 (self):
-		with open("populationControl.py") as f:
-			code = compile(f.read(), "populationControl", 'exec')
-			exec(code)
+	def testUC8 (self):
+		driver = webdriver.Firefox ()
+		driver.get ("http://localhost:8000/tools/submit/")
 		
+		driver.find_element_by_id ("id_name").send_keys ("Anduril")
+		
+		driver.find_element_by_id ("id_description").send_keys ("The reforged blade that was broken")
+		
+		driver.find_element_by_id ("id_tags").send_keys  ("sword")
+		
+		driver.findElement(By.xpath("//*[@value='Submit Tool']")).click();
+		
+	def testUC4 (self):
+		driver = webdriver.Firefox()
+		driver.get ("http://localhost:8000/sheds/create/")
+		
+		driver.find_element_by_id ("id_name").send_keys ("Rivendell")
+		
+		driver.find_element_by_id ("id_sharezone").send_keys ("Elven Middle-Earth")
+		
+		driver.findElement(By.xpath("//*[@value='Create New Shed']")).click()
