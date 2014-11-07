@@ -18,7 +18,7 @@ class toolTests (TestCase):
 			ngTool = toolUtils.createNewTool ("Lightsaber", "Please don't hurt yourself with this", profUtils.getAllProfiles()[3], "Jedi Temple", "http://www.bitrebels.com/wp-content/uploads/2012/12/led-lightsaber-role-playing-6.jpg", True, "", "")
 		except:
 			self.fail("Error when generating new tool")
-		print (str(Tool.objects.all()))
+
 		ncTool = Tool.objects.get (name = "Lightsaber")
 		nhTool = Tool.objects.get (name = "Hammer")
 		self.assertEqual (ngTool, ncTool) #make sure that the tool  pulled from the db is the same reference as the returned reference
@@ -35,46 +35,46 @@ class toolTests (TestCase):
 		
 		toolUtils.updateToolName (ncTool, "Darksaber") #changing the name of the tool
 		self.assertEqual (toolUtils.getToolName (ncTool), "Darksaber") #making sure that the new name is saved
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolDescription (ncTool, "Darth Maul stole this from Mandalorians") #changing the description of the tool
 		self.assertEqual (toolUtils.getToolDescription (ncTool), "Darth Maul stole this from Mandalorians") #making sure that the new description is saved
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolTags (ncTool, "tag") #changing the name of the tool
 		self.assertEqual (toolUtils.getToolTags (ncTool), "tag") #making sure that the new name is saved
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
-		self.assertEqual (toolUtils.getOwner(), profUtils.getAllProfiles()[3])  #testing getOwner
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		self.assertEqual (toolUtils.getToolOwner(ncTool), profUtils.getAllProfiles()[3])  #testing getOwner
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
-		self.assertIn (ncTool, getToolsBelongingToProfile(profUtils.getAllProfiles()[3]))  #testing getToolsBelongingToProfile
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		self.assertIn (ncTool, toolUtils.getToolsBelongingToProfile(profUtils.getAllProfiles()[3]))  #testing getToolsBelongingToProfile
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolBorrower (ncTool, profUtils.getAllProfiles()[2])    #testing toolBorrower
 		self.assertEqual (toolUtils.getToolBorrower (ncTool), profUtils.getAllProfiles()[2])
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolShed (ncTool, Shed.objects.all()[0])   #tesging updatetoolshed and gettoolshed
-		self.assertEqual (toolUtils.getToolShed(), Shed.objects.all()[0])
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		self.assertEqual (toolUtils.getToolShed(ncTool), Shed.objects.all()[0])
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolLocation (ncTool, "Dune Sea")
 		self.assertEqual (toolUtils.getToolLocation (ncTool), "Dune Sea")
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		toolUtils.updateToolCondition (ncTool, 5)
 		self.assertEqual (5, toolUtils.getToolCondition (ncTool))
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		
 		self.assertEqual (toolUtils.getBorrowedCount(ncTool), 0)
 		toolUtils.incrementBorrowedCount (ncTool)
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		self.assertEqual (toolUtils.getBorrowedCount(ncTool), 1)
 		
 		self.assertEqual (toolUtils.getRequestedCount(ncTool), 0)
 		toolUtils.incrementRequestedCount (ncTool)
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		ncTool = Tool.objects.get (name = "Darksaber")
 		self.assertEqual (toolUtils.getRequestedCount(ncTool), 1)
 		
 		self.assertIn (ncTool, toolUtils.getAllTools())
@@ -83,7 +83,7 @@ class toolTests (TestCase):
 		
 		self.assertEqual(toolUtils.isToolAvailable(ncTool), True)
 		toolUtils.updateToolAvailability (ncTool, False)
-		ncTool = Tool.objects.get (name = "Lightsaber")
+		
 		
 		
 class shedTests (TestCase):
@@ -111,6 +111,8 @@ class shedTests (TestCase):
 		self.assertNotIn (profUtils.getAllProfiles()[2], shedUtils.getAllMembersOfShed()) #taking him out and then making sure he's not there
 		
 		self.assertIn (getShed, shedUtils.getAllShedsAllSharezones())
+		
+		shedUtils.updateLatitudeOfShed (shedObj)
 		
 		
 		
