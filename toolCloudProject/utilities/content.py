@@ -46,14 +46,16 @@ def genSuper():
 """
 def genBaseLoggedIn(request):
 	results = dict()
+	results.update(genSuper())
 	results['username'] = request.username
 	results['first_name'] = request.first_name
 	results['last_name'] = request.last_name
 	#get pict location
-	#results['picture'] = 
-	#get top sheds#results['topSheds'] = 
+	results['picture'] = None
+	#get top sheds
+	results['topSheds'] = None
 	#get notifications
-	#results['notifications'] = 
+	results['notifications'] = None
 	return results
 
 """
@@ -67,7 +69,8 @@ def genBaseLoggedIn(request):
 			each as (name, time left, time borrowed, timestamp)
 """
 #def genUserHome(request):
-	#complex shit
+	results = dict()
+	results.update(genBaseLoggedIn())
 
 def getDefaults():
 	return defaults
