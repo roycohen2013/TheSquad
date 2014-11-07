@@ -159,7 +159,7 @@ def getToolCondition(toolObj):
 def updateToolCondition(toolObj, newCondition):
 	toolObj.condition = newCondition
 	toolObj.save()
-	return toolObject
+	return toolObj
 
 
 """
