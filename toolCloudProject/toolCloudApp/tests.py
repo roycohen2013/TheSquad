@@ -6,6 +6,7 @@ import utilities.toolUtilities as toolUtils
 import utilities.profileUtilities as profUtils
 import utilities.shedUtilities as shedUtils
 
+
 # Create your tests here.
 
 
@@ -92,7 +93,7 @@ class shedTests (TestCase):
 			code = compile(f.read(), "populationControl", 'exec')
 			exec(code)
 		try:
-			genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "Lightsaber Tools", "Coruscant", "Jedi Temple", "open") #create new shed
+			genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "Lightsaber Tools", "Jedi Temple", "Coruscant", "open") #create new shed
 		except:
 			self.fail ("Error when generating new shed")
 		
@@ -100,19 +101,49 @@ class shedTests (TestCase):
 		
 		self.assertEqual (genShed, getShed) #make sure the reference in the db = the reference returned by the creation of the shed
 		
-		self.assertEqual (shedUtils.getShedName (getShed), "Lightsaber Tools") #make sure names match
+		self.assertEqual (shedUtils.getNameOfShed (getShed), "Lightsaber Tools") #make sure names match
 		
-		self.assertIn (getShed, shedUtils.getAllShedsInSharezone ("Jedi Temple")) #make sure the shed is returned when doing a query of all sheds in zone
+		self.assertIn (getShed, shedUtils.getAllShedsInSharezone ("Coruscant")) #make sure the shed is returned when doing a query of all sheds in zone
 		
 		shedUtils.addMemberToShed (getShed, profUtils.getAllProfiles()[2])
-		self.assertIn (profUtils.getAllProfiles()[2], shedUtils.getAllMembersOfShed ())  #adding a member and then making sure he's there
+		getShed = Shed.objects.get (name = "Lightsaber Tools")
+		self.assertIn (profUtils.getAllProfiles()[2], shedUtils.getAllMembersOfShed (getShed))  #adding a member and then making sure he's there
 		
 		shedUtils.removeMemberFromShed (getShed, profUtils.getAllProfiles()[2])
-		self.assertNotIn (profUtils.getAllProfiles()[2], shedUtils.getAllMembersOfShed()) #taking him out and then making sure he's not there
+		getShed = Shed.objects.get (name = "Lightsaber Tools")
+		self.assertNotIn (profUtils.getAllProfiles()[2], shedUtils.getAllMembersOfShed(getShed)) #taking him out and then making sure he's not there
 		
 		self.assertIn (getShed, shedUtils.getAllShedsAllSharezones())
 		
-		shedUtils.updateLatitudeOfShed (shedObj)
+		shedUtils.updateLatitudeOfShed (getShed, 45)
+		getShed = Shed.objects.get (name = "Lightsaber Tools")
+		self.assertEqual (shedUtils.getLatitudeOfShed (getShed), 45)
+		
+		shedUtils.updateLongitudeOfShed (getShed, 55)
+		getShed = Shed.objects.get (name = "Lightsaber Tools")
+		self.assertEqual (shedUtils.getLongitudeOfShed (getShed), 55)
+		
+		shedUtils.updateLocationOfShed (getShed, "Emperor Palpatine's personal stronghold")
+		getShed = Shed.objects.get (name = "Lightsaber Tools")
+		self.assertEqual (shedUtils.getLocationOfShed (getShed), "Emperor Palpatine's personal stronghold")
+		
+		self.assertEqual (shedUtils.getSharezoneOfShed (getShed), "Coruscant")
+		
+		self.assertEqual (shedUtils.getOwnerOfShed (getShed), profUtils.getAllProfiles()[3])
+		
+		shedUtils.updateNameOfShed (getShed,"Jedi artifacts")
+		getShed = Shed.objects.get (name = "Jedi artifacts")
+		self.assertEqual (shedUtils.getNameOfShed (getShed), "Jedi artifacts")
+		
+		shedUtils.addAdminToShed (getShed, profUtils.getAllProfiles()[2])
+		getShed = Shed.objects.get (name = "Jedi artifacts")
+		self.assertIn (profUtils.getAllProfiles()[2], shedUtils.getAllAdminsOfShed (getShed))  #adding an admin and then making sure he's there
+		
+		shedUtils.removeAdminFromShed (getShed, profUtils.getAllProfiles()[2])
+		getShed = Shed.objects.get (name = "Jedi artifacts")
+		self.assertNotIn (profUtils.getAllProfiles()[2], shedUtils.getAllAdminsOfShed(getShed)) #taking him out and then making sure he's not there
+		
+		
 		
 		
 		
@@ -131,7 +162,7 @@ class profileTests (TestCase):
 		except:
 			self.fail ("Error while generating user")
 			
-		getProfile = Profile.objects.get (address = "Tatooine") #make sure we can catch him from the db
+		getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
 		
 		self.assertEqual (genProfile, getProfile)
 		
@@ -139,13 +170,16 @@ class profileTests (TestCase):
 		
 		profUtils.updateFirstName (genProfile, "Ben")
 		self.assertEqual (profUtils.getFirstName(getProfile), "Ben") #change his name to Ben and then make sure it was saved
+		getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
 		
 		rep = profUtils.getReputation(getProfile)
 		profUtils.updateReputation (getProfile, 10)
 		self.assertGreater (profUtils.getReputation (getProfile), rep)  #make sure his reputation updates
+		getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
 		
 		profUtils.updateLastName (genProfile, "General")
 		self.assertEqual (profUtils.getLastName(getProfile), "General") #change his name to Ben and then make sure it was saved
+		getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
 		
 		self.assertNotIn (getProfile, profUtils.getAllOtherProfilesInSharezone (getProfile))
 		
@@ -156,26 +190,25 @@ class profileTests (TestCase):
 		self.updateAddress (getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		self.assertEqual (profUtils.getAddress (genProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
+		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
+		
 		profUtils.updateSharezone (getProfile, "Sandpeople")
 		self.assertEqual (profUtils.getSharezone (genProfile), "Sandpeople")
 		
+		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updateStatus (getProfile, "Exile")
 		self.assertEqual (profUtils.getStatus (genProfile), "Exile")
+		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updateEmail (getProfile, "ben@moseisley.org")
 		self.assertEqual (profUtils.getEmail (genProfile), "ben@moseisley.org")
+		getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
 		
 		profUtils.updatePhoneNumber (getProfile, "1111111111")
 		self.assertEqual (profUtils.getPhoneNumber (genProfile), "1111111111")
 		
 		
-		
-
-		
-
-		
-		
-		
+				
 
 		
