@@ -162,75 +162,149 @@ class shedTests (TestCase):
     
     
 class profileTests (TestCase):
-    def testProfUtils (self):
+
+
+
+    def setUp (self):
+
         with open("populationControl.py") as f:
             code = compile(f.read(), "populationControl", 'exec')
             exec(code)
         try:
-            genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
+
+            self.genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
+            
+            self.getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
+        
         except:
             self.fail ("Error while generating user")
-            
-        getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
-        
-        self.assertEqual (genProfile, getProfile)
-        
-        self.assertEqual (profUtils.getFirstName(getProfile), "Obi-Wan")  #make sure the name was actually saved as Obi-Wan
-        
-        profUtils.updateFirstName (getProfile, "Ben")
-        self.assertEqual (profUtils.getFirstName(getProfile), "Ben") #change his name to Ben and then make sure it was saved
-        getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
-        
-        rep = profUtils.getReputation(getProfile)
-        profUtils.updateReputation (getProfile, 10)
-        self.assertGreater (profUtils.getReputation (getProfile), rep)  #make sure his reputation updates
-        getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
-        
-        profUtils.updateLastName (genProfile, "General")
-        self.assertEqual (profUtils.getLastName(getProfile), "General") #change his name to Ben and then make sure it was saved
-        getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters")
-        
-        self.assertNotIn (getProfile, profUtils.getAllOtherProfilesInSharezone (getProfile))
-        
-        self.assertIn (getProfile, profUtils.getAllProfilesInSharezone ("Jedi Temple"))
-        
-        self.assertEqual (profUtils.getProfileFromUser (profUtils.getUserofProfile(genProfile)), genProfile)
-        
-        profUtils.updateAddress (getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        self.assertEqual (profUtils.getAddress (getProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        
-        getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        
-        profUtils.updateSharezone (getProfile, "Sandpeople")
-        self.assertEqual (profUtils.getSharezone (getProfile), "Sandpeople")
-        
-        getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        
-        profUtils.updateStatus (getProfile, "Exile")
-        self.assertEqual (profUtils.getStatus (getProfile), "Exile")
-        getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        
-        profUtils.updateEmail (getProfile, "ben@moseisley.org")
-        self.assertEqual (profUtils.getEmail (getProfile), "ben@moseisley.org")
-        getProfile = Profile.objects.get (address = "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        
-        profUtils.updatePhoneNumber (getProfile, "1111111111")
-        self.assertEqual (profUtils.getPhoneNumber (getProfile), "1111111111")
-        
-        
+
+
+    def test_GetProfile(self):
+        """
+        tests that GetProfile returns same profile as submitted to database
+        """
+        self.assertEqual (self.genProfile, self.getProfile)
+
+
+    def test_GetFirstName(self):
+        """
+
+        """
+        self.assertEqual(profUtils.getFirstName(self.getProfile), "Obi-Wan")  #make sure the name was actually saved as Obi-Wan
+
+    def test_GetLastName(self):
+        """
+
+        """
+        self.assertEqual(profUtils.getLastName(self.getProfile), "Kenobi")  #make sure the name was actually saved as Obi-Wan
+
+
+
+    def test_UpdateFirstName(self):
+        """
+
+        """
+        profUtils.updateFirstName (self.getProfile, "Ben")
+        self.assertEqual (profUtils.getFirstName(self.getProfile), "Ben") #change his name to Ben and then make sure it was saved
+
+    def test_UpdateLastName(self):
+        """
+
+        """
+        profUtils.updateLastName (self.getProfile, "General")
+        self.assertEqual (profUtils.getLastName(self.getProfile), "General") #change his name to Ben and then make sure it was saved
+
+
+    def test_GetReputation(self):
+        """
+        """
+        self.assertEqual (profUtils.getReputation(self.getProfile), 50) #change his name to Ben and then make sure it was saved
+
+    def test_UpdateReputation(self):
+        rep = profUtils.getReputation(self.getProfile)
+        profUtils.updateReputation(self.getProfile, 10)
+        self.assertGreater (profUtils.getReputation(self.getProfile), rep)  #make sure his reputation updates
+
+    def test_GetAllOtherProfilesInSharezone(self):
+        """
+        """
+        self.assertNotIn (self.getProfile, profUtils.getAllOtherProfilesInSharezone(self.getProfile))
+
+
+    def test_GetAllProfilesInShareZone(self):
+        """
+        """
+        self.assertIn(self.getProfile, profUtils.getAllProfilesInSharezone("Jedi Temple"))
+
+    def test_GetUserOfProfile(self):
+        """
+        """
+        self.assertEqual(profUtils.getProfileFromUser(profUtils.getUserofProfile(self.genProfile)), self.genProfile)
+
+    def test_GetAddress(self):
+        """
+        """
+        self.assertEqual (profUtils.getAddress(self.getProfile), "Room 42, Jedi Temple Master's Quarters")
+
+    def test_UpdateAddress(self):
+        """
+        """
+        profUtils.updateAddress (self.getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
+        self.assertEqual (profUtils.getAddress (self.getProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
+
+
+    def test_GetShareZone(self):
+        """
+        """
+        self.assertEqual (profUtils.getSharezone(self.getProfile), "Jedi Temple")
+
+    def test_UpdateShareZone(self):
+        """
+        """
+        profUtils.updateSharezone(self.getProfile, "Sandpeople")
+        self.assertEqual (profUtils.getSharezone(self.getProfile), "Sandpeople")
+
+
+    def test_GetStatus(self):
+        """
+        """
+        self.assertEqual (profUtils.getStatus (self.getProfile), "active")
+
+    def test_UpdateStatus(self):
+        """
+        """
+        profUtils.updateStatus (self.getProfile, "Exile")
+        self.assertEqual(profUtils.getStatus(self.getProfile), "Exile")
+
+
+    def test_GetEmail(self):
+        """
+        """
+        self.assertEqual (profUtils.getEmail (self.getProfile), "ben@jedi.edu")
+
+    def test_UpdateEmail(self):
+        """
+        """
+        profUtils.updateEmail(self.getProfile, "ben@moseisley.org")
+        self.assertEqual (profUtils.getEmail(self.getProfile), "ben@moseisley.org")
+   
+    def test_GetPhoneNumber(self):
+        """
+        """
+        self.assertEqual (profUtils.getPhoneNumber (self.getProfile), "0000000000")
+
+    def test_UpdatePhoneNumber(self):
+        """
+        """
+        profUtils.updatePhoneNumber (self.getProfile, "1111111111")
+        self.assertEqual (profUtils.getPhoneNumber(self.getProfile), "1111111111")
+
                 
 
         
 
 class notificationTests (TestCase):
-
-    genShed = None
-    RecptProfile = None
-    genTool = None
-
-    #genTool = Tool()
-
-
 
     def setUp (self):
         # if platform.system() == 'Linux' or platform.system() == 'Darwin':
@@ -247,14 +321,12 @@ class notificationTests (TestCase):
             self.RecptProfile = profUtils.createNewProfile ("some", "Person", "somePerson122", "somePerson122@toolcloud.com",\
                                                   "password", "2012227555", "someAddress", "someZones", "active", 0) #mk User
 
-            self.genTool = toolUtils.createNewTool ("Lightsaber", "Please don't hurt yourself with this", profUtils.getAllProfiles()[3], "Jedi Temple", "http://www.bitrebels.com/wp-content/uploads/2012/12/led-lightsaber-role-playing-6.jpg", True, "", "")
+            self.genTool = toolUtils.createNewTool ("Lightsaber", "Please don't hurt yourself with this", profUtils.getAllProfiles()[3], "Jedi Temple", "http://www.bitrebels.com", True, "", "")
  
             #RecptProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
         except:
             self.fail ("Error while generating user")
-        
-        print("SETTING UP")
-        
+                
        
         #genShed = shedUtils.createNewShed(profUtils.getAllProfiles()[3], "shed notification test", "somwhere ", "somezone", "open") #create new shed
 
@@ -276,8 +348,10 @@ class notificationTests (TestCase):
 
             
 
-    def testInfoNotificationCreation(self):
-
+    def test_InfoNotificationCreation(self):
+        """
+        Tests Info notification creation for all types
+        """
         
         #self.genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "shed notification test", "somwhere ", "somezone", "open") #create new shed
         #RecptProfile = profUtils.createNewProfile ("some", "Person", "somePerson122", "somePerson122@toolcloud.com",\
@@ -288,3 +362,13 @@ class notificationTests (TestCase):
 
         
         self.assertEqual (genNotif, getNotif) #make sure the reference in the db = the reference returned by the creation of the shed
+
+
+    def test_InfoNotificationDeletion(self):
+        """
+
+        Tests Info notification Deletion for all types
+        
+        """
+        pass
+
