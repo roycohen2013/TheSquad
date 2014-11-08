@@ -166,6 +166,8 @@ class Notification(models.Model):
         #-open ended - user prompt text
     notificationType = models.CharField(max_length="20",null=True)#type of notification can be either "info" or "request" ex. TCP vs UDP
     timestamp = models.DateTimeField(auto_now_add=True,null=True)
+
+    response = models.CharField(max_length="40",null=True)#Starts off being null. when filled out the notification has been responded to
     
     def save(self, *args, **kwargs):
         #do_something()
