@@ -2,6 +2,8 @@
 These tests depend on Selenium and also expect you to have Firefox installed.
 """
 
+import sys
+sys.path.append("../../selenium/py/selenium")
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
