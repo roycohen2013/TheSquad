@@ -528,7 +528,7 @@ class notificationTests (TestCase):
         #RecptProfile = profUtils.createNewProfile ("some", "Person", "somePerson122", "somePerson122@toolcloud.com",\
         #                                          "password", "2012227555", "someAddress", "someZones", "active", 0) #mk User
 
-        genNotif = notifUtils.createInfoNotification(self.genShed, self.RecptProfile, "test Content")
+        genNotif = notifUtils.createInfoNotif(self.genShed, self.RecptProfile, "test Content")
         getNotif = Notification.objects.get(id = genNotif.object_id) #make sure the shed was actually saved to the db
 
         
