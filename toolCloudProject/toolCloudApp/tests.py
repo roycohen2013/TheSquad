@@ -21,8 +21,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 
 
 
-
-
 #@unittest.skip("skipping Tool tests")    #can be used for skipping past certain tests
 class toolTests (TestCase):
     fixtures = ["initDBData.json"]
