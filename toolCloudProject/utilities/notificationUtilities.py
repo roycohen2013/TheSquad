@@ -14,16 +14,11 @@ from toolCloudApp.models import Profile, Tool, Shed, Notification
 """
     Create a new Notification of the "info" type.
 """
-<<<<<<< HEAD
 def createInfoNotif(sourceObj,recipientProfile,content):
-=======
-def createNotificationInfo(sourceObj,recipientProfile,content):
->>>>>>> FETCH_HEAD
 	newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 	newNotification.save()
 	return newNotification
 
-<<<<<<< HEAD
 
 """
     Create a new Notification that waits for a response.
@@ -34,13 +29,12 @@ def createResponseNotif(sourceObj,recipientProfile,content):
     return newNotification
 
 
-=======
->>>>>>> FETCH_HEAD
 """
     Get the source of a notification.
 """
 def getNotifSource(notifObj):
     return notifObj.source
+
 
 """
     Get the recipient of a notification.
