@@ -88,6 +88,7 @@ class Shed(models.Model):
         #do_something()
         super(Shed, self).save(*args, **kwargs) # Call the "real" save() method.
         self.object_id = self.id
+        #print (content_type)
         super(Shed, self).save(*args, **kwargs) # Call the "real" save() method.
         #do_something_else()
 
@@ -129,6 +130,8 @@ class Tool(models.Model):
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
     object_id = models.PositiveIntegerField(null=True,default=1)
 
+
+
     def __str__(self):
         myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
                     "Borrowed by" + self.borrower, "My shed: " + self.myShed.name]
@@ -148,18 +151,30 @@ class Tool(models.Model):
 
 
 class Notification(models.Model):
-    recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
     
+    content_type = models.ForeignKey(ContentType,null=True,blank=True)
+    object_id = models.PositiveIntegerField(null=True,default=1)
+    #ContentType.objects.get_for_model(self)
 
-    source = generic.GenericForeignKey()#action that caused it
+    recipient = models.ForeignKey('Profile', related_name='myNotifications',null=True)#reciever of notification
+    source = generic.GenericForeignKey('content_type', 'object_id')#action that caused it
 
-    content = models.CharField(max_length=280)
+    content = models.CharField(max_length=280,null=True)
     #if type == info: content is string of text
     #elif type == request: content is
         #-multiple choice - question, then choices in CSV form
         #-open ended - user prompt text
-    notificationType = models.CharField(max_length="20")#type of notification can be either info or request ex. TCP vs UDP
-    timestamp = models.DateTimeField(auto_now_add=True)
+    notificationType = models.CharField(max_length="20",null=True)#type of notification can be either "info" or "request" ex. TCP vs UDP
+    timestamp = models.DateTimeField(auto_now_add=True,null=True)
+    
+    def save(self, *args, **kwargs):
+        #do_something()
+        super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
+        self.object_id = self.id
+        super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
+        #do_something_else()
+
+
 
 class Action(models.Model):
     tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
