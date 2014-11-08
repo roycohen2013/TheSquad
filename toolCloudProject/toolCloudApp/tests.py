@@ -25,15 +25,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 
 #@unittest.skip("skipping Tool tests")    #can be used for skipping past certain tests
 class toolTests (TestCase):
-
+    fixtures = ["initDBData.json"]
 
 
 
     def setUp (self):
-
-        with open("populationControl.py") as f:
-            code = compile(f.read(), "populationControl", 'exec')
-            exec(code)
+        #with open("populationControl.py") as f:
+        #    code = compile(f.read(), "populationControl", 'exec')
+        #    exec(code)
         try:
 
             self.ngTool = toolUtils.createNewTool ("Lightsaber", "Please don't hurt yourself with this", profUtils.getAllProfiles()[3], "Jedi Temple", "http://www.bitrebels.com", True, "", "")
@@ -208,13 +207,13 @@ class toolTests (TestCase):
         
 #@unittest.skip("skipping Shed tests")    #can be used for skipping past certain tests   
 class shedTests (TestCase):
-
+    fixtures = ["initDBData.json"]
 
     def setUp (self):
 
-        with open("populationControl.py") as f:
-            code = compile(f.read(), "populationControl", 'exec')
-            exec(code)
+        #with open("populationControl.py") as f:
+        #    code = compile(f.read(), "populationControl", 'exec')
+        #    exec(code)
         try:
 
             self.genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "Lightsaber Tools", "Jedi Temple", "Coruscant", "open") #create new shed
@@ -354,14 +353,14 @@ class shedTests (TestCase):
     
 #@unittest.skip("skipping Profile tests")    #can be used for skipping past certain tests
 class profileTests (TestCase):
-
+    fixtures = ["initDBData.json"]
 
 
     def setUp (self):
 
-        with open("populationControl.py") as f:
-            code = compile(f.read(), "populationControl", 'exec')
-            exec(code)
+        #with open("populationControl.py") as f:
+        #    code = compile(f.read(), "populationControl", 'exec')
+        #    exec(code)
         try:
 
             self.genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
@@ -497,16 +496,16 @@ class profileTests (TestCase):
         
 #@unittest.skip("skipping Notification tests")    #can be used for skipping past certain tests
 class notificationTests (TestCase):
-
+    fixtures = ["initDBData.json"]
     def setUp (self):
         # if platform.system() == 'Linux' or platform.system() == 'Darwin':
         #     os.system('python3 populationControl.py')
         # else:
         #     os.system('python populationControl.py')
         # print("")
-        with open("populationControl.py") as f:
-            code = compile(f.read(), "populationControl", 'exec')
-            exec(code)
+        #with open("populationControl.py") as f:
+        #    code = compile(f.read(), "populationControl", 'exec')
+        #    exec(code)
         try:
             self.genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "shed notification test", "somwhere ", "somezone", "open") #create new shed
         
