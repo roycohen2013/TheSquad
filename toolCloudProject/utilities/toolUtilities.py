@@ -1,9 +1,5 @@
 """
-$Date $
-$Revision $
-$Author $
-
-Provides functionality for all front end requests regarding tools.
+	Provides functionality for all front end requests regarding tools.
 """
 
 import sys
@@ -93,7 +89,7 @@ def getToolOwner(toolObj):
 
 
 """
-        Get all tools belonging to a specific user
+    Get all tools belonging to a specific user
 """
 def getToolsBelongingToProfile(profileObj):
 	return Tool.objects.filter(owner=profileObj).order_by('name')

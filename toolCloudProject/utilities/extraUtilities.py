@@ -1,8 +1,5 @@
 """
-$Date $
-$Revision $
-$Author $
-Provides functionality for other front end stuff.
+    Provides functionality for other front end stuff.
 """
 import sys
 sys.path.append("..")

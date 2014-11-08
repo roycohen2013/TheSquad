@@ -1,9 +1,5 @@
 """
-$Date $
-$Revision $
-$Author $
-
-Provides functionality for all front end requests regarding profiles.
+	Provides functionality for all front end requests regarding profiles.
 """
 
 import sys
