@@ -21,6 +21,7 @@ class toolTests (TestCase):
 		except:
 			self.fail("Error when generating new tool")
 
+
 		ncTool = Tool.objects.get (name = "Lightsaber")
 		nhTool = Tool.objects.get (name = "Hammer")
 		self.assertEqual (ngTool, ncTool) #make sure that the tool  pulled from the db is the same reference as the returned reference
