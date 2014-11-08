@@ -18,9 +18,9 @@ from toolCloudApp.models import Profile, Tool, Shed
 """
 	Create a new shed owned by a given Profile.
 """
-def createNewShed(ownerProfileObj,name,location,sharezone,status,preferences):
+def createNewShed(ownerProfileObj,name,location,sharezone,status):
 	newShed = Shed(name=name,owner=ownerProfileObj,location=location, \
-					sharezone=sharezone,status=status,preferences=preferences)
+					sharezone=sharezone,status=status)
 	newShed.save()
 	return newShed
 
