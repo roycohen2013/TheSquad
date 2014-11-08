@@ -8,4 +8,5 @@ clean:
 	rm -rf *.pyc
 test: ready
 	python3 manage.py runserver
+update: pull push
 
