@@ -135,3 +135,9 @@ def getNotifResponse(notifObj):
         return notifObj.response
     return None
 
+
+"""
+    Respond to a notification with text of your choice.
+"""
+def respondToNotif(notifObj, myResponse):
+    notifObj.response = myResponse
