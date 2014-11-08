@@ -216,7 +216,7 @@ class Action(models.Model):
     actionType = models.CharField(max_length=20)#either tool, or shed
     currrentState = models.CharField(max_length=20)
     timestamps = models.CharField(max_length=560)#CSV timestamps for every state
-    workSpace = models.CharField(max_length=200)#for use in state machine
+    workSpace = models.CharField(max_length=200,null = True)#for use in state machine
 
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
     object_id = models.PositiveIntegerField(null=True,default=1)

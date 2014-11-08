@@ -27,6 +27,8 @@ class Action(models.Model):
 if state ==	"userBorrowRequest":
     pass
 elif state == "askOwner":
+	#generate question string asking [owner] if [borrower]
+
     pass
 elif state == "acceptDecline":
     pass
