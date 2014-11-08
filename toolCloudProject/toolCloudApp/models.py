@@ -2,14 +2,17 @@
     Our database tables.
 """
 
-
 from django.db import models
 from django.contrib.auth.models import User
-
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 
 
+
+"""
+    The Profile class is an extension of Django's User class
+    and stores basic account information.
+"""
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='myProfile')
 
@@ -18,11 +21,11 @@ class Profile(models.Model):
     address = models.CharField(max_length=100)
     sharezone = models.CharField(max_length=5) #five digit zip code
     status = models.CharField(max_length=50)
-    #picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
+    #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     reputation = models.IntegerField(default=50) #0..100 rating
 
     preferences_Privacy = models.IntegerField(default=0)
-    #publi   0 - you can see everything 
+    #public   0 - you can see everything 
     #private 1 - persons name
     #secret  2 - initials
 
@@ -32,11 +35,17 @@ class Profile(models.Model):
     #registered = models.IntegerField(default=0) #0: user has not yet completed their profile, 1: user can login and use
     # all features of site
 
+    """
+        ToString method.
+    """
     def __str__(self):
         myList = ["Name: " + self.user.first_name + " " + self.user.last_name, \
                     "Sharezone: " + self.sharezone]
         return ",".join(myList)
 
+    """
+        Overrides save to work with generic notifications.
+    """
     def save(self, *args, **kwargs):
         #do_something()
         super(Profile, self).save(*args, **kwargs) # Call the "real" save() method.
@@ -46,10 +55,15 @@ class Profile(models.Model):
 
 
 
+"""
+    The Shed class stores all information about a particular shed
+    including all its members, admins, etc.
+"""
 class Shed(models.Model):
     owner = models.ForeignKey('Profile',related_name='mySheds') #the Profile who owns this shed (sueprAdmin)
     admins = models.ManyToManyField('Profile',related_name='adminOfShed',null=True) #admins of shed
     members = models.ManyToManyField('Profile',related_name='memberOfShed',null=True) #members of shed
+
     timeCreated = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=75) #address of the shed
@@ -57,10 +71,10 @@ class Shed(models.Model):
     latitude = models.IntegerField(default=-1)
     longitude = models.IntegerField(default=-1)
     status = models.CharField(max_length=50)
-    #picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
+    #picture = models.FileField(upload_to='documents/%Y/%m/%d')
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
+    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
+    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
 
 
     privacy = models.IntegerField(default=-1)               
@@ -68,7 +82,8 @@ class Shed(models.Model):
         #NonMemberview - anyone in community can see, tools,members,address
         #joining       - Request is accepted automaticly
 
-    #private 1 - Open to only people who have been authorized, See name,owner,number of members,number of tools but no particulars like specific tools,users
+    #private 1 - Open to only people who have been authorized, See name,owner,number of members,number of
+    #            tools but no particulars like specific tools,users
         #NonMemberView - anyone in community can see, number of members, number of tools
         #joining       - Request to join must be aproved by a shed admin
 
@@ -78,12 +93,17 @@ class Shed(models.Model):
 
     minimumReputation = models.IntegerField(default=-1) # this only applies to public sheds
 
-
+    """
+        ToString method.
+    """
     def __str__(self):
         myList = ["Name: " + self.name, "Sharezone: " + self.sharezone, \
                         "Owned by " + self.owner.user.username]
         return ",".join(myList)
 
+    """
+        Overrides save to work with generic notifications.
+    """
     def save(self, *args, **kwargs):
         #do_something()
         super(Shed, self).save(*args, **kwargs) # Call the "real" save() method.
@@ -94,15 +114,14 @@ class Shed(models.Model):
 
 
 
-
+"""
+    The Tool class stores all information about tools including its owner,
+    borrower, shed, etc.
+"""
 class Tool(models.Model):
-    #these two fields are used for creating GenericForeignKeys between notification system and notifyer
-
-
     owner = models.ForeignKey('Profile', related_name='toolsOwned') #the Profile who owns this tool
     borrower = models.ForeignKey('Profile',null=True, related_name='toolsBorrowed') # the Profile who is borrowing the tool
     myShed = models.ForeignKey('Shed',null=True,related_name='toolsInShed') #the Shed this tool is apart of
-    
 
     timeCreated = models.DateTimeField(auto_now_add=True)
     timeLastEdited = models.DateTimeField(auto_now_add=True)
@@ -110,7 +129,7 @@ class Tool(models.Model):
     description = models.CharField(max_length=200)
     tags = models.CharField(max_length=200)#categories that apply to this tool object
     location = models.CharField(max_length=75) #current location of the tool
-    #picture = models.FileField(upload_to='documents/%Y/%m/%d')    WILL REPLACE PICTURE WHEN FRONT END CREATED
+    #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     condition = models.IntegerField(default=0) #0-10 scale
     isAvailable = models.BooleanField()
     borrowedCount = models.IntegerField(default=0) # times Tool borrowed
@@ -127,18 +146,20 @@ class Tool(models.Model):
     minimumReputation = models.IntegerField(default=0)#preferences
     #if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
+    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
+    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
 
-
-
+    """
+        ToString method.
+    """
     def __str__(self):
         myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
                     "Borrowed by" + self.borrower, "My shed: " + self.myShed.name]
         return ",".join(myList)
 
-
-
+    """
+        Overrides save to work with generic notifications.
+    """
     def save(self, *args, **kwargs):
         #do_something()
         super(Tool, self).save(*args, **kwargs) # Call the "real" save() method.
@@ -149,11 +170,13 @@ class Tool(models.Model):
 
 
 
-
+"""
+    Provides functionality for notifications.
+"""
 class Notification(models.Model):
     
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
+    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
+    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
     #ContentType.objects.get_for_model(self)
 
     recipient = models.ForeignKey('Profile', related_name='myNotifications',null=True)#reciever of notification
@@ -168,7 +191,10 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True,null=True)
 
     response = models.CharField(max_length="40",null=True)#Starts off being null. when filled out the notification has been responded to
-    
+
+    """
+        Overrides save to work with generic notifications.
+    """
     def save(self, *args, **kwargs):
         #do_something()
         super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
@@ -178,23 +204,26 @@ class Notification(models.Model):
 
 
 
+"""
+    Works with the Notification class to handle notifications.
+"""
 class Action(models.Model):
     tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
     shed = models.ForeignKey('Shed', related_name='shedActions')#if shed, send to all admins of shed
     admin = models.ForeignKey('Profile', related_name='adminActions')#returns list of actions that a user is controlling of
     requester = models.ForeignKey('Profile', related_name='requesterActions')
 
-
-
     actionType = models.CharField(max_length=20)#either tool, or shed
     currrentState = models.CharField(max_length=20)
     timestamps = models.CharField(max_length=560)#CSV timestamps for every state
     workSpace = models.CharField(max_length=200)#for use in state machine
 
-
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
     object_id = models.PositiveIntegerField(null=True,default=1)
 
+    """
+        Overrides save to work with generic notifications.
+    """
     def save(self, *args, **kwargs):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
