@@ -68,9 +68,11 @@ def genBaseLoggedIn(request):
 	toolsBorrowed - object (array of tool objects)
 			each as (name, time left, time borrowed, timestamp)
 """
-#def genUserHome(request):
+def genUserHome(request):
 	results = dict()
 	results.update(genBaseLoggedIn())
+	tools = profileUtil.getProfileFromUser(request.user).tools
+	#not done
 
 def getDefaults():
 	return defaults
