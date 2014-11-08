@@ -70,6 +70,23 @@ print ("--> Delete Complete")
 
 print ("")
 
+
+print ("--> Unit Tests starting...")
+
+print ("")
+
+if mode == 1:
+    if platform.system() == 'Linux' or platform.system() == 'Darwin':
+        os.system('python3 manage.py test toolCloudApp.tests')
+    else:
+        os.system('python manage.py test toolCloudApp.tests')
+    print("")
+print ("-->Unit Tests Complete")
+
+
+print ("")
+
+
 print ("--> DataBase syncronization starting...")
 management.call_command('syncdb', interactive=False)
 print ("-->DataBase sync Complete")
@@ -100,6 +117,10 @@ if mode == 1:
     else:
         os.system('python populationControl.py')
     print("")
+
+
+
+
 
 
 
