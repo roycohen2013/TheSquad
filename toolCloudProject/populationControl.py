@@ -11,7 +11,7 @@ import django.db
 import string
 import random
 
-print("--> Populating Database...")
+#print("--> Populating Database...")
 
 names = [ ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', 'Bowen'] , \
 			['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
@@ -63,4 +63,4 @@ for x in range(len(toolNames)):
 	newTool.save()
 	toolObjects.append(newTool)
 
-print("--> Database populated")
+#print("--> Database populated")
