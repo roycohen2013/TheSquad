@@ -41,11 +41,12 @@ class Action(models.Model):
 
 
 def createBorrowAction(tool,requester):
-	newAction = Action(tool=tool,requester = requester,actionType="tool")
+	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
 
 
-def createShedRequestAction():
-	pass
+def createShedRequestAction(shed,requester):
+	newAction = Action(shed=tool,requester = requester,actionType="tool",currrentState= "userShedRequest")
+
 
 def getAllActions():
 	"""

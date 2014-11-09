@@ -26,14 +26,24 @@ class Action(models.Model):
 #Tool borrow state machine
 
 if state ==	"userBorrowRequest":
+	#procede to next one
     pass
 elif state == "askOwner":
 	#generate question string asking [owner] if [borrower]
 
+	#procede to next state
     pass
 elif state == "acceptDecline":
-    pass
-elif state == "pickup":
+	#get notification assosiated with object
+		#if (notification responded == true):
+			#start timer for when tool is overdue (set end time)
+			#move tool location to requesters shed
+			#Continue to Borrowed state
+
+
+		#if notification responded fales - notify of denial and delete request
+
+
     pass
 elif state == "borrowed":
     pass
@@ -48,15 +58,17 @@ elif state == "returned":
 
 
 if state ==	"userShedRequest":
+	#procede to next state
     pass
 elif state == "askAdmins":
 	#loop through all admins of shed
 		#generate question string asking [Admin] if [borrower]
 
-
-	
+		#proced to next state
 
     pass
 elif state == "acceptDecline":
+	#get all notificaitons assosiated with this action
+		#check if notification has been responded to correctly
+
     pass
-elif state == "pickup":

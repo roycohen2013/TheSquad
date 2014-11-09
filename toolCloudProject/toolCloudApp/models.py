@@ -208,9 +208,8 @@ class Notification(models.Model):
     Works with the Notification class to handle notifications.
 """
 class Action(models.Model):
-    tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
-    shed = models.ForeignKey('Shed', related_name='shedActions')#if shed, send to all admins of shed
-    admin = models.ForeignKey('Profile', related_name='adminActions')#returns list of actions that a user is controlling of
+    tool = models.ForeignKey('Tool', related_name='toolActions',null = True)#if tool, send to owner of tool
+    shed = models.ForeignKey('Shed', related_name='shedActions',null = True)#if shed, send to all admins of shed
     requester = models.ForeignKey('Profile', related_name='requesterActions')
 
     actionType = models.CharField(max_length=20)#either tool, or shed
