@@ -5,7 +5,17 @@
 			<p>{% tool.name %}</p>
 		{% endfor %}
 	</div>
-	<div id="shedSection"></div>
-	<div id="communitySection"></div>
-	<div id="borrowedSection"></div>
+	<div id="shedSection">
+		{% for shed in sheds %}
+			<p>{% shed.name %}</p>
+		{% endfor %}
+	</div>
+	<div id="communitySection">
+		{% community.name %}
+	</div>
+	<div id="borrowedSection">
+		{% for tool in borrowed %}
+			<p>{% tool.name %}</p>
+		{% endfor %}
+	</div>
 {% endblock %}
