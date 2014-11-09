@@ -43,11 +43,15 @@ elif state == "acceptDecline":
 
 		#if notification responded fales - notify of denial and delete request
 
-
     pass
 elif state == "borrowed":
+	#check if borrowed is past timestamp
+		#Notify {requester} that they are overdraft and they should return [tool]
+		#Set canBorrow state to false
+		#move to overdraft state
     pass
 elif state == "overDraft":
+	#once 
     pass
 elif state == "returned":
     pass
