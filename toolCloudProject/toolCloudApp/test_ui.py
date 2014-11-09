@@ -3,11 +3,11 @@ These tests depend on Selenium and also expect you to have Firefox installed.
 """
 
 import sys
-#ys.path.append("../../selenium/py/selenium")
-from selenium_py import webdriver
-from selenium_py.common.exceptions import TimeoutException
-from selenium_py.webdriver.support.ui import WebDriverWait # available since 2.4.0
-from selenium_py.webdriver.support import expected_conditions as EC # available since 2.26.0
+sys.path.append("selenium")
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
+from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from django.test import LiveServerTestCase
 from django.contrib.auth.models import User
 from django.utils import timezone
