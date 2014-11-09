@@ -46,9 +46,9 @@ def genSuper():
 def genBaseLoggedIn(request):
 	results = dict()
 	results.update(genSuper())
-	results['username'] = request.username
-	results['first_name'] = request.first_name
-	results['last_name'] = request.last_name
+	results['username'] = request.user.username
+	results['first_name'] = request.user.first_name
+	results['last_name'] = request.user.last_name
 	#get pict location
 	results['picture'] = None
 	#get top sheds
