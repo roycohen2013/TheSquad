@@ -26,9 +26,9 @@ class Action(models.Model):
 """
 
 
-	newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
-	newNotification.save()
-	return newNotification
+	#newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+	#newNotification.save()
+	#return newNotification
 
 
 def createBorrowAction(tool,requester):
