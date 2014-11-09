@@ -20,14 +20,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 
 
 #@unittest.skip("skipping Notification tests")    #can be used for skipping past certain tests
-
-
-
 class notificationTests (TestCase):
     fixtures = ["initDBData.json"]
     def setUp (self):
         try:
-            source = 
         	self.genInfoNotif = notifUtils.createInfoNotif (Tool.objects.get(name = "Hoe"), profUtils.getProfileFromUsername ("TaikhoomAttar"), "Synergy is love, synergy is life")
         except:
         	self.fail ("Error in info notification generation!")
