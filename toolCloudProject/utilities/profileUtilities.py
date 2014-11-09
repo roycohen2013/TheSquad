@@ -1,9 +1,5 @@
 """
-$Date $
-$Revision $
-$Author $
-
-Provides functionality for all front end requests regarding profiles.
+	Provides functionality for all front end requests regarding profiles.
 """
 
 import sys
@@ -203,3 +199,12 @@ def updateStatus(profileObj, newStatus):
 	profileObj.status = newStatus
 	profileObj.save()
 	return profileObj
+
+
+"""
+	Get Profile pbject for username
+"""
+def getProfileFromUsername (user_name):
+	embeddeduser = User.objects.get (username = user_name)
+	return Profile.objects.get (user = embeddeduser)
+

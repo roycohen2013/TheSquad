@@ -1,9 +1,5 @@
 """
-$Date $
-$Revision $
-$Author $
-
-Provides functionality for all front end requests regarding sheds.
+	Provides functionality for all front end requests regarding sheds.
 """
 
 import sys
@@ -48,21 +44,21 @@ def getAllShedsInSharezone(sharezone):
 
 
 """
-        Get all sheds a user owns
+    Get all sheds a user owns
 """
 def getAllShedsOwnedBy(profileObj):
 	return Shed.objects.filter(owner=profileObj)
 
 
 """
-        Get all sheds a user is a member of
+    Get all sheds a user is a member of
 """
 def getAllShedsJoinedBy(profileObj):
 	return profileObj.memberOfShed
 
 
 """
-        Get all sheds a user is an admin of
+    Get all sheds a user is an admin of
 """
 def getAllShedsAdministratedBy(profileObj):
         return profileObj.adminOfShed

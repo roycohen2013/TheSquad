@@ -2,7 +2,6 @@
 
 import sys
 import utilities.profileUtilities as profileUtil
-import utilities.extraUtilities as extraUtil
 import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
 
@@ -72,6 +71,7 @@ def genUserHome(request):
 	results = dict()
 	results.update(genBaseLoggedIn())
 	tools = profileUtil.getProfileFromUser(request.user).tools
+	sheds = profileUtil.getProfileFromUser(request.user).sheds
 	#not done
 
 def getDefaults():

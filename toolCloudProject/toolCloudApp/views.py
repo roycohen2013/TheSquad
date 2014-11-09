@@ -16,7 +16,7 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(1,parentdir) 
 """
-import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
+import utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
 import utilities.content as content
 
 def home(request):
@@ -182,7 +182,7 @@ def view_tool_page(request, id):
         context['condition'] = condition
         context['available'] = available
         return render_to_response('tool_page.html', context)
-
+     
 def view_shed_page(request, id):
     if request.user.is_anonymous():
         return HttpResponseRedirect("/accounts/login")

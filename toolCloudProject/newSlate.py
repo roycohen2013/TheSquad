@@ -17,8 +17,7 @@ from subprocess import *
 
 
 from colorama import init, Fore, Back, Style
-
-init()
+init()  # init for colorama
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 

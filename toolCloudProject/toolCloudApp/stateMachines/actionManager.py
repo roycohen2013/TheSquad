@@ -23,18 +23,67 @@ class Action(models.Model):
 	workSpace = models.CharField(max_length=200)#for use in state machine
 """
 
+#Tool borrow state machine
 
 if state ==	"userBorrowRequest":
+	#procede to next one
     pass
 elif state == "askOwner":
+	#generate question string asking [owner] if [borrower]
+
+	#procede to next state
     pass
 elif state == "acceptDecline":
-    pass
-elif state == "pickup":
+	#get notification assosiated with object
+		#if (notification responded == true):
+			#start timer for when tool is overdue (set end time)
+			#move tool location to requesters shed
+			#Continue to Borrowed state
+
+
+		#if notification responded fales - notify of denial and delete request
+
     pass
 elif state == "borrowed":
+	#check if borrowed is past timestamp
+		#Notify {requester} that they are overdraft and they should return [tool]
+		#Set canBorrow state to false
+		#move to overdraft state
+
+	#if (tool.isAvailable() == true): 	#means tool has been returned
+		#move state to returned 
+
     pass
 elif state == "overDraft":
+	#if (tool.isAvailable() == true): 	#means tool has been returned
+		#calculate how many days the tool is overdue and reduce user reputation until then
+		#set user.canBorrow state to true.
+		#notify requester thankyou for returning the tool finally!
+		#move state to returned 
+
     pass
 elif state == "returned":
+	#delete action object
+	#Notify tool owner that his tool has been returned
+    pass
+
+
+
+#shed request state machine
+
+
+if state ==	"userShedRequest":
+	#procede to next state
+    pass
+elif state == "askAdmins":
+	#loop through all admins of shed
+		#generate question string asking [Admin] if [borrower]
+
+		#proced to next state
+    pass
+
+elif state == "acceptDecline":
+	#get all notificaitons assosiated with this action
+		#check if notification has been responded to correctly
+
     pass
