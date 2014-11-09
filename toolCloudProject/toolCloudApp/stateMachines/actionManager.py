@@ -49,11 +49,22 @@ elif state == "borrowed":
 		#Notify {requester} that they are overdraft and they should return [tool]
 		#Set canBorrow state to false
 		#move to overdraft state
+
+	#if (tool.isAvailable() == true): 	#means tool has been returned
+		#move state to returned 
+
     pass
 elif state == "overDraft":
-	#once 
+	#if (tool.isAvailable() == true): 	#means tool has been returned
+		#calculate how many days the tool is overdue and reduce user reputation until then
+		#set user.canBorrow state to true.
+		#notify requester thankyou for returning the tool finally!
+		#move state to returned 
+
     pass
 elif state == "returned":
+	#delete action object
+	#Notify tool owner that his tool has been returned
     pass
 
 
@@ -69,8 +80,8 @@ elif state == "askAdmins":
 		#generate question string asking [Admin] if [borrower]
 
 		#proced to next state
-
     pass
+
 elif state == "acceptDecline":
 	#get all notificaitons assosiated with this action
 		#check if notification has been responded to correctly
