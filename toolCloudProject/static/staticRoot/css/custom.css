@@ -79,8 +79,8 @@
   bottom: 0;
   display: block;
   height: 100%;
-  width: 3%;
-  background-color: #ccc;
+  width: 15%;
+  background-color: #9ED29E;
   
   transition-delay: 0s;
   transition-duration: 0.4s;
@@ -95,17 +95,15 @@
   bottom: 0;
   height: 100%;
   width: 15%;
-  background-color: #9ED29E;
 }
 
-#nav a {
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  opacity:0;
-  margin-left: 1vw;
+#nav {
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=.1)";
+  filter: alpha(opacity=.1);
+  opacity:.1;
 }
 
-#nav:hover a {
+#nav:hover {
   -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
   filter: alpha(opacity=100);
   opacity:1;
