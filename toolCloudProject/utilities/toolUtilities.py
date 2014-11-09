@@ -89,12 +89,6 @@ def getToolOwner(toolObj):
 
 
 """
-    Get all tools belonging to a specific user
-"""
-def getToolsBelongingToProfile(profileObj):
-	return Tool.objects.filter(owner=profileObj).order_by('name')
-
-"""
 	Get the borrower of a tool.
 """
 def getToolBorrower(toolObj):

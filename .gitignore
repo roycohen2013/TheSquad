@@ -3,3 +3,6 @@ toolCloudProject/static/staticRoot/
 *.sqlite3
 *.DS_Store
 
+*.pyc
+*.pyc
+*.pyc
