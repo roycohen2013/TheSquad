@@ -72,7 +72,7 @@ def genUserHome(request):
 	results.update(genBaseLoggedIn(request))
 	user = profileUtil.getProfileFromUser(request.user)
 	tools = toolUtil.getToolsBelongingToProfile(user)
-	sheds = shedUtil.getShedsJoinedBy(user)
+	sheds = shedUtil.getAllShedsJoinedBy(user)
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(user)
 	community = profileUtil.getAllOtherProfilesInSharezone(user)
 	print(user)
