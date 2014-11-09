@@ -6,7 +6,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-
+from django.utils import timezone
 
 
 """
@@ -154,6 +154,7 @@ class Tool(models.Model):
         ToString method.
     """
     def __str__(self):
+
         myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
                     "Borrowed by" + self.borrower.name, "My shed: " + self.myShed.name]
         return ",".join(myList)
