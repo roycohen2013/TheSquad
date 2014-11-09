@@ -158,7 +158,7 @@ class profileTests (TestCase):
         """
         """
         self.assertEqual (self.getProfile, profUtils.getProfileFromUsername ("ben"))
-        print (profUtils.getProfileFromUsername ("ben"))
+        
 
                 
 
