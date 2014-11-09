@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from toolCloudApp.models import Profile, Tool, Shed, Notification
 
+
 """
     Create a new Notification of the "info" type.
 """
@@ -27,6 +28,40 @@ def createResponseNotif(sourceObj,recipientProfile,content):
     newNotification = Notification(source=sourceObj, content = content, recipient=recipientProfile,notificationType="request")
     newNotification.save()
     return newNotification
+
+
+"""
+    Returns True if an "info" notification.
+"""
+def isInfoNotif(notifObj):
+    if notifObj.notificationType == 'info':
+        return True
+    return False
+
+
+"""
+    Returns True if a "request" notification.
+"""
+def isRequestNotif(notifObj):
+    if notifObj.notificationType == 'request':
+        return True
+    return False
+
+
+"""
+    Gets all the notifications for a Profile object.
+"""
+def getAllProfileNotifs(profileObj):
+    return Notification.objects.filter(recipient=profileObj)
+
+
+"""
+    Gets all the not yet responded to notifications of a Profile object.
+    This includeds info notifs as well as request notifs that have null
+    response fields.
+"""
+def getAllActiveProfileNotifs(profileObj):
+    return Notification.objects.filter(recipient=profileObj, response="")
 
 
 """
@@ -50,20 +85,30 @@ def getNotifContent(notifObj):
 
 
 """
-    Returns True if an "info" notification.
+    Returns True if the notification has been responded to.
 """
-def isInfoNotif(notifObj):
-    if notifObj.notificationType == 'info':
-        return True
-    return False
+def notifHasResponse(notifObj):
+    if (notifObj.response == ""):
+        return False
+    return True
+
 
 """
-    Returns True if a "request" notification.
+    Returns the response of a notification. Will return None
+    if the notification has not been responded to yet.
 """
-def isRequestNotif(notifObj):
-    if notifObj.notificationType == 'request':
-        return True
-    return False
+def getNotifResponse(notifObj):
+    if (notifObj.response != ""):
+        return notifObj.response
+    return None
+
+
+"""
+    Respond to a notification with text of your choice.
+"""
+def respondToNotif(notifObj, myResponse):
+    notifObj.response = myResponse  
+
 
 """
     Deletes a notification that is no longer needed.
@@ -71,11 +116,6 @@ def isRequestNotif(notifObj):
 def deleteNotif(notifObj):
     notifObj.delete()
 
-"""
-    Gets all the notifications for a Profile object.
-"""
-def getAllProfileNotifs(profileObj):
-    return Notification.objects.filter(recipient=profileObj)
 
 """
     Returns True if notification source is a Shed object.
@@ -109,4 +149,3 @@ def isNotifFromAction(notifObj):
         return True
     return False
 
-    
