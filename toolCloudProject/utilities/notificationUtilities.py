@@ -9,7 +9,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from toolCloudApp.models import Profile, Tool, Shed, Notification
+from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 
 
 """

@@ -41,11 +41,12 @@ for actionInstance in getAllActions():
     #states allow system to process and respond to all actions asyncrounusly
 
     #Tool borrow state machine
-    if isToolRequest() == True:
-        if state == "userBorrowRequest":
+    if isToolRequest() == True: 
+        if state == "userBorrowRequest":                                        #entry point
             #procede to next one
-            pass
-        elif state == "askOwner":
+            actionInstance.currrentState = "askOwner"
+            
+        if state == "askOwner":
             #generate question string asking [owner] if [borrower]
 
             #procede to next state

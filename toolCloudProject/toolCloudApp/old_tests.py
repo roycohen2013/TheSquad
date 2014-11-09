@@ -496,45 +496,15 @@ class notificationTests (TestCase):
         	self.genInfoNotif = notifUtils.createInfoNotif (Tool.objects.get(name = "Hoe"), profUtils.getProfileFromUsername ("TaikhoomAttar"), "Synergy is love, synergy is life")
         except:
         	self.fail ("Error in info notification generation!")
-        
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-       
-            
 
     def test_InfoNotificationCreation(self):
         """
         Tests Info notification creation for all types
         """
-        
-        #self.genShed = shedUtils.createNewShed (profUtils.getAllProfiles()[3], "shed notification test", "somwhere ", "somezone", "open") #create new shed
-        #RecptProfile = profUtils.createNewProfile ("some", "Person", "somePerson122", "somePerson122@toolcloud.com",\
-        #                                          "password", "2012227555", "someAddress", "someZones", "active", 0) #mk User
-
-        genNotif = notifUtils.createInfoNotif(self.genShed, self.RecptProfile, "test Content")
-        getNotif = Notification.objects.get(id = genNotif.object_id) #make sure the shed was actually saved to the db
+        getNotif = Notification.objects.get(id = self.genInfoNotif.object_id) #make sure the notification was actually saved to the db
 
         
-        self.assertEqual (genNotif, getNotif) #make sure the reference in the db = the reference returned by the creation of the shed
+        self.assertEqual (genNotif, getNotif) #make sure the reference in the db = the reference returned by the creation of the notification
 
 
     def test_InfoNotificationDeletion(self):
@@ -543,5 +513,69 @@ class notificationTests (TestCase):
         Tests Info notification Deletion for all types
         
         """
-        pass
+        notifUtils.deleteNotif (self.genInfoNotif)
+        self.assertNotIn (self.genInfoNotif, Notification.objects.all())
+        
+        
+    def test_InfoNotificationIsInfoNotification (self):
+        """
+        """
+        self.assertTrue (notifUtils.isInfoNotif (self.genInfoNotif))
+    
+    def test_InfoNotificationIsNotReqNotification (self):
+        """
+        """
+        self.assertFalse (notifUtils.isRequestNotif (self.genInfoNotif))
+        
+    def test_AllProfileNotifs (self):
+        """
+        """
+        self.assertIn (self.genInfoNotif, notifUtils.getAllProfileNotifs (profUtils.getProfileFromUsername ("TaikhoomAttar")))
+        
+    def test_AllActivrProfileNotifs (self):
+        """
+        THIS NEEDS TO BE MODIFIED FOR RESPONSE NOTIFICATIONS
+        """
+        self.assertIn (self.genInfoNotif, notifUtils.getAllActiveProfileNotifs (profUtils.getProfileFromUsername ("TaikhoomAttar")))
+        
+    def test_getNotifRecipient (self):
+        """
+        """
+        self.assertEquals (profUtils.getProfileFromUsername ("TaikhoomAttar"), notifUtils.getNotifRecip (self.genInfoNotif))
+        
+    def test_getNotifContent (self):
+        """
+        """
+        self.assertEquals ("Synergy is love, synergy is life", notifUtils.getNotifContent (self.genInfoNotif))
+        
+    def test_getNotifSource (self):
+        """
+        """
+        self.assertEquals (Tool.objects.get (name = "Hoe"), notifUtils.getNotifSource (self.genInfoNotif))
+        
+    def test_getNotifSourceType (self):
+        """
+        """
+        self.assertEquals ("Tool", notifUtils.getNotifSourceType (self.genInfoNotif))
+        
+    def test_isNotifFromTool (self):
+        """
+        """
+        self.assertTrue (notifUtils.isNotifFromTool (self.genInfoNotif))
+    
+    def test_isNotifFromShed (self):
+        """
+        """
+        self.assertFalse (notifUtils.isNotifFromShed (self.genInfoNotif))
+        
+    def test_isNotifFromAction (self):
+        """
+        """
+        self.assertFalse (notifUtils.isNotifFromAction (self.genInfoNotif))
+    
+    def test_isNotifFromProfile (self):
+        """
+        """
+        self.assertFalse (notifUtils.isNotifFromProfile (self.genInfoNotif))
+    
 
