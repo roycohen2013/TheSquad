@@ -1,5 +1,6 @@
-{% extends super.html %}
-{% block content %}
+{% extends "super.html" %}
+{% load staticfiles %}
+{% block body %}
 <!-- Navigation -->
     <nav id="nav">
         <div id="links">
@@ -25,6 +26,7 @@
             </ul>
             <a>Notifications</a>
             <ul id="notis">
+                {{ notifications }}
             </ul>
         </div>
 		<div id="links">

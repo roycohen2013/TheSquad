@@ -1,5 +1,6 @@
 """
-	Provides functionality for all interactions with Actions
+	Provides functionality for all Action objects.
+	(tool borrowing and shed requests)
 """
 
 import sys
@@ -10,66 +11,80 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 
-
-
-
-#what calls action manager:
-	#Automated
-	#update to one of the action objects
-	#call back from a notification object
-
-
-
-
 """
-class Action(models.Model):
-	tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
-	shed = models.ForeignKey('Shed', related_name='shedActions')#if shed, send to all admins of shed
-	admin = models.ForeignKey('Profile', related_name='adminActions')#returns list of actions that a user is controlling of
-	requester = models.ForeignKey('Profile', related_name='requesterActions')
-
-	actionType = models.CharField(max_length=20)#either tool, or shed
-	currrentState = models.CharField(max_length=20)
-	timestamps = models.CharField(max_length=560)#CSV timestamps for every state
-	workSpace = models.CharField(max_length=200)#for use in state machine
+	Creates a new Action object for a Profile requesting to borrow a Tool.
+	The currentState field for the object is set to "userBorrowRequest"
 """
-
-
-	#newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
-	#newNotification.save()
-	#return newNotification
-
-
-def createBorrowAction(tool,requester):
+def createBorrowRequestAction(tool,requester):
 	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
+	newAction.save()
+	return newAction
 
 
+"""
+	Creates a new Action object for a Profile requesting to join a Shed.
+	The currentState field for the object is set to "userShedRequest"
+"""
 def createShedRequestAction(shed,requester):
-	newAction = Action(shed=tool,requester = requester,actionType="tool",currrentState= "userShedRequest")
+	newAction = Action(shed=shed,requester = requester,actionType="shed",currrentState= "userShedRequest")
+	newAction.save()
+	return newAction
 
 
+"""
+	Returns True if the given Action object deals with a tool borrow request.
+"""
+def isToolRequest(actionObj):
+	if actionObj.actionType == 'tool':
+		return True
+	return False
+
+
+"""
+	Returns True if the given Action object deals with a shed request.
+"""
+def isShedRequest(actionObj):
+	if actionObj.actionType == 'shed':
+		return True
+	return False
+
+
+"""
+	Returns a list of all Action objects in the database.
+"""
 def getAllActions():
-	"""
-	"""
 	return Action.objects.all()
 
-def getBorrowActions():
-	pass
 
-def getShedRequestActions():
-	pass
-
-
-def getActionsFromShed():
-	pass
-
-def getActionFromTool():
-	pass
+"""
+	Returns a list of all Action objects requested by a given Profile.
+"""
+def getProfileAction(profileObj):
+	return Action.objects.filter(requester=profileObj)
 
 
-def isToolRequest():
-	pass
+"""
+	Returns a list of all Action objects associated with a given shed.
+"""
+def getShedActions(shedObj):
+	return Action.objects.filter(shed=shedObj)
 
-def isShedRequest():
-	pass
+
+"""
+	Returns a list of all Action objects associated with tool borrowing.
+"""
+def getToolActions(toolObj):
+	return Action.objects.filter(tool=toolObj)
+
+
+"""
+	gets all notifications tied to action object
+"""
+def getAllActionNotifications(actionObj):
+	return Notification.objects.filter(source = actionObj)
+
+
+
+
+
 

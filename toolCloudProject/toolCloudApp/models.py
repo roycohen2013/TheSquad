@@ -132,7 +132,7 @@ class Tool(models.Model):
     location = models.CharField(max_length=75) #current location of the tool
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     condition = models.IntegerField(default=0) #0-10 scale
-    isAvailable = models.BooleanField()
+    isAvailable = models.BooleanField()     # also used for telling if tool borrowed
     borrowedCount = models.IntegerField(default=0) # times Tool borrowed
     requestedCount = models.IntegerField(default=0) # times Tool requested
 
@@ -215,7 +215,7 @@ class Action(models.Model):
 
     actionType = models.CharField(max_length=20)#either tool, or shed
     currrentState = models.CharField(max_length=20)
-    timeStamps = models.CharField(max_length=560,null = True)#CSV timestamps for every state
+    timeStamps = models.CharField(max_length=560,default = "")#CSV timestamps for every state
     workSpace = models.CharField(max_length=200,null = True)#for use in state machine
 
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
@@ -228,7 +228,7 @@ class Action(models.Model):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
         
-        timeStamps = timeStamps + str(timezone.now()) + ','     
+        self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','     
         
         self.object_id = self.id
 
