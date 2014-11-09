@@ -15,6 +15,10 @@ from toolCloudApp.models import Profile, Tool, Shed
 from time import sleep # just for debugging -- so I can see where the browser is before it dies
 import utilities.profileUtilities as profUtils
 
+import unittest
+
+
+@unittest.skip("skipping UI tests tests")    #can be used for skipping past certain tests
 class UITests (LiveServerTestCase):
 	fixtures = ['initDBData.json']
 	

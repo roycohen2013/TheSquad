@@ -33,7 +33,7 @@ class notificationTests (TestCase):
 	    """
 	    """
 	    tool = Tool.objects.get(name = "Hoe")
-	    
+	    print (tool.name)
 	    prof = profUtils.getProfileFromUsername ("TaikhoomAttar")
 	    msg = "Synergy is love, synergy is life"
 	    generation = notifUtils.createInfoNotif (tool, prof, msg)
