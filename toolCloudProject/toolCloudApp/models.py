@@ -180,7 +180,7 @@ class Notification(models.Model):
     object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
     #ContentType.objects.get_for_model(self)
 
-    recipient = models.ForeignKey('Profile', related_name='myNotifications',null=True)#reciever of notification
+    recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
     source = generic.GenericForeignKey('content_type', 'object_id')#action that caused it
 
     content = models.CharField(max_length=280,null=True)

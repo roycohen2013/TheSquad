@@ -17,6 +17,7 @@ from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 """
 def createInfoNotif(sourceObj,recipientProfile,content):
 	newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+	
 	newNotification.save()
 	return newNotification
 

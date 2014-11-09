@@ -48,21 +48,21 @@ for actionInstance in getAllActions():
             
         if state == "askOwner":
             #generate question string asking [owner] if [borrower]
-            question = "can " + actionInstance.requester.name + " borrow the " actionInstance.tool.name + "from " + actionInstance.tool.shed   
+            
+            question = "can " + actionInstance.requester.name + " borrow the " actionInstance.tool.name + "from " + actionInstance.tool.shed               
             Notification.createResponseNotif(actionInstance,actionInstance.tool.owner,question):
-
-
-
 
             #procede to next state
             pass
         elif state == "acceptDecline":
+
             #get notification assosiated with object
                 #if (notification responded == true):
                     #start timer for when tool is overdue (set end time)
                     #move tool location to requesters shed
                     #Continue to Borrowed state
 
+            ownerResponse = Action.getAllActionNotifications(actionInstance)
 
                 #if notification responded fales - notify of denial and delete request
 
