@@ -27,6 +27,7 @@ class notificationTests (TestCase):
     fixtures = ["initDBData.json"]
     def setUp (self):
         try:
+            source = 
         	self.genInfoNotif = notifUtils.createInfoNotif (Tool.objects.get(name = "Hoe"), profUtils.getProfileFromUsername ("TaikhoomAttar"), "Synergy is love, synergy is life")
         except:
         	self.fail ("Error in info notification generation!")

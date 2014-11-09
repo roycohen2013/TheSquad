@@ -184,10 +184,12 @@ class Notification(models.Model):
     source = generic.GenericForeignKey('content_type', 'object_id')#action that caused it
 
     content = models.CharField(max_length=280,null=True)
+
     #if type == info: content is string of text
     #elif type == request: content is
         #-multiple choice - question, then choices in CSV form
         #-open ended - user prompt text
+        
     notificationType = models.CharField(max_length="20",null=True)#type of notification can be either "info" or "request" ex. TCP vs UDP
     timestamp = models.DateTimeField(auto_now_add=True,null=True)
 
