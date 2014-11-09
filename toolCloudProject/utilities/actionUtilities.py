@@ -41,7 +41,7 @@ class Action(models.Model):
 
 
 def createBorrowAction(tool,requester):
-	newAction = Action(tool=tool,requester = requester,actionType="tool"
+	newAction = Action(tool=tool,requester = requester,actionType="tool")
 
 
 def createShedRequestAction():

@@ -57,7 +57,7 @@ def getAllProfileNotifs(profileObj):
 
 """
     Gets all the not yet responded to notifications of a Profile object.
-    This includeds info notifs as well as request notifs that have null
+    This includes info notifs as well as request notifs that have null
     response fields.
 """
 def getAllActiveProfileNotifs(profileObj):
@@ -91,7 +91,7 @@ def getNotifSourceObject(notifObj):
         Source of type Shed returns "Shed"
         Source of type Profile returns "Profile"
         Source of type Action returns "Action"
-        If source is not one of those, return None
+        If source is not one of those, return ""
 """
 def getNotifSourceType(notifObj):
     if isinstance(notifObj.source, Shed):
@@ -103,7 +103,7 @@ def getNotifSourceType(notifObj):
     elif isinstance(notifObj.source, Action):
         return 'Action'
     else:
-        return None
+        return ''
 
 
 """
@@ -113,6 +113,7 @@ def isNotifFromShed(notifObj):
     if isinstance(notifObj.source, Shed):
         return True
     return False
+
 
 """
     Returns True if notification source is a Tool object.
@@ -165,6 +166,7 @@ def getNotifResponse(notifObj):
 """
 def respondToNotif(notifObj, myResponse):
     notifObj.response = myResponse  
+    notifObj.save()
 
 
 """
