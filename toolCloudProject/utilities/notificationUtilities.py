@@ -61,7 +61,7 @@ def getAllProfileNotifs(profileObj):
     response fields.
 """
 def getAllActiveProfileNotifs(profileObj):
-    return Notification.objects.filter(recipient=profileObj, response="")
+    return Notification.objects.filter(recipient=profileObj, response=None)
 
 
 """
