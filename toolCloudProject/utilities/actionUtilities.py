@@ -41,11 +41,20 @@ class Action(models.Model):
 
 
 def createBorrowAction(tool,requester):
+	"""
+	"""
 	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
+	newAction.save()
+	return newAction
 
 
 def createShedRequestAction(shed,requester):
-	newAction = Action(shed=tool,requester = requester,actionType="tool",currrentState= "userShedRequest")
+	"""
+	"""
+	newAction = Action(shed=shed,requester = requester,actionType="shed",currrentState= "userShedRequest")
+	newAction.save()
+	return newAction
+
 
 
 def getAllActions():
