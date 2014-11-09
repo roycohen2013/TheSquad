@@ -12,6 +12,15 @@ from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 
 
 
+
+#what calls action manager:
+	#Automated
+	#update to one of the action objects
+	#call back from a notification object
+
+
+
+
 """
 class Action(models.Model):
 	tool = models.ForeignKey('Tool', related_name='toolActions')#if tool, send to owner of tool
@@ -63,4 +72,3 @@ def isToolRequest():
 def isShedRequest():
 	pass
 
-	
