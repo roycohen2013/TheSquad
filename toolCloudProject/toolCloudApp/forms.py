@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from toolCloudApp.models import Profile, Tool, Shed
 from django.utils import timezone
-import utilities.extraUtilities as extraUtil, utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
+import utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
 import utilities.content as content
 import string
 import random
