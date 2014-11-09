@@ -45,3 +45,18 @@ elif state == "returned":
 
 
 #shed request state machine
+
+
+if state ==	"userShedRequest":
+    pass
+elif state == "askAdmins":
+	#loop through all admins of shed
+		#generate question string asking [Admin] if [borrower]
+
+
+	
+
+    pass
+elif state == "acceptDecline":
+    pass
+elif state == "pickup":

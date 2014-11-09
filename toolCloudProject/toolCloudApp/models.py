@@ -208,10 +208,11 @@ class Action(models.Model):
     admin = models.ForeignKey('Profile', related_name='adminActions') #returns list of actions that a user is controlling of
     requester = models.ForeignKey('Profile', related_name='requesterActions')
 
-    actionType = models.CharField(max_length=20) #either 'Tool' or 'Shed'
-    currrentState = models.CharField(max_length=20) 
-    timeStamps = models.CharField(max_length=560) #CSV timestamps for every state
-    workSpace = models.CharField(max_length=200,null=True)#for use in state machine
+    actionType = models.CharField(max_length=20)#either tool, or shed
+    currrentState = models.CharField(max_length=20)
+    timeStamps = models.CharField(max_length=560,null = True)#CSV timestamps for every state
+    workSpace = models.CharField(max_length=200,null = True)#for use in state machine
+
 
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
     object_id = models.PositiveIntegerField(null=True,default=1)
@@ -222,7 +223,9 @@ class Action(models.Model):
     def save(self, *args, **kwargs):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
+        
         timeStamps = timeStamps + str(timezone.now()) + ','     
+        
         self.object_id = self.id
 
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
