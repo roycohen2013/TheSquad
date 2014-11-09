@@ -215,7 +215,7 @@ class Action(models.Model):
 
     actionType = models.CharField(max_length=20)#either tool, or shed
     currrentState = models.CharField(max_length=20)
-    timeStamps = models.CharField(max_length=560,null = True)#CSV timestamps for every state
+    timeStamps = models.CharField(max_length=560,default = "")#CSV timestamps for every state
     workSpace = models.CharField(max_length=200,null = True)#for use in state machine
 
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
@@ -228,7 +228,7 @@ class Action(models.Model):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
         
-        timeStamps = timeStamps + "[" currrentState +" "+ str(timezone.now()) + "]"  + ','     
+        self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','     
         
         self.object_id = self.id
 
