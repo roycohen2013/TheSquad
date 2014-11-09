@@ -48,7 +48,9 @@
         <h1 id="heading">{{ heading }}
         <img id="iconMain" src="{% static 'img/shed.png' %}"/></h1>
             <div id="contentBlock">
-                {% block content %}{% endblock %}
+                {% block content %}
+                    <h3><i>{{strings|random}}</i></h3>
+                {% endblock %}
             </div>
         </div>
     </div>

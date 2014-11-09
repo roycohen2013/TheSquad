@@ -22,7 +22,12 @@ import utilities.toolUtilities as toolUtil
 import utilities.content as content
 
 def home(request):
-    return render(request, 'loggedOutBase.html', content.genContent(request))
+    file = open("homePageText.txt","r")
+    strings = file.readlines()
+    context = {}
+    context['strings'] = strings
+    context.update(content.genContent(request))
+    return render(request, 'loggedOutBase.html', context)
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm
