@@ -72,19 +72,23 @@ def genUserHome(request):
 	results.update(genBaseLoggedIn(request))
 	profile = profileUtil.getProfileFromUser(request.user)
 	tools = toolUtil.getAllToolsOwnedBy(profile)
-	#sheds = shedUtil.getAllShedsJoinedBy(user)
-	sheds = None
-	#borrowedTools = toolUtil.getAllToolsBorrowedBy(user)
-	borrowedTools = None
-	#community = profileUtil.getAllOtherProfilesInSharezone(user)
-	community = None
+	sheds = shedUtil.getAllShedsJoinedBy(profile)
+	#sheds = None
+	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
+	#borrowedTools = None
+	print(profile)
+	community = profileUtil.getAllOtherProfilesInSharezone(profileUtil.getSharezone(profile))
+	#community = None
 	#print(user)
 	#print(tools)
 	#print(sheds)
 	#print(borrowedTools)
-	#print(community)
+	print(community)
 	#not done
 	results['tools'] = tools
+	results['sheds'] = sheds
+	results['borrowed'] = borrowedTools
+	results['community'] = community
 	return results
 
 def getDefaults():
