@@ -1,5 +1,6 @@
 """
-	Provides functionality for all interactions with Actions
+	Provides functionality for all Action objects.
+	(tool borrowing and shed requests)
 """
 
 import sys
@@ -38,6 +39,7 @@ class Action(models.Model):
 
 """
 	Creates a new Action object for a Profile requesting to borrow a Tool.
+	The currentState field for the object is set to "userBorrowRequest"
 """
 def createBorrowRequestAction(tool,requester):
 	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
@@ -47,6 +49,7 @@ def createBorrowRequestAction(tool,requester):
 
 """
 	Creates a new Action object for a Profile requesting to join a Shed.
+	The currentState field for the object is set to "userShedRequest"
 """
 def createShedRequestAction(shed,requester):
 	newAction = Action(shed=shed,requester = requester,actionType="shed",currrentState= "userShedRequest")
@@ -66,7 +69,7 @@ def isToolRequest(actionObj):
 """
 	Returns True if the given Action object deals with a shed request.
 """
-def isShedRequest():
+def isShedRequest(actionObj):
 	if actionObj.actionType == 'shed':
 		return True
 	return False
@@ -77,6 +80,13 @@ def isShedRequest():
 """
 def getAllActions():
 	return Action.objects.all()
+
+
+"""
+	Returns a list of all Action objects requested by a given Profile.
+"""
+def getAllActionsRequestedBy(profileObj):
+	return Action.objects.filter(requester=profileObj)
 
 
 """
@@ -91,4 +101,13 @@ def getShedActions(shedObj):
 """
 def getToolActions(toolObj):
 	return Action.objects.filter(tool=toolObj)
+
+
+"""
+	Add a timestamp to this Action object.
+"""
+def addTimestampToAction(actionObj, timestamp):
+	actionObj.timestamp += (timestamp + ',')
+	actionObj.save()
+	return actionObj
 
