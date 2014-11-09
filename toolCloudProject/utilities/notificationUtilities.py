@@ -65,23 +65,80 @@ def getAllActiveProfileNotifs(profileObj):
 
 
 """
-    Get the source of a notification.
-"""
-def getNotifSource(notifObj):
-    return notifObj.source
-
-
-"""
     Get the recipient of a notification.
 """
 def getNotifRecip(notifObj):
     return notifObj.recipient
+
 
 """
     Get the content of a notification.
 """
 def getNotifContent(notifObj):
     return notifObj.content
+
+
+"""
+    Get the source object of a notification.
+"""
+def getNotifSourceObject(notifObj):
+    return notifObj.source
+
+
+"""
+    Returns the type of the notification source in string format.
+        Source of type Tool returns "Tool"
+        Source of type Shed returns "Shed"
+        Source of type Profile returns "Profile"
+        Source of type Action returns "Action"
+        If source is not one of those, return None
+"""
+def getNotifSourceType(notifObj):
+    if isinstance(notifObj.source, Shed):
+        return 'Shed'
+    elif isinstance(notifObj.source, Tool):
+        return 'Tool'
+    elif isinstance(notifObj.source, Profile):
+        return 'Profile'
+    elif isinstance(notifObj.source, Action):
+        return 'Action'
+    else:
+        return None
+
+
+"""
+    Returns True if notification source is a Shed object.
+"""
+def isNotifFromShed(notifObj):
+    if isinstance(notifObj.source, Shed):
+        return True
+    return False
+
+"""
+    Returns True if notification source is a Tool object.
+"""
+def isNotifFromTool(notifObj):
+    if isinstance(notifObj.source, Tool):
+        return True
+    return False
+
+
+"""
+    Returns True if notification source is a Profile object.
+"""
+def isNotifFromProfile(notifObj):
+    if isinstance(notifObj.source, Profile):
+        return True
+    return False
+
+
+"""
+    Returns True if notification source is a Action object.
+"""
+def isNotifFromAction(notifObj):
+    if isinstance(notifObj.source, Action):
+        return True
+    return False
 
 
 """
@@ -115,37 +172,4 @@ def respondToNotif(notifObj, myResponse):
 """
 def deleteNotif(notifObj):
     notifObj.delete()
-
-
-"""
-    Returns True if notification source is a Shed object.
-"""
-def isNotifFromShed(notifObj):
-    if isinstance(notifObj.source, Shed):
-        return True
-    return False
-
-"""
-    Returns True if notification source is a Tool object.
-"""
-def isNotifFromTool(notifObj):
-    if isinstance(notifObj.source, Tool):
-        return True
-    return False
-
-"""
-    Returns True if notification source is a Profile object.
-"""
-def isNotifFromProfile(notifObj):
-    if isinstance(notifObj.source, Profile):
-        return True
-    return False
-
-"""
-    Returns True if notification source is a Action object.
-"""
-def isNotifFromAction(notifObj):
-    if isinstance(notifObj.source, Action):
-        return True
-    return False
 
