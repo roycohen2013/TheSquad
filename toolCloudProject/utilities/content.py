@@ -77,18 +77,14 @@ def genUserHome(request):
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
 	#borrowedTools = None
 	print(profile)
-	community = profileUtil.getAllOtherProfilesInSharezone(profileUtil.getSharezone(profile))
-	#community = None
-	#print(user)
-	#print(tools)
-	#print(sheds)
-	#print(borrowedTools)
-	print(community)
+	sharezone = profileUtil.getSharezone(profile)
+	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
 	#not done
 	results['tools'] = tools
 	results['sheds'] = sheds
 	results['borrowed'] = borrowedTools
-	results['community'] = community
+	results['sharezone'] = sharezone
+	results['sharezoneMembers'] = sharezoneMembers
 	return results
 
 def getDefaults():

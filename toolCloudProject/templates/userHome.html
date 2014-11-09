@@ -22,10 +22,17 @@
 	</div>
 	<div id="communitySection">
 		<h1>Community</h1>
-		{% if community %}
-			<li><a href = "/communitities/{{community.id}}">{{ community.name }}</a></li>
+		{% if sharezone %}
+			<li><p>{{ sharezone }}</p></li>
+			{% if sharezoneMembers %}
+			<ul>
+				{% for mem in sharezoneMembers %}
+					<li><p>{{ mem.user.username }}</p></li>
+				{% endfor %}
+			</ul>
+			{% endif %}
 		{% else %}
-			<p>You are not a part of any communities. :(</p>
+			<li><p>You are not a part of any communities. :(</p></li>
 		{% endif %}
 	</div>
 	<div id="borrowedSection">

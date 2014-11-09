@@ -54,7 +54,7 @@ def getAllShedsOwnedBy(profileObj):
     Get all sheds a user is a member of
 """
 def getAllShedsJoinedBy(profileObj):
-	return profileObj.memberOfShed
+	return profileObj.memberOfShed.all()
 
 
 """
