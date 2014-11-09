@@ -27,7 +27,9 @@ def home(request):
     context = {}
     context['strings'] = strings
     context.update(content.genContent(request))
-    return render(request, 'loggedOutBase.html', context)
+    if request.user.is_anonymous():
+        return render(request, 'loggedOutBase.html', context)
+    return HttpResponseRedirect('/accounts/loggedin')
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm
@@ -38,7 +40,7 @@ def user_register(request):
     if request.user.is_anonymous():
         if request.method == 'POST':
             form = UserRegistrationForm(request.POST)
-            if form.is_valid:
+            if form.is_valid():
                 form.save()
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
                 if user is not None:
@@ -67,7 +69,7 @@ def tool_submission(request):
     else:
         if request.method == 'POST':
             form = ToolCreationForm(request.user, request.POST)
-            if form.is_valid:
+            if form.is_valid():
                 tool = form.save()
                 tool.save()
 
@@ -261,7 +263,7 @@ def create_tool_shed(request):
 	else:
 		if request.method == 'POST':
 			form = ShedCreationForm(request.user, request.POST)
-			if form.is_valid:
+			if form.is_valid():
 				shed = form.save()
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
