@@ -11,32 +11,6 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 
-
-#what calls action manager:
-	#Automated
-	#update to one of the action objects
-	#call back from a notification object
-
-
-"""
-class Action(models.Model):
-    tool = models.ForeignKey('Tool', related_name='toolActions',null = True)#if tool, send to owner of tool
-    shed = models.ForeignKey('Shed', related_name='shedActions',null = True)#if shed, send to all admins of shed
-    requester = models.ForeignKey('Profile', related_name='requesterActions')
-
-    actionType = models.CharField(max_length=20)#either tool, or shed
-    currrentState = models.CharField(max_length=20)
-    timeStamps = models.CharField(max_length=560,null = True)#CSV timestamps for every state
-    workSpace = models.CharField(max_length=200,null = True)#for use in state machine
-
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
-"""
-
-	#newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
-	#newNotification.save()
-	#return newNotification
-
 """
 	Creates a new Action object for a Profile requesting to borrow a Tool.
 	The currentState field for the object is set to "userBorrowRequest"

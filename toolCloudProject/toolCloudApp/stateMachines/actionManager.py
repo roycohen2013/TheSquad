@@ -8,6 +8,13 @@ from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 
 
+
+#what calls action manager:
+    #Automated
+    #update to one of the action objects
+    #call back from a notification object
+
+
 #reference
     """
     class Action(models.Model):
