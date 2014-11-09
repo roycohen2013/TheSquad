@@ -268,6 +268,9 @@ def create_tool_shed(request):
 		context['form'] = form
 		return render_to_response('shed_creation.html', context)
 
+def about_us(request):
+    return render_to_response('about_us.html')
+
 #DO NOT TOUCH - team leader
 def spooked(request):
     return render_to_response('spoopy.html')

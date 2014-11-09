@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 	url(r'^accounts/register/$', 'toolCloudApp.views.user_register'),
 	#url(r'^accounts/tool_submission/$', 'toolCloudApp.views.tool_submission'),
 
-    # Accounts urls
+        # Accounts urls
 	url(r'^accounts/login/$', 'toolCloudProject.views.login'),
 	url(r'^accounts/logout/$', 'toolCloudProject.views.logout'),
 	url(r'^accounts/auth/$', 'toolCloudProject.views.auth_view'),
@@ -25,11 +25,14 @@ urlpatterns = patterns('',
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 
-	#Shed urls
+	# Shed urls
 	url(r'^sheds/$', 'toolCloudApp.views.all_sheds'),
 	url(r'^sheds/create/$', 'toolCloudApp.views.create_tool_shed'),
 	url(r'^sheds/(?P<id>\d+)/$', 'toolCloudApp.views.view_shed_page', name="shedPage"),
-	
+
+	# misc
+	url(r'^about_us/$', 'toolCloudApp.views.about_us'),
+
 	# sekret
 	url(r'^3spooky5me/$', 'toolCloudApp.views.spooked'),
 	url(r'^aspookedeh/$', 'toolCloudApp.views.spooky')
