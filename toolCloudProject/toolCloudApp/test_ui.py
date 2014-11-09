@@ -3,7 +3,7 @@ These tests depend on Selenium and also expect you to have Firefox installed.
 """
 
 import sys
-sys.path.append("../../selenium/py/selenium")
+#ys.path.append("../../selenium/py/selenium")
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait # available since 2.4.0
@@ -20,11 +20,15 @@ class UITests (LiveServerTestCase):
 	
 	def setUp(self):
 		self.selenium = webdriver.Firefox()
-		self.selenium.get (self.live_server_url + "/accounts/login/")
-		self.selenium.find_element_by_id ("username").send_keys ("TaikhoomAttar")
-		self.selenium.find_element_by_id ("password").send_keys ("password")
-		self.selenium.find_element_by_xpath("//*[@value='login']").click()
-		
+		try:
+			self.selenium.get (self.live_server_url + "/accounts/login/")
+			self.selenium.find_element_by_id ("username").send_keys ("TaikhoomAttar")
+			self.selenium.find_element_by_id ("password").send_keys ("password")
+			self.selenium.find_element_by_xpath("//*[@value='login']").click()
+		except:
+			self.selenium.quit()
+			self.fail ("Error accessing site")
+			
 		
 	def tearDown (self):
 		self.selenium.quit()
@@ -34,8 +38,8 @@ class UITests (LiveServerTestCase):
 		self.selenium.get (self.live_server_url + "/accounts/logout/")
 		self.selenium.get (self.live_server_url + "/accounts/register/")
 		WebDriverWait(self.selenium, 2).until(
-        lambda driver: driver.find_element_by_tag_name('body'))
-		
+		lambda driver: driver.find_element_by_tag_name('body'))
+			
 		self.selenium.find_element_by_id ("id_first_name").send_keys("Boromir") #Enter the name Boromir into the first name field
 		self.selenium.find_element_by_id ("id_last_name").send_keys("so Denethor") #enter the name so Denethor into the last name field
 			
@@ -52,7 +56,7 @@ class UITests (LiveServerTestCase):
 		self.selenium.find_element_by_id ("id_share_zone").send_keys ("Minas Tirith")
 		
 		self.selenium.find_element_by_xpath("//*[@value='Sign Up']").click()
-		
+
 		try:
 			Profile.objects.get (sharezone = "Minas Tirith")
 		except:
@@ -69,7 +73,7 @@ class UITests (LiveServerTestCase):
 		self.selenium.find_element_by_id ("id_tags").send_keys  ("sword")
 		
 		self.selenium.find_element_by_xpath("//*[@value='Submit Tool']").click()
-		
+
 		try:
 			Tool.objects.get (name = "Anduril")
 		except:
@@ -84,7 +88,6 @@ class UITests (LiveServerTestCase):
 		self.selenium.find_element_by_id ("id_sharezone").send_keys ("Elven")
 		
 		self.selenium.find_element_by_xpath("//*[@value='Create New Shed']").click()
-		
 		try:
 			Shed.objects.get (name = "Rivendell")
 		except:
