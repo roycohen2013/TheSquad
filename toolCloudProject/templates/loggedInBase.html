@@ -4,7 +4,7 @@
     <!-- Custom CSS -->
     <link href="{% static 'css/custom.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
-{% block body %}
+{% block main %}
 <!-- Navigation -->
     <nav id="nav">
         <div id="links">
@@ -27,10 +27,16 @@
                 <li><a>{{ first_name }}</a></li>
                 <li><a>{{ last_name }}</a></li>
                 <li><a>{{ address }}</a></li>
-            </ul>
-            <a>Notifications</a>
-            <ul id="notis">
-                {{ notifications }}
+                <li id="notis">
+                    <h5>Notifications</h5>
+                    {% if notifications %}
+                        {% for noti in notifications %}
+                            <li><p>{{ noti.name }}</p></li>
+                        {% endfor %}
+                    {% else %}
+                        <li><p>You have no new notifications!</p></li>
+                    {% endif %}
+                </li>
             </ul>
         </div>
 		<div id="links">

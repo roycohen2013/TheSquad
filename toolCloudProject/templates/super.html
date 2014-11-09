@@ -34,7 +34,7 @@
 
 <body>
 
-    {% block body %}{% endblock %}
+    {% block main %}{% endblock %}
 
     <!-- jQuery Version 1.11.0 -->
     <script src="{% static 'js/jquery-1.11.0.js' %}"></script>
@@ -44,11 +44,12 @@
 
 </body>
 
-<footer>
-    <p> {{ footer }}</p>
-{% if copyrightYear != None and companyName != None %}
-    <p>Copyright {{ companyName }}, {{ copyrightYear }}</p>
-{% endif %}
-</footer>
+<!--<footer>
+    {% block footer %}{% endblock %}
+    <p>{{ footer }}</p>
+    {% if copyrightYear and companyName %}
+        <p>Copyright {{ companyName }}, {{ copyrightYear }}</p>
+    {% endif %}
+</footer>-->
 
 </html>

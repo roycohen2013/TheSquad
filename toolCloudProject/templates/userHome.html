@@ -1,6 +1,7 @@
 {% extends "loggedInBase.html" %}
 {% block content %}
 	<div id="toolSection">
+		<h1>Tools</h1>
 		{% if tools %}
 			{% for tool in tools %}
 				<li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
@@ -10,6 +11,7 @@
 		{% endif %}
 	</div>
 	<div id="shedSection">
+		<h1>Sheds</h1>
 		{% if sheds %}
 			{% for shed in sheds %}
 				<li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
@@ -19,11 +21,15 @@
 		{% endif %}
 	</div>
 	<div id="communitySection">
+		<h1>Community</h1>
 		{% if community %}
 			<li><a href = "/communitities/{{community.id}}">{{ community.name }}</a></li>
+		{% else %}
+			<p>You are not a part of any communities. :(</p>
 		{% endif %}
 	</div>
 	<div id="borrowedSection">
+		<h1>Borrowed</h1>
 		{% if borrowed %}
 			{% for tool in borrowed %}
 				<li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
