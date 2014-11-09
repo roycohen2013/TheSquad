@@ -228,7 +228,7 @@ class Action(models.Model):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
         
-        timeStamps = timeStamps + str(timezone.now()) + ','     
+        timeStamps = timeStamps + "[" currrentState +" "+ str(timezone.now()) + "]"  + ','     
         
         self.object_id = self.id
 

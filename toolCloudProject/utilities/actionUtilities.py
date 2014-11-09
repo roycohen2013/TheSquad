@@ -59,7 +59,7 @@ def getAllActions():
 """
 	Returns a list of all Action objects requested by a given Profile.
 """
-def getAllActionsRequestedBy(profileObj):
+def getProfileAction(profileObj):
 	return Action.objects.filter(requester=profileObj)
 
 
@@ -78,10 +78,13 @@ def getToolActions(toolObj):
 
 
 """
-	Add a timestamp to this Action object.
+	gets all notifications tied to action object
 """
-def addTimestampToAction(actionObj, timestamp):
-	actionObj.timestamp += (timestamp + ',')
-	actionObj.save()
-	return actionObj
+def getAllActionNotifications(actionObj):
+	return Notification.objects.filter(source = actionObj)
+
+
+
+
+
 
