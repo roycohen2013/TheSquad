@@ -135,8 +135,13 @@ class Tool(models.Model):
     borrowedCount = models.IntegerField(default=0) # times Tool borrowed
     requestedCount = models.IntegerField(default=0) # times Tool requested
 
-    freeToBorrow = models.BooleanField(default=False) # True means you don't have to request to borrow
-    maxBorrowTime = models.IntegerField(default=30) # max num of days tool can be borrowed, 0 = unlimited time
+    defaultMaxBorrowTime = models.IntegerField(default=30)#time measured in days only
+    #applies to tools if free to borrow is enabled 
+    #0 means unlimited time
+
+    defaultFreeToBorrow = models.IntegerField(default=0)#preferences
+    #0 means borrow request accepted automaticly
+    #1 means aproval of borrow request required
 
     minimumReputation = models.IntegerField(default=0)#preferences
     #if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
@@ -203,18 +208,14 @@ class Notification(models.Model):
     Works with the Notification class to handle notifications.
 """
 class Action(models.Model):
-
     tool = models.ForeignKey('Tool', related_name='toolActions',null = True)#if tool, send to owner of tool
     shed = models.ForeignKey('Shed', related_name='shedActions',null = True)#if shed, send to all admins of shed
-
-
     requester = models.ForeignKey('Profile', related_name='requesterActions')
 
     actionType = models.CharField(max_length=20)#either tool, or shed
     currrentState = models.CharField(max_length=20)
     timeStamps = models.CharField(max_length=560,null = True)#CSV timestamps for every state
     workSpace = models.CharField(max_length=200,null = True)#for use in state machine
-
 
     content_type = models.ForeignKey(ContentType,null=True,blank=True)
     object_id = models.PositiveIntegerField(null=True,default=1)

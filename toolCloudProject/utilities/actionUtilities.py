@@ -10,10 +10,16 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 
+
+
+
 #what calls action manager:
 	#Automated
 	#update to one of the action objects
 	#call back from a notification object
+
+
+
 
 """
 class Action(models.Model):
@@ -28,6 +34,7 @@ class Action(models.Model):
 	workSpace = models.CharField(max_length=200)#for use in state machine
 """
 
+
 	#newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 	#newNotification.save()
 	#return newNotification
@@ -35,7 +42,6 @@ class Action(models.Model):
 
 def createBorrowAction(tool,requester):
 	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
-
 
 
 def createShedRequestAction(shed,requester):
