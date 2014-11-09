@@ -57,3 +57,10 @@ def getActionFromTool():
 	pass
 
 
+def isToolRequest():
+	pass
+
+def isShedRequest():
+	pass
+
+	

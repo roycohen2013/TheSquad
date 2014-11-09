@@ -23,6 +23,7 @@ class Action(models.Model):
 	workSpace = models.CharField(max_length=200)#for use in state machine
 """
 
+#Tool borrow state machine
 
 if state ==	"userBorrowRequest":
     pass
@@ -40,3 +41,7 @@ elif state == "overDraft":
     pass
 elif state == "returned":
     pass
+
+
+
+#shed request state machine
