@@ -1,3 +1,11 @@
 {% extends "loggedInBase.html" %}
 {% block content %}
+	<div id="toolSection">
+		{% for tool in tools %}
+			<p>{% tool.name %}</p>
+		{% endfor %}
+	</div>
+	<div id="shedSection"></div>
+	<div id="communitySection"></div>
+	<div id="borrowedSection"></div>
 {% endblock %}

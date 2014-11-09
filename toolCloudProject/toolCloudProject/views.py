@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.core.context_processors import csrf
+from utilities import content
 
 
 
@@ -29,7 +30,7 @@ def auth_view(request):
 
 
 def loggedin(request):
-	return render_to_response('loggedin.html',{'name': request.user.first_name})
+	return render_to_response('userHome.html',content.genUserHome(request))
 
 
 def invalid_login(request):
