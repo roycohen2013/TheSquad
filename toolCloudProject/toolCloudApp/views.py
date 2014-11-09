@@ -16,11 +16,13 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(1,parentdir) 
 """
-import utilities.profileUtilities as profileUtil, utilities.shedUtilities as shedUtil, utilities.toolUtilities as toolUtil
+import utilities.profileUtilities as profileUtil
+import utilities.shedUtilities as shedUtil
+import utilities.toolUtilities as toolUtil
 import utilities.content as content
 
 def home(request):
-    return render(request, 'base.html', content.genContent(request))
+    return render(request, 'loggedOutBase.html', content.genContent(request))
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm

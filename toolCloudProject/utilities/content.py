@@ -70,17 +70,22 @@ def genBaseLoggedIn(request):
 def genUserHome(request):
 	results = dict()
 	results.update(genBaseLoggedIn(request))
-	user = profileUtil.getProfileFromUser(request.user)
-	tools = toolUtil.getToolsBelongingToProfile(user)
-	sheds = shedUtil.getAllShedsJoinedBy(user)
-	borrowedTools = toolUtil.getAllToolsBorrowedBy(user)
-	community = profileUtil.getAllOtherProfilesInSharezone(user)
-	print(user)
-	print(tools)
-	print(sheds)
-	print(borrowedTools)
-	print(community)
+	profile = profileUtil.getProfileFromUser(request.user)
+	tools = toolUtil.getAllToolsOwnedBy(profile)
+	#sheds = shedUtil.getAllShedsJoinedBy(user)
+	sheds = None
+	#borrowedTools = toolUtil.getAllToolsBorrowedBy(user)
+	borrowedTools = None
+	#community = profileUtil.getAllOtherProfilesInSharezone(user)
+	community = None
+	#print(user)
+	#print(tools)
+	#print(sheds)
+	#print(borrowedTools)
+	#print(community)
 	#not done
+	results['tools'] = tools
+	return results
 
 def getDefaults():
 	return defaults
