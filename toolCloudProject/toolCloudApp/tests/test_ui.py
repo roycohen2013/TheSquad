@@ -14,6 +14,7 @@ from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed
 from time import sleep # just for debugging -- so I can see where the browser is before it dies
 import utilities.profileUtilities as profUtils
+import utilities.toolUtilities as toolUtils
 
 import unittest
 
@@ -96,5 +97,23 @@ class UITests (LiveServerTestCase):
 			Shed.objects.get (name = "Rivendell")
 		except:
 			self.fail ("New shed not saved!")
+			
+	def test_tool_listing (self):
+		self.selenium.get (self.live_server_url + "/tools/")
+		
+		body = self.selenium.find_element_by_tag_name ("body").text
+		body = body.split ("All Tools on ToolCloud:")[1]
+		body = body.split ("\n")
+		
+		for ind_tool in Tool.objects.all():
+			name = toolUtils.getToolName (ind_tool)
+			if not (name in body):
+				self.fail (name + " missing from list!")
 	
+	def test_shed_joining_other (self):
+		self.selenium.get (self.live_server_url + "/sheds/1/")
+		
+		self.selenium.find_element_by_xpath("//button[contains(.,'Join this shed')]").click()
+		
+		self.assertIn (profUtils.getProfileFromUsername ("TaikhoomAttar"), Shed.objects.get (name = "Jake's Shed").members.all())
 	
