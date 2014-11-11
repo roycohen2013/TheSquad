@@ -49,7 +49,7 @@
         <img id="iconMain" src="{% static 'img/shed.png' %}"/></h1>
             <div id="contentBlock">
                 {% block content %}
-                    <h3 class="text-center"><i>{{strings|random}}</i></h3>
+                    <h3 class="text-center"><i>{{strings|random|safe}}</i></h3>
                 {% endblock %}
             </div>
         </div>
