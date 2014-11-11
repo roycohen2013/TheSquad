@@ -98,13 +98,13 @@ class ShedCreationForm(ModelForm):
         shed.timeCreated = timezone.now()
         shed.timeLastEdited = timezone.now()
         shed.owner = profileUtil.getProfileFromUser(self.userObject)
-        shed.location = ''
-        shed.latitude = ''
-        shed.longitude = ''
-        shed.status = ''
-        shed.admins = ''
-        shed.members = ''
-        shed.privacy = ''
+        #shed.location = ''
+        #shed.latitude = ''
+        #shed.longitude = ''
+        #shed.status = ''
+        #shed.admins = ''
+        #shed.members = ''
+        #shed.privacy = ''
         if commit:
             shed.save()
         return shed

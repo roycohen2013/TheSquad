@@ -263,6 +263,7 @@ def create_tool_shed(request):
 	else:
 		if request.method == 'POST':
 			form = ShedCreationForm(request.user, request.POST)
+			
 			if form.is_valid():
 				shed = form.save()
                 #send email

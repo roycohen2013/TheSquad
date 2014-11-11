@@ -76,7 +76,7 @@ def genUserHome(request):
 	#sheds = None
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
 	#borrowedTools = None
-	print(profile)
+	#print(profile)
 	sharezone = profileUtil.getSharezone(profile)
 	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
 	#not done
