@@ -77,11 +77,8 @@ class toolTests (TestCase):
         """
         """
         self.assertEqual (toolUtils.getToolTags (self.ncTool), "") #making sure that the new name is saved
-
-    def test_GetToolsBelongingToProfile(self):
-        """
-        """
-        self.assertIn (self.ncTool, toolUtils.getToolsBelongingToProfile(profUtils.getAllProfiles()[3]))  #testing getToolsBelongingToProfile
+        
+        
 
     def test_GetToolBorrower(self):
         """
