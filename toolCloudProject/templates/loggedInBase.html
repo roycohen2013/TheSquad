@@ -26,9 +26,9 @@
                 <li><a>{{ username }}</a></li>
                 <li id="notis">
                     <h5>Notifications</h5>
-                    {% if notifications %}
-                        {% for noti in notifications %}
-                            <li><p>{{ noti.name }}</p></li>
+                    {% if notif %}
+                        {% for noti in notif %}
+                            <li><p>{{ noti.content }}</p></li>
                         {% endfor %}
                     {% else %}
                         <li><p>You have no new notifications!</p></li>

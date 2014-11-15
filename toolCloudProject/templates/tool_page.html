@@ -12,9 +12,9 @@
   <i>The owner has not tagged this tool with anything.</i>
 {% endif %}
 
-{% if available %}
-  <button type="button">Borrow this tool</button>
-{% else %}
+{% if available and not ownedByUser %}
+  <a class="btn" href="/tools/{{ tool.id }}/borrow">Borrow this tool</a>
+{% elif not ownedByUser %}
   <h2>Sorry, but this tool is currently not available to borrow.</h2>
   {% if borrower %}
     <h1>Current borrower: <a href = "/accounts/profile/{{borrower.user.username}}">{{borrower.user.username}}</a></h1>

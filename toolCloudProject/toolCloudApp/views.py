@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 import django.db
-from toolCloudApp.models import Profile, User
+from toolCloudApp.models import Profile, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
 import string
 import random
@@ -19,6 +19,8 @@ sys.path.insert(1,parentdir)
 import utilities.profileUtilities as profileUtil
 import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
+import utilities.notificationUtilities as notifUtil
+import utilities.actionUtilities as actionUtil
 import utilities.content as content
 
 def home(request):
@@ -181,8 +183,13 @@ def view_tool_page(request, id):
             borrower = toolUtil.getToolBorrower(toolObj)
             condition = toolUtil.getToolCondition(toolObj)
             available = toolUtil.isToolAvailable(toolObj)
+            if profileUtil.getProfileFromUser(request.user) == owner:
+                ownedByUser = True
+            else:
+                ownedByUser = False
         context = {}
         context.update(csrf(request))
+        context['tool'] = toolObj
         context['name'] = name
         context['owner'] = owner
         context['description'] = description
@@ -190,6 +197,7 @@ def view_tool_page(request, id):
         context['borrower'] = borrower
         context['condition'] = condition
         context['available'] = available
+        context['ownedByUser'] = ownedByUser
         return render_to_response('tool_page.html', context)
      
 def view_shed_page(request, id):
@@ -232,6 +240,22 @@ def all_tools(request):
         context.update(csrf(request))
         context['tools'] = tools
         return render_to_response('all_tools.html', context)
+
+def borrow_tool(request, id):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        borrowerProfile = profileUtil.getProfileFromUser(request.user)
+        toolObject = toolUtil.getToolFromID(id)
+        ownerProfile = toolObject.owner
+        content = borrowerProfile.user.username + " has requested to borrow your " + toolObject.name + "."
+        actionObject = actionUtil.createBorrowRequestAction(toolObject, borrowerProfile)
+        notifObject = notifUtil.createResponseNotif(actionObject, ownerProfile, content)
+        notifObject.save()
+        return HttpResponseRedirect('/tools/request_sent')
+
+def request_sent(request):
+    return render_to_response("request_sent.html")
 
 def all_sheds(request):
     if request.user.is_anonymous():

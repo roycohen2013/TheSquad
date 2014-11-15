@@ -7,6 +7,8 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.core.context_processors import csrf
 from utilities import content
+from utilities import notificationUtilities as notifUtil
+from utilities import profileUtilities as profileUtil
 
 
 
@@ -30,7 +32,12 @@ def auth_view(request):
 
 
 def loggedin(request):
-	return render_to_response('userHome.html',content.genUserHome(request))
+	profileObj = profileUtil.getProfileFromUser(request.user)
+	notif = notifUtil.getAllActiveProfileNotifs(profileObj)
+	context = {}
+	context['notif'] = notif
+	context.update(content.genUserHome(request))
+	return render_to_response('userHome.html', context)
 
 
 def invalid_login(request):
