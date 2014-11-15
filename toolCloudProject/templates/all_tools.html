@@ -6,7 +6,7 @@
   {% for tool in tools %}
     <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
   {% endfor %}
-  <h2><a href = "tools/submit">Submit a new tool</a></h2>
+  <a class="btn" href = "tools/submit">Submit a new tool</a>
 {% else %}
   <i>Something's not right here...no tools found on the site!</i>
 {% endif %}

@@ -6,7 +6,7 @@
   {% for shed in sheds %}
     <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
   {% endfor %}
-  <h2><a href = "/sheds/create">Create a new shed</a></h2>
+  <a class="btn" href="/sheds/create">Create a new shed</a>
 {% else %}
   <i>Something's not right here...no sheds found on the site!</i>
 {% endif %}
