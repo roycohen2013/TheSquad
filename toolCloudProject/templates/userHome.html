@@ -27,7 +27,7 @@
 			{% if sharezoneMembers %}
 			<ul>
 				{% for mem in sharezoneMembers %}
-					<li><p>{{ mem.user.username }}</p></li>
+					<li><a href = "/accounts/profile/{{ mem.user.username }}">{{ mem.user.username }}</a></li>
 				{% endfor %}
 			</ul>
 			{% endif %}
