@@ -210,6 +210,7 @@ def view_shed_page(request, id):
         tools = toolUtil.getAllToolsInShed(shedObj)
         userProfile = profileUtil.getProfileFromUser(request.user)
         meetsMinRep = userProfile.reputation >= shedObj.minimumReputation
+        shedMembership = shedUtil.checkForMembership(userProfile, id)
         context = {}
         context.update(csrf(request))
         context['owner'] = owner
@@ -218,6 +219,7 @@ def view_shed_page(request, id):
         context['members'] = members
         context['tools'] = tools
         context['meetsMin'] = meetsMinRep
+        context['alreadyMember'] = shedMembership
         return render_to_response('shed_page.html', context)
 
 #a view that will display all tools

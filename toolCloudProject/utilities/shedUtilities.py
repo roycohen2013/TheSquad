@@ -58,6 +58,15 @@ def getAllShedsJoinedBy(profileObj):
 
 
 """
+    Check if a user is a member of a shed
+"""
+def checkForMembership(profileObj, id):
+	shed = getShedFromID(id)
+	sheds = getAllShedsJoinedBy(profileObj)
+	return shed in sheds
+	
+
+"""
     Get all sheds a user is an admin of
 """
 def getAllShedsAdministratedBy(profileObj):
