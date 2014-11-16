@@ -24,13 +24,13 @@
         <div id="userInfo">
             <ul>
                 <li><a>{{ username }}</a></li>
-            </ul>
-            <ul id="notis">
+                <li>
                 {% if notif %}
-                    <div id="notiBell"></div>
+                    <a href="/accounts/notifications"><div id="notiBell"></div></a>
                 {% else %}
-                    <div id="notiBellStatic"></div>
+                    <a href="/accounts/notifications"><div href="/accounts/notifications" id="notiBellStatic"></div></a>
                 {% endif %}
+                </li>
             </ul>
         </div>
 		<div id="links">
