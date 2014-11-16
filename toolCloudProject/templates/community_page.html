@@ -12,8 +12,8 @@
 {% endif %}
 {% if users %}
   <h2>Users in this community:</h2>
-  {% for user in users %}
-    <li><a href = "/accounts/profile/{{user.username}}">{{ user.username }}</a></li>
+  {% for profile in users %}
+    <li><a href = "/accounts/profile/{{profile.user.username}}">{{ profile.user.username }}</a></li>
   {% endfor %}
 {% else %}
   <i>There are currently no users in this community.</i>
