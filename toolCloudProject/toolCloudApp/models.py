@@ -174,7 +174,8 @@ class Notification(models.Model):
 
     recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
 
-    content = models.CharField(max_length=280,null=True)
+    content = models.CharField(max_length=280,null=True)    # contains the question or alert string
+    options = models.CharField(max_length=280,null=True)    #CSV of question options
 
     #if type == info: content is string of text
     #elif type == request: content is
