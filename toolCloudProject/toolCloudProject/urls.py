@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
 	url(r'^tools/request_sent/$', 'toolCloudApp.views.request_sent'),
+	url(r'^tools/request_accept/$', 'toolCloudApp.views.request_accept'),
+	url(r'^tools/request_decline/$', 'toolCloudApp.views.request_decline'),
 
 	# Shed urls
 	url(r'^sheds/$', 'toolCloudApp.views.all_sheds'),
