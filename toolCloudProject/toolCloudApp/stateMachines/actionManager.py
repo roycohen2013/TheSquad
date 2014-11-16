@@ -6,6 +6,10 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
+import utilities.profileUtilities as profileUtil
+import utilities.shedUtilities as shedUtil
+import utilities.toolUtilities as toolUtil
+import utilities.notificationUtilities as notifUtil
 
 
 
@@ -59,14 +63,16 @@ def ProcessActions():
             elif state == "acceptDecline":
 
 
-                                                                                #get notification assosiated with object
+                                                                                 #get notification assosiated with object
                 if(notifHasResponse(getNotifOfAction(actionInstance)) == True):   #if (notification responded == true):
                
                    
                     #start timer for when tool is overdue (set end time)\
 
                     #move tool location to requesters shed
-                    
+                    shedUtil.removeToolFromShed(actionInstance.tool.shed,actionInstance.tool)
+                    shedUtil.addToolToShed(actionInstance.requester.,actionInstance.tool)
+
 
 
                     #Continue to Borrowed state
