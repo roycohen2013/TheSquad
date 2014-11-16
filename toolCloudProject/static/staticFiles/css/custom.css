@@ -217,7 +217,6 @@
   height: 42px;
   line-height: 48px;
   border-radius: 7px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
   font-family: Arial;
   font-size: 20px;
   color: #FFF;
@@ -258,7 +257,6 @@
   height: 42px;
   line-height: 48px;
   border-radius: 7px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
   font-family: Arial;
   font-size: 20px;
   color: #FFF;
@@ -270,5 +268,4 @@
   content: "\f0f3";
   font-family: "FontAwesome";
   text-align: center;
-  box-shadow: none;
 }
