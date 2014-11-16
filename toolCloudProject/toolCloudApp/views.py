@@ -44,12 +44,17 @@ def user_register(request):
         if request.method == 'POST':
             form = UserRegistrationForm(request.POST)
             if form.is_valid():
-                form.save()
+                userAccount = form.save()
                 user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
                 if user is not None:
                     login(request, user)
                 #send confirmation email
                 #sendMail(form.cleaned_data['email'],"Welcome to ToolCloud! ", "Hi " + form.cleaned_data['first_name'] + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
+                shedName = form.cleaned_data['username'] + "'s Shed"
+                userProfile = profileUtil.getProfileFromUser(userAccount)
+                newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['share_zone'],\
+                    status='status')
+                newShedObject.save()
                 context = {}
                 context['name'] = form.cleaned_data['username']
                 return render_to_response('register_success.html', context)
@@ -75,14 +80,6 @@ def tool_submission(request):
             if form.is_valid():
                 tool = form.save()
                 tool.save()
-
-                # while (True):
-                #     try:
-                #         tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(8))
-                #         tool.save()
-                #     except django.db.IntegrityError:
-                #         continue
-                #     break
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
                 context = {}
@@ -108,7 +105,9 @@ def view_profile(request, username=None):
                 try:
                     userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
                 except ObjectDoesNotExist:
-                    return render_to_response("profile_dne.html")
+                    context = {}
+                    context['object'] = 'profile'
+                    return render_to_response("dne.html", context)
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
@@ -119,7 +118,9 @@ def view_profile(request, username=None):
                 try:
                     userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
                 except ObjectDoesNotExist:
-                    return render_to_response("profile_dne.html")
+                    context = {}
+                    context['object'] = 'profile'
+                    return render_to_response("dne.html", context)
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
             toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
@@ -159,7 +160,9 @@ def view_tool_page(request, id):
                 try:
                     toolObj = toolUtil.getToolFromID(id)
                 except ObjectDoesNotExist:
-                    return render_to_response("tool_dne.html")
+                    context = {}
+                    context['object'] = 'tool'
+                    return render_to_response("dne.html", context)
             else:
                 return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             owner = toolUtil.getToolOwner(toolObj)
@@ -174,7 +177,9 @@ def view_tool_page(request, id):
                 try:
                     toolObj = toolUtil.getToolFromID(id)
                 except ObjectDoesNotExist:
-                    return render_to_response("tool_dne.html")
+                    context = {}
+                    context['object'] = 'tool'
+                    return render_to_response("dne.html", context)
             else:
                 return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
             owner = toolUtil.getToolOwner(toolObj)
@@ -211,7 +216,9 @@ def view_shed_page(request, id):
             except ObjectDoesNotExist:
                 return render_to_response("shed_dne.html")
         else:
-            return render_to_response("shed_dne.html")
+            context = {}
+            context['object'] = 'shed'
+            return render_to_response("dne.html", context)
         owner = shedUtil.getOwnerOfShed(shedObj)
         name = shedUtil.getNameOfShed(shedObj)
         admins = shedUtil.getAllAdminsOfShed(shedObj)
@@ -231,6 +238,23 @@ def view_shed_page(request, id):
         context['meetsMin'] = meetsMinRep
         context['alreadyMember'] = shedMembership
         return render_to_response('shed_page.html', context)
+
+def view_community_page(request, sharezone):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect("/accounts/login")
+    else:
+        if sharezone is not None:
+            sheds = shedUtil.getAllShedsInSharezone(sharezone)
+            users = profileUtil.getAllProfilesInSharezone(sharezone)
+            context = {}
+            context['sharezone'] = sharezone
+            context['sheds'] = sheds
+            context['users'] = users
+            return render_to_response('community_page.html', context)
+        else:
+            context = {}
+            context['object'] = 'community'
+            return render_to_response('dne.html', context)
 
 #a view that will display all tools
 def all_tools(request):

@@ -38,7 +38,7 @@ def getAllProfiles():
 	Return a list of all profiles in a specific sharezone.
 """
 def getAllProfilesInSharezone(sharezone):
-	return Profile.objects.filter(sharezone=sharezone).order_by('user__first_name')
+	return Profile.objects.filter(sharezone=sharezone).order_by('user__username')
 
 
 """
@@ -46,7 +46,7 @@ def getAllProfilesInSharezone(sharezone):
 """
 def getAllOtherProfilesInSharezone(profileObj):
 	sharezone = profileObj.sharezone
-	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username).order_by('user__first_name')
+	return Profile.objects.filter(sharezone=sharezone).exclude(user__username = profileObj.user.username).order_by('user__username')
 
 
 """

@@ -40,7 +40,7 @@ def removeToolFromShed(shedObj, toolObj):
 	(regardless of sharezone)
 """
 def getAllShedsAllSharezones():
-	return Shed.objects.all()
+	return Shed.objects.all().order_by('shed__name')
 
 
 """
@@ -54,21 +54,21 @@ def getShedFromID(id):
 	Get all sheds in a given sharezone.
 """
 def getAllShedsInSharezone(sharezone):
-	return Shed.objects.filter(sharezone=sharezone)
+	return Shed.objects.filter(sharezone=sharezone).order_by('shed__name')
 
 
 """
     Get all sheds a user owns
 """
 def getAllShedsOwnedBy(profileObj):
-	return Shed.objects.filter(owner=profileObj)
+	return Shed.objects.filter(owner=profileObj).order_by('shed__name')
 
 
 """
     Get all sheds a user is a member of
 """
 def getAllShedsJoinedBy(profileObj):
-	return profileObj.memberOfShed.all()
+	return profileObj.memberOfShed.all().order_by('shed__name')
 
 
 """
@@ -90,7 +90,7 @@ def getAllShedsAdministratedBy(profileObj):
 	Get all members of a shed.
 """
 def getAllMembersOfShed(shedObj):
-	return shedObj.members.all()
+	return shedObj.members.all().order_by('user__username')
 
 
 """
@@ -115,7 +115,7 @@ def removeMemberFromShed(shedObj, profileObj):
 	Get all admins of shed.
 """
 def getAllAdminsOfShed(shedObj):
-	return shedObj.admins.all()
+	return shedObj.admins.all().order_by('user__username')
 
 
 """
