@@ -22,6 +22,13 @@ def createNewShed(ownerProfileObj,name,location,sharezone,status):
 
 
 """
+	Find Shed based on name of shed.
+"""
+def getShedByName(name):
+	return Shed.objects.filter(name=name)
+
+
+"""
 	Adds a tool to a shed.
 """
 def addToolToShed(shedObj, toolObj):
