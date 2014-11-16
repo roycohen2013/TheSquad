@@ -258,6 +258,12 @@ def borrow_tool(request, id):
 def request_sent(request):
     return render_to_response("request_sent.html")
 
+def request_accept(request):
+    return render_to_response("request_accept.html")
+
+def request_deny(request):
+    return render_to_response("request_deny.html")
+
 def all_sheds(request):
     if request.user.is_anonymous():
         return HttpResponseRedirect('/accounts/login')
