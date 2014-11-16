@@ -102,16 +102,15 @@ def getNotifContent(notifObj):
 """
 def getNotifSourceObject(notifObj):
     if notifObj.sourceShed != None:
-       return sourceShed
+        return notifObj.sourceShed
     elif notifObj.sourceTool != None:
-        return sourceTool
+        return notifObj.sourceTool
     elif notifObj.sourceProfile != None:
-        return sourceProfile
+        return notifObj.sourceProfile
     elif notifObj.sourceAction != None:
-        return sourceAction
+        return notifObj.sourceAction
 
-
-
+        
 """
     Returns the type of the notification source in string format.
         Source of type Tool returns "Tool"
@@ -122,7 +121,7 @@ def getNotifSourceObject(notifObj):
 """
 def getNotifSourceType(notifObj):
     if notifObj.sourceShed != None:
-       return 'Shed'
+        return 'Shed'
     elif notifObj.sourceTool != None:
         return 'Tool'
     elif notifObj.sourceProfile != None:

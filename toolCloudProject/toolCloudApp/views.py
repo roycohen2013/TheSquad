@@ -9,6 +9,7 @@ from toolCloudApp.models import Profile, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
 import string
 import random
+import actionManager
 
 """
 import os,sys,inspect
@@ -255,14 +256,73 @@ def borrow_tool(request, id):
         notifObject.save()
         return HttpResponseRedirect('/tools/request_sent')
 
+def join_shed(request, id):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        joinerProfile = profileUtil.getProfileFromUser(request.user)
+        shedObject = shedUtil.getShedFromID(id)
+        ownerProfile = shedObject.owner
+        content = joinerProfile.user.username + " has requested to join the shed '" + shedObject.name + "."
+        content = content + ",Accept,Deny"
+        actionObject = actionUtil.createShedRequestAction(shedObject, joinerProfile)
+        notifObject = notifUtil.createResponseNotif(shedObject, ownerProfile, content)
+        notifObject.save()
+        return HttpResponseRedirect('/sheds/request_sent')
+
 def request_sent(request):
     return render_to_response("request_sent.html")
 
-def request_accept(request):
-    return render_to_response("request_accept.html")
+def request_accept(request, id):
+    notifObject = Notification.objects.get(id = id)
+    notifObject = notifUtil.respondToNotif(notifObj, "Accept")
+    actionManager.processActions()
+    actionObject = notifUtil.getNotifSourceObject(notifObject)
+    requesterProfile = actionObject.requester
+    context = {}
+    context['requesterName'] = requesterProfile.user.username
+    if actionUtil.isShedRequest(actionObject):
+        shedObject = actionObject.shed
+        shedName = shedObject.name
+        context['objectName'] = shedName
+        context['type'] = "Shed"
+    elif actionUtil.isToolRequest(actionObject):
+        toolObject = actionObject.tool
+        toolName = toolObject.name
+        context['objectName'] = shedName
+        context['type'] = "Tool"
+    return render_to_response("request_accept.html", context)
 
-def request_deny(request):
-    return render_to_response("request_deny.html")
+def request_deny(request, id):
+    notifObject = Notification.objects.get(id = id)
+    notifObject = notifUtil.respondToNotif(notifObj, "Deny")
+    actionManager.processActions()
+    actionObject = notifUtil.getNotifSourceObject(notifObject)
+    requesterProfile = actionObject.requester
+    context = {}
+    context['requesterName'] = requesterProfile.user.username
+    if actionUtil.isShedRequest(actionObject):
+        shedObject = actionObject.shed
+        shedName = shedObject.name
+        context['objectName'] = shedName
+        context['type'] = "Shed"
+    elif actionUtil.isToolRequest(actionObject):
+        toolObject = actionObject.tool
+        toolName = toolObject.name
+        context['objectName'] = shedName
+        context['type'] = "Tool"
+    return render_to_response("request_deny.html", context)
+
+def view_notifications(request):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        notifs = notifUtil.getAllActiveProfileNotifs(userProfile)
+        context = {}
+        context['userProfile'] = userProfile
+        context['notifs'] = notifs
+        return render_to_response('view_notifs.html', context)
 
 def all_sheds(request):
     if request.user.is_anonymous():

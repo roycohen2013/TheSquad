@@ -1,0 +1,14 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+<h1>Your currently pending notifications:</h1>
+{% if notifs %}
+  {% for notif in notifs %}
+    <li>{{notif.content}}</li>
+    <a class="btn" href = "accounts/notifications/{{notif.id}}/request_accept">Accept</a>
+    <a class="btn" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</a>
+  {% endfor %}
+{% else %}
+  <i>You have no pending notifications.</i>
+{% endif %}
+{% endblock %}
