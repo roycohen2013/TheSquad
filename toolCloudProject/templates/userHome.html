@@ -23,7 +23,7 @@
 	<div id="communitySection">
 		<h1>Community</h1>
 		{% if sharezone %}
-			<li><p>{{ sharezone }}</p></li>
+			<li><p><a href = "/communities/{{ sharezone }}">{{ sharezone }}</a></p></li>
 			{% if sharezoneMembers %}
 			<ul>
 				{% for mem in sharezoneMembers %}

@@ -39,6 +39,9 @@ urlpatterns = patterns('',
 	url(r'^sheds/(?P<id>\d+)/join/$', 'toolCloudApp.views.join_shed', name="joinRequest"),
 	url(r'^sheds/request_sent/$', 'toolCloudApp.view.request_sent'),
 
+	# Community urls
+	url(r'^communities/(?P<sharezone>\d+)/$', 'toolCloudApp.views.view_community_page', name="communityPage"),
+
 	# misc
 	url(r'^about_us/$', 'toolCloudApp.views.about_us'),
 

@@ -31,7 +31,7 @@ def createNewProfile(firstName,lastName,username,email,password,phoneNumber, \
 	(regardless of sharezone)
 """
 def getAllProfiles():
-	return Profile.objects.all().order_by('user__first_name')
+	return Profile.objects.order_by('user__first_name')
 
 
 """
