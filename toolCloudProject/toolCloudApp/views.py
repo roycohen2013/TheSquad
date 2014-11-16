@@ -249,6 +249,7 @@ def borrow_tool(request, id):
         toolObject = toolUtil.getToolFromID(id)
         ownerProfile = toolObject.owner
         content = borrowerProfile.user.username + " has requested to borrow your " + toolObject.name + "."
+        content = content + ",Accept,Deny"                                                                  #adding questions
         actionObject = actionUtil.createBorrowRequestAction(toolObject, borrowerProfile)
         notifObject = notifUtil.createResponseNotif(actionObject, ownerProfile, content)
         notifObject.save()
