@@ -31,6 +31,22 @@
                 {% else %}
                     <div id="notiBellStatic"></div>
                 {% endif %}
+<<<<<<< HEAD
+=======
+                <li id="notis">
+                    <h5>Notifications</h5>
+                    {% if notif %}
+                        {% for noti in notif %}
+                            <li><p>{{ noti.content }}</p></li>
+
+                            <li><p>{{ noti.sourceTool.name }}</p></li>
+
+                        {% endfor %}
+                    {% else %}
+                        <li><p>You have no new notifications!</p></li>
+                    {% endif %}
+                </li>
+>>>>>>> 59c85b581e50426e5c6da91b7699a165e50edb8e
             </ul>
         </div>
 		<div id="links">

@@ -1,0 +1,10 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+{% if type is "Shed" %}
+  <h1>You have denied {{requesterName}}'s request to join the shed {{objectName}}.</h1>
+{% else %}
+  <h1>You have denied {{requesterName}}'s request to borrow your {{objectName}}.</h1>
+{% endif %}
+<a href="/">Home Page</a>
+{% endblock %}

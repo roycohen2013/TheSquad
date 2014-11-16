@@ -19,20 +19,25 @@ urlpatterns = patterns('',
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
 	url(r'^accounts/profile/$', 'toolCloudApp.views.view_current_profile'), #current user profile, redirect to URL above
-	
+
+	# Notification urls
+	url(r'^accounts/notifications/$', 'toolCloudApp.views.view_notifications'),
+	url(r'^accounts/notifications/(?P<id>\d+)/request_accept/$', 'toolCloudApp.views.request_accept'),
+	url(r'^accounts/notifications/(?P<id>\d+)/request_decline/$', 'toolCloudApp.views.request_decline'),
+
 	# Tool urls
 	url(r'^tools/$', 'toolCloudApp.views.all_tools'),
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
 	url(r'^tools/request_sent/$', 'toolCloudApp.views.request_sent'),
-	url(r'^tools/(?P<id>\d+)/request_accept/$', 'toolCloudApp.views.request_accept'),
-	url(r'^tools/(?P<id>\d+)/request_decline/$', 'toolCloudApp.views.request_decline'),
 
 	# Shed urls
 	url(r'^sheds/$', 'toolCloudApp.views.all_sheds'),
 	url(r'^sheds/create/$', 'toolCloudApp.views.create_tool_shed'),
 	url(r'^sheds/(?P<id>\d+)/$', 'toolCloudApp.views.view_shed_page', name="shedPage"),
+	url(r'^sheds/(?P<id>\d+)/join/$', 'toolCloudApp.views.join_shed', name="joinRequest"),
+	url(r'^sheds/request_sent/$', 'toolCloudApp.view.request_sent'),
 
 	# misc
 	url(r'^about_us/$', 'toolCloudApp.views.about_us'),

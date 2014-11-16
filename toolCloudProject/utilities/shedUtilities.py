@@ -22,6 +22,20 @@ def createNewShed(ownerProfileObj,name,location,sharezone,status):
 
 
 """
+	Adds a tool to a shed.
+"""
+def addToolToShed(shedObj, toolObj):
+	shedObj.toolsInShed.add(toolObj)
+
+
+"""
+	Remove a tool from a shed.
+"""
+def removeToolFromShed(shedObj, toolObj):
+	shedObj.toolsInShed.remove(toolObj)
+
+
+"""
 	Get all sheds in the entire database.
 	(regardless of sharezone)
 """
