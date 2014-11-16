@@ -35,7 +35,6 @@ def ProcessActions():
     #Re-process all action objects on every call
     for actionInstance in getAllActions():
 
-
         #states allow system to process and respond to all actions asyncrounusly
 
         #Tool borrow state machine
@@ -45,6 +44,7 @@ def ProcessActions():
                 actionInstance.currrentState = "askOwner"
                 
                 #re-invoke entire state machine
+                #ProcessActions()
 
             if state == "askOwner":
                 #generate question string asking [owner] if [borrower]
@@ -55,14 +55,25 @@ def ProcessActions():
                 Notification.createResponseNotif(actionInstance,actionInstance.tool.owner,question,options=options,userOptions):
 
                 #procede to next state
-                pass
+                
             elif state == "acceptDecline":
 
-                #get notification assosiated with object
-                    #if (notification responded == true):
-                        #start timer for when tool is overdue (set end time)
-                        #move tool location to requesters shed
-                        #Continue to Borrowed state
+
+                                                                                #get notification assosiated with object
+                if(notifHasResponse(getNotifOfAction(actionInstance)) == True):   #if (notification responded == true):
+               
+                   
+                    #start timer for when tool is overdue (set end time)\
+
+                    #move tool location to requesters shed
+                    
+
+
+                    #Continue to Borrowed state
+
+
+
+
 
                 ownerResponse = Action.getAllActionNotifications(actionInstance)
 
