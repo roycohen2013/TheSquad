@@ -9,7 +9,7 @@ from toolCloudApp.models import Profile, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
 import string
 import random
-import actionManager
+#import toolCloudApp.stateMachines.actionManager
 
 """
 import os,sys,inspect
@@ -276,7 +276,7 @@ def request_sent(request):
 def request_accept(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Accept")
-    actionManager.processActions()
+    #actionManager.processActions()
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
@@ -296,7 +296,7 @@ def request_accept(request, id):
 def request_deny(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Deny")
-    actionManager.processActions()
+    #actionManager.processActions()
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
