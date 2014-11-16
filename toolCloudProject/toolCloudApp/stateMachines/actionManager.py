@@ -46,10 +46,14 @@ for actionInstance in getAllActions():
             #procede to next one
             actionInstance.currrentState = "askOwner"
             
+            #re-invoke entire state machine
+
         if state == "askOwner":
             #generate question string asking [owner] if [borrower]
             
-            question = "can " + actionInstance.requester.name + " borrow the " actionInstance.tool.name + "from " + actionInstance.tool.shed               
+            question = "can " + actionInstance.requester.name + " borrow the " actionInstance.tool.name + "from " + actionInstance.tool.shed
+            question = question + ",Accept,Deny"                                                                  #adding questions           
+            
             Notification.createResponseNotif(actionInstance,actionInstance.tool.owner,question):
 
             #procede to next state
