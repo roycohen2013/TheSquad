@@ -32,6 +32,13 @@ def createShedRequestAction(shed,requester):
 
 
 """
+	Get notification object from Action object
+"""
+def getNotifOfAction(actionObj):
+	return actionObj.sourceActionNotifications
+
+
+"""
 	Returns True if the given Action object deals with a tool borrow request.
 """
 def isToolRequest(actionObj):

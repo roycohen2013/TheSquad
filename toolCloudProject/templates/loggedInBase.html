@@ -24,6 +24,16 @@
         <div id="userInfo">
             <ul>
                 <li><a>{{ username }}</a></li>
+<<<<<<< HEAD
+            </ul>
+            <ul id="notis">
+                <h5>Notifications</h5>
+                {% if notif %}
+                    <div id="notiBell"></div>
+                {% else %}
+                    <div id="notiBellStatic"></div>
+                {% endif %}
+=======
                 <li id="notis">
                     <h5>Notifications</h5>
                     {% if notif %}
@@ -37,6 +47,7 @@
                         <li><p>You have no new notifications!</p></li>
                     {% endif %}
                 </li>
+>>>>>>> 767a2afadb1c13233d6d4ec1f9611c1e553df3db
             </ul>
         </div>
 		<div id="links">

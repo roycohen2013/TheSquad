@@ -44,5 +44,7 @@ urlpatterns = patterns('',
 
 	# sekret
 	url(r'^3spooky5me/$', 'toolCloudApp.views.spooked'),
-	url(r'^aspookedeh/$', 'toolCloudApp.views.spooky')
+	url(r'^aspookedeh/$', 'toolCloudApp.views.spooky'),
+	
+	url(r'^debug/$', 'toolCloudApp.admin.debug')
 )
