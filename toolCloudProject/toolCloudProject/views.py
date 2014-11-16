@@ -32,7 +32,7 @@ def auth_view(request):
 
 
 def loggedin(request):
-	return render_to_response('userHome.html', context)
+	return render_to_response('userHome.html', content.genUserHome(request))
 
 
 def invalid_login(request):
