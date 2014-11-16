@@ -77,6 +77,7 @@ def genUserHome(request):
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
 	#borrowedTools = None
 	#print(profile)
+	results['notif'] = notifUtil.getAllActiveProfileNotifs(profileObj)
 	sharezone = profileUtil.getSharezone(profile)
 	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
 	#not done

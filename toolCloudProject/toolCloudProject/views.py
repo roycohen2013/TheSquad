@@ -32,11 +32,6 @@ def auth_view(request):
 
 
 def loggedin(request):
-	profileObj = profileUtil.getProfileFromUser(request.user)
-	notif = notifUtil.getAllActiveProfileNotifs(profileObj)
-	context = {}
-	context['notif'] = notif
-	context.update(content.genUserHome(request))
 	return render_to_response('userHome.html', context)
 
 
