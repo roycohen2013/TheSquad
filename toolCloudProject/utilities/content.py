@@ -4,6 +4,7 @@ import sys
 import utilities.profileUtilities as profileUtil
 import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
+import utilities.notificationUtilities as notifUtil
 
 defaults = {
 	'heading' : "ToolCloud",
@@ -77,7 +78,7 @@ def genUserHome(request):
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
 	#borrowedTools = None
 	#print(profile)
-	results['notif'] = notifUtil.getAllActiveProfileNotifs(profileObj)
+	results['notif'] = notifUtil.getAllActiveProfileNotifs(profile)
 	sharezone = profileUtil.getSharezone(profile)
 	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
 	#not done

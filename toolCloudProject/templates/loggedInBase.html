@@ -29,11 +29,6 @@
                     {% if notif %}
                         {% for noti in notif %}
                             <li><p>{{ noti.content }}</p></li>
-                            {% if isRequestNotif(noti) %}
-                                <a href="/"
-                            <li><p>{{ noti.notificationType }}</p></li>
-
-
                         {% endfor %}
                     {% else %}
                         <li><p>You have no new notifications!</p></li>
