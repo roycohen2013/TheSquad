@@ -222,6 +222,7 @@ def view_shed_page(request, id):
         shedMembership = shedUtil.checkForMembership(userProfile, id)
         context = {}
         context.update(csrf(request))
+        context['shed'] = shedObj
         context['owner'] = owner
         context['name'] = name
         context['admins'] = admins
@@ -249,11 +250,7 @@ def borrow_tool(request, id):
         borrowerProfile = profileUtil.getProfileFromUser(request.user)
         toolObject = toolUtil.getToolFromID(id)
         ownerProfile = toolObject.owner
-        content = borrowerProfile.user.username + " has requested to borrow your " + toolObject.name + "."
-        content = content + ",Accept,Deny"                                                                  #adding questions
         actionObject = actionUtil.createBorrowRequestAction(toolObject, borrowerProfile)
-        notifObject = notifUtil.createResponseNotif(toolObject, ownerProfile, content)
-        notifObject.save()
         return HttpResponseRedirect('/tools/request_sent')
 
 def join_shed(request, id):
@@ -263,11 +260,7 @@ def join_shed(request, id):
         joinerProfile = profileUtil.getProfileFromUser(request.user)
         shedObject = shedUtil.getShedFromID(id)
         ownerProfile = shedObject.owner
-        content = joinerProfile.user.username + " has requested to join the shed '" + shedObject.name + "."
-        content = content + ",Accept,Deny"
         actionObject = actionUtil.createShedRequestAction(shedObject, joinerProfile)
-        notifObject = notifUtil.createResponseNotif(shedObject, ownerProfile, content)
-        notifObject.save()
         return HttpResponseRedirect('/sheds/request_sent')
 
 def request_sent(request):
