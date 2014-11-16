@@ -108,3 +108,7 @@ class ShedCreationForm(ModelForm):
         if commit:
             shed.save()
         return shed
+
+class debugForm(forms.Form): #Note that it is not inheriting from forms.ModelForm
+    a = forms.CharField(widget = forms.Textarea)
+    #All my attributes here

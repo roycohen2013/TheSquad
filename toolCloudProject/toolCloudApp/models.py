@@ -30,8 +30,6 @@ class Profile(models.Model):
     #private 1 - persons name
     #secret  2 - initials
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
 
     #registered = models.IntegerField(default=0) #0: user has not yet completed their profile, 1: user can login and use
     # all features of site
@@ -74,8 +72,6 @@ class Shed(models.Model):
     status = models.CharField(max_length=50)
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
-    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
 
 
     privacy = models.IntegerField(default=-1)               
@@ -147,8 +143,6 @@ class Tool(models.Model):
     minimumReputation = models.IntegerField(default=0)#preferences
     #if free to borrow enabled this states the minimum reputation of a person who can borrow the tool 
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
-    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
 
     """
         ToString method.
@@ -177,20 +171,26 @@ class Tool(models.Model):
 """
 class Notification(models.Model):
     
-    content_type = models.ForeignKey(ContentType,null=True,blank=True) # for generic notifications
-    object_id = models.PositiveIntegerField(null=True,default=1) # for generic notifications
-    #ContentType.objects.get_for_model(self)
 
     recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
-    source = generic.GenericForeignKey('content_type', 'object_id')#action that caused it
 
-    content = models.CharField(max_length=280,null=True)
+    content = models.CharField(max_length=280,null=True)    # contains the question or alert string
+    options = models.CharField(max_length=280,null=True)    #CSV of question options
 
     #if type == info: content is string of text
     #elif type == request: content is
         #-multiple choice - question, then choices in CSV form
         #-open ended - user prompt text
-        
+
+
+    #replacing genericForeignKeys with an individual link to each possible object type
+    #only one of these should be linked at any given time
+    sourceShed = models.OneToOneField('Shed', related_name='sourceShedNotification', null=True)
+    sourceProfile = models.OneToOneField('Profile', related_name='sourceProfileNotification', null=True)
+    sourceTool = models.OneToOneField('Tool', related_name = 'sourceToolNotification', null=True)
+    sourceAction = models.OneToOneField('Action', related_name = 'sourceActionNotification', null=True)
+
+
     notificationType = models.CharField(max_length="20",null=True)#type of notification can be either "info" or "request" ex. TCP vs UDP
     timestamp = models.DateTimeField(auto_now_add=True,null=True)
 
@@ -221,8 +221,6 @@ class Action(models.Model):
     timeStamps = models.CharField(max_length=560,default = "")#CSV timestamps for every state
     workSpace = models.CharField(max_length=200,null = True)#for use in state machine
 
-    content_type = models.ForeignKey(ContentType,null=True,blank=True)
-    object_id = models.PositiveIntegerField(null=True,default=1)
 
     """
         Overrides save to work with generic notifications.

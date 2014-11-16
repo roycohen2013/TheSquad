@@ -19,7 +19,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 # python manage.py test toolCloudApp.tests -v 2
 
 
-#@unittest.skip("skipping Profile tests")    #can be used for skipping past certain tests
+@unittest.skip("skipping Profile tests")    #can be used for skipping past certain tests
 class profileTests (TestCase):
     fixtures = ["initDBData.json"]
 
