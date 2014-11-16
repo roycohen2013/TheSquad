@@ -15,18 +15,43 @@ from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 """
     Create a new Notification of the "info" type.
 """
+
+
+
+
+
 def createInfoNotif(sourceObj,recipientProfile,content):
-	newNotification = Notification(source = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
-	
-	newNotification.save()
-	return newNotification
+    if isinstance(sourceObj, Shed):
+        newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+    elif isinstance(sourceObj, Tool):
+        newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+    elif isinstance(sourceObj, Profile):
+       newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+    elif isinstance(sourceObj, Action):
+        newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+
+    
+    newNotification.save()
+    return newNotification
 
 
 """
     Create a new Notification that waits for a response.
 """
 def createResponseNotif(sourceObj,recipientProfile,content):
-    newNotification = Notification(source=sourceObj, content = content, recipient=recipientProfile,notificationType="request")
+
+
+    if isinstance(sourceObj, Shed):
+        newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+    elif isinstance(sourceObj, Tool):
+        newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+    elif isinstance(sourceObj, Profile):
+       newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+    elif isinstance(sourceObj, Action):
+        newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+
+
+    # newNotification = Notification(source=sourceObj, content = content, recipient=recipientProfile,notificationType="request")
     newNotification.save()
     return newNotification
 
@@ -83,7 +108,15 @@ def getNotifContent(notifObj):
     Get the source object of a notification.
 """
 def getNotifSourceObject(notifObj):
-    return notifObj.source
+    if isinstance(notifObj.source, Shed):
+       return sourceShed
+    elif isinstance(notifObj.source, Tool):
+        return sourceTool
+    elif isinstance(notifObj.source, Profile):
+        return sourceProfile
+    elif isinstance(notifObj.source, Action):
+        return sourceAction
+
 
 
 """

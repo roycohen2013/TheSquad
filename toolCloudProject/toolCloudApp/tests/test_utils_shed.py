@@ -18,8 +18,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 # Recomended command to run to see all tests
 # python manage.py test toolCloudApp.tests -v 2
 
-
-#@unittest.skip("skipping Shed tests")    #can be used for skipping past certain tests   
+@unittest.skip("skipping Shed tests")    #can be used for skipping past certain tests   
 class shedTests (TestCase):
     fixtures = ["initDBData.json"]
 
