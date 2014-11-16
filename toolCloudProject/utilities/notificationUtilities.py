@@ -15,11 +15,6 @@ from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 """
     Create a new Notification of the "info" type.
 """
-
-
-
-
-
 def createInfoNotif(sourceObj,recipientProfile,content):
     if isinstance(sourceObj, Shed):
         newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
@@ -56,6 +51,7 @@ def createResponseNotif(sourceObj,recipientProfile,content):
 """
     Returns True if an "info" notification.
 """
+
 def isInfoNotif(notifObj):
     if notifObj.notificationType == 'info':
         return True
@@ -105,13 +101,13 @@ def getNotifContent(notifObj):
     Get the source object of a notification.
 """
 def getNotifSourceObject(notifObj):
-    if isinstance(notifObj.source, Shed):
+    if notifObj.sourceShed != None:
        return sourceShed
-    elif isinstance(notifObj.source, Tool):
+    elif notifObj.sourceTool != None:
         return sourceTool
-    elif isinstance(notifObj.source, Profile):
+    elif notifObj.sourceProfile != None:
         return sourceProfile
-    elif isinstance(notifObj.source, Action):
+    elif notifObj.sourceAction != None:
         return sourceAction
 
 
@@ -125,23 +121,21 @@ def getNotifSourceObject(notifObj):
         If source is not one of those, return ""
 """
 def getNotifSourceType(notifObj):
-    if isinstance(notifObj.source, Shed):
-        return 'Shed'
-    elif isinstance(notifObj.source, Tool):
+    if notifObj.sourceShed != None:
+       return 'Shed'
+    elif notifObj.sourceTool != None:
         return 'Tool'
-    elif isinstance(notifObj.source, Profile):
+    elif notifObj.sourceProfile != None:
         return 'Profile'
-    elif isinstance(notifObj.source, Action):
+    elif notifObj.sourceAction != None:
         return 'Action'
-    else:
-        return ''
 
 
 """
     Returns True if notification source is a Shed object.
 """
 def isNotifFromShed(notifObj):
-    if isinstance(notifObj.source, Shed):
+    if notifObj.sourceShed != None:
         return True
     return False
 
@@ -150,7 +144,7 @@ def isNotifFromShed(notifObj):
     Returns True if notification source is a Tool object.
 """
 def isNotifFromTool(notifObj):
-    if isinstance(notifObj.source, Tool):
+    if notifObj.sourceTool != None:
         return True
     return False
 
@@ -159,7 +153,7 @@ def isNotifFromTool(notifObj):
     Returns True if notification source is a Profile object.
 """
 def isNotifFromProfile(notifObj):
-    if isinstance(notifObj.source, Profile):
+    if notifObj.sourceProfile != None:
         return True
     return False
 
@@ -168,7 +162,7 @@ def isNotifFromProfile(notifObj):
     Returns True if notification source is a Action object.
 """
 def isNotifFromAction(notifObj):
-    if isinstance(notifObj.source, Action):
+    if notifObj.sourceAction != None:
         return True
     return False
 
