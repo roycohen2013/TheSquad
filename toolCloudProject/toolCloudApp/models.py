@@ -184,10 +184,10 @@ class Notification(models.Model):
 
     #replacing genericForeignKeys with an individual link to each possible object type
     #only one of these should be linked at any given time
-    sourceShed = models.OneToOneField('Shed', related_name='sourceShedNotifications', null=True)
-    sourceProfile = models.OneToOneField('Profile', related_name='sourceProfileNotifications', null=True)
-    sourceTool = models.OneToOneField('Tool', related_name = 'sourceToolNotifications', null=True)
-    sourceAction = models.OneToOneField('Action', related_name = 'sourceActionNotifications', null=True)
+    sourceShed = models.OneToOneField('Shed', related_name='sourceShedNotification', null=True)
+    sourceProfile = models.OneToOneField('Profile', related_name='sourceProfileNotification', null=True)
+    sourceTool = models.OneToOneField('Tool', related_name = 'sourceToolNotification', null=True)
+    sourceAction = models.OneToOneField('Action', related_name = 'sourceActionNotification', null=True)
 
 
     notificationType = models.CharField(max_length="20",null=True)#type of notification can be either "info" or "request" ex. TCP vs UDP
