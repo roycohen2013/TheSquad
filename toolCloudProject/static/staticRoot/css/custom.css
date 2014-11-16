@@ -98,9 +98,9 @@
 }
 
 #nav {
-  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=.1)";
-  filter: alpha(opacity=.1);
-  opacity:.1;
+  -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  opacity:0;
 }
 
 #nav:hover {
@@ -117,6 +117,158 @@
 
 #userInfo {
 	margin-top: 10%;
-	background-color: rgba(120,120,120,.2);
 	height: 35%;
+}
+
+.wrapper { 
+  margin: 1em auto;
+  width: 40%
+}
+
+.notification {
+  position: relative;
+  margin: 1em auto
+}
+
+.notification-description:after {
+  content: '\f00d';
+  font: 20px FontAwesome;
+  position: absolute;
+  color: #ecf0f1;
+  top: 33%;
+  right: 3%;
+  cursor: pointer
+}
+
+  .notification .notification-description .fa {
+    color:#fff;
+    margin-right: .5em
+  }
+  .notification .notification-description p {
+    margin:0;
+    vertical-align: middle;
+    font: 300 16px/2.3 "Open Sans";
+    color:#ecf0f1;
+    padding: 10px 20px
+  }
+
+  .notification .notification-description p strong {
+    font-size: 20px;
+    margin-right: 20px;
+    text-transform: uppercase;
+    display: inline-block;
+    width: 100px
+  }
+.notification.success .notification-description{
+  position: relative;
+  background: #27ae60;
+  background: linear-gradient(
+    25deg
+    , rgba(39, 174, 96, .8) 0%
+    , rgba(46, 204, 113, .8) 15%
+    , rgba(39, 174, 96, 1) 15%
+    , #27ae60 100% 
+  )
+}
+
+.notification.error .notification-description{
+   background: #c0392b;
+    background: linear-gradient(
+    25deg
+    , rgba(192, 57, 43, .8) 0%
+    , rgba(231, 76, 60, .8) 15%
+    , rgba(231, 76, 60, 1) 15%
+    , #c0392b 100% 
+  )
+}
+
+.notification.warning .notification-description {
+  background:#d35400;
+  background: linear-gradient(
+    25deg
+    , rgba(211, 84, 0, .8) 0%
+    , rgba(230, 126, 34, .8) 15%
+    , rgba(230, 126, 34, 1) 15%
+    , #d35400 100% 
+  )
+}
+.notification.info .notification-description{
+   background:#3498db;
+  background: linear-gradient(
+    25deg
+    , rgba(41, 128, 185, .8) 0%
+    , rgba(52, 152, 219, .8) 15%
+    , rgba(52, 152, 219, 1) 15%
+    , #3498db 100%
+  )
+}
+
+@media (max-width: 90em) {
+  .wrapper {
+    width: 90%
+  }
+}
+
+#notiBell:before, #notiBell:after
+{
+  content: "";
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  line-height: 48px;
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  font-family: Arial;
+  font-size: 20px;
+  color: #FFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+}
+
+#notiBell:after
+{
+  content: "\f0f3";
+  font-family: "FontAwesome";
+  text-align: center;
+  box-shadow: none;
+  transform-origin: 70% -1px;
+  animation-name: ring;
+  animation-duration: 2.75s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes ring
+  {
+    0% { transform: rotate(0deg) }
+    15% { transform: rotate(-2.5deg) }
+    25% { transform: rotate(2.5deg) }
+    35% { transform: rotate(-2.5deg) }
+    45% { transform: rotate(2.5deg) }
+    55% { transform: rotate(-2.5deg) }
+    65% { transform: rotate(2.5deg) }
+    75% { transform: rotate(-2.5deg) }
+    85% { transform: rotate(2.5deg) }
+    100% { transform: rotate(0deg) }
+  }
+
+  #notiBellStatic:before, #notiBellStatic:after
+{
+  content: "";
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  line-height: 48px;
+  border-radius: 7px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+  font-family: Arial;
+  font-size: 20px;
+  color: #FFF;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .3);
+}
+
+#notiBellStatic:after
+{
+  content: "\f0f3";
+  font-family: "FontAwesome";
+  text-align: center;
+  box-shadow: none;
 }
