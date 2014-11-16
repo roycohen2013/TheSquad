@@ -24,13 +24,13 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     if isinstance(sourceObj, Shed):
         newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
     elif isinstance(sourceObj, Tool):
-        newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+        newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
     elif isinstance(sourceObj, Profile):
-       newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
+       newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
     elif isinstance(sourceObj, Action):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 
-    
+
     newNotification.save()
     return newNotification
 
@@ -39,17 +39,14 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     Create a new Notification that waits for a response.
 """
 def createResponseNotif(sourceObj,recipientProfile,content):
-
-
     if isinstance(sourceObj, Shed):
         newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
     elif isinstance(sourceObj, Tool):
-        newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+        newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
     elif isinstance(sourceObj, Profile):
-       newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
+       newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
     elif isinstance(sourceObj, Action):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "request")
-
 
     # newNotification = Notification(source=sourceObj, content = content, recipient=recipientProfile,notificationType="request")
     newNotification.save()

@@ -29,6 +29,9 @@
                     {% if notif %}
                         {% for noti in notif %}
                             <li><p>{{ noti.content }}</p></li>
+
+                            <li><p>{{ noti.sourceTool.name }}</p></li>
+
                         {% endfor %}
                     {% else %}
                         <li><p>You have no new notifications!</p></li>
