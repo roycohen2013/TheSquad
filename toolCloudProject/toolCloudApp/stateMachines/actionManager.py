@@ -10,6 +10,7 @@ import utilities.profileUtilities as profileUtil
 import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
 import utilities.notificationUtilities as notifUtil
+import utilities.actionUtilities as actionUtil
 
 
 
@@ -43,14 +44,16 @@ def ProcessActions():
 
         #Tool borrow state machine
         if isToolRequest() == True: 
-            if state == "userBorrowRequest":                                        #entry point
-                #procede to next one
-                actionInstance.currrentState = "askOwner"
+            if actionInstance.currrentState == "userBorrowRequest":                                        #entry point
                 
-                #re-invoke entire state machine
-                #ProcessActions()
 
-            if state == "askOwner":
+                #procede to next state
+                actionInstance.currrentState = "askOwner"
+                actionInstance.save()
+                #ProcessActions()       #re-invoke entire state machine
+                
+
+            if actionInstance.currrentState == "askOwner":
                 #generate question string asking [owner] if [borrower]
                 
                 question = "can " + actionInstance.requester.name + " borrow the " actionInstance.tool.name + "from " + actionInstance.tool.shed
@@ -58,35 +61,60 @@ def ProcessActions():
                 
                 Notification.createResponseNotif(actionInstance,actionInstance.tool.owner,question,options=options,userOptions):
 
+
                 #procede to next state
-                
-            elif state == "acceptDecline":
+                actionInstance.currrentState = "acceptDecline"
+                actionInstance.save()
+                #ProcessActions()       #re-invoke entire state machine
+
+
+            elif actionInstance.currrentState == "acceptDecline":
 
 
                                                                                  #get notification assosiated with object
-                if(notifHasResponse(getNotifOfAction(actionInstance)) == True):   #if (notification responded == true):
-               
+                if notifHasResponse(getNotifOfAction(actionInstance)) == True:   #if (notification responded == true):
+                
                    
-                    #start timer for when tool is overdue (set end time)\
+                    if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == True:
+                        #start timer for when tool is overdue (set end time)\
+                        #move tool location to requesters shed
 
-                    #move tool location to requesters shed
-                    shedUtil.removeToolFromShed(actionInstance.tool.shed,actionInstance.tool)
-                    shedUtil.addToolToShed(actionInstance.requester.,actionInstance.tool)
-
-
-
-                    #Continue to Borrowed state
+                        targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
+                        shedUtil.removeToolFromShed(actionInstance.tool.shed,actionInstance.tool)
+                        shedUtil.addToolToShed(targetShed,actionInstance.tool)
 
 
+                        #set borrower field to tool
+                        toolUtil.updateToolBorrower(actionInstance.tool,getUserOfProfile(actionInstance.requester))
+
+                        #procede to next state
+                        actionInstance.currrentState = "borrowed"
+                        actionInstance.save()
+                        actionUtil.getNotifOfAction(actionInstance).delete()
+                        #ProcessActions()       #re-invoke entire state machine
+
+
+                    else:
+                        #Verbally reject requester 
+
+                        response = "You " + actionInstance.requester.name + " have been swiftly rejected from borrowing " actionInstance.tool.name + " from " + actionInstance.tool.shed
+                        createInfoNotif(actionInstance,actionInstance.requester,response):
+
+                        #procede to next state
+                        actionInstance.currrentState = "idle"
+                        actionInstance.save()
+                        #ProcessActions()       #re-invoke entire state machine
 
 
 
-                ownerResponse = Action.getAllActionNotifications(actionInstance)
+                    
+
+
+                #ownerResponse = Action.getAllActionNotifications(actionInstance)
 
                     #if notification responded fales - notify of denial and delete request
 
-                pass
-            elif state == "borrowed":
+            elif actionInstance.currrentState == "borrowed":
                 #check if borrowed is past timestamp
                     #Notify {requester} that they are overdraft and they should return [tool]
                     #Set canBorrow state to false
@@ -95,8 +123,13 @@ def ProcessActions():
                 #if (tool.isAvailable() == true):   #means tool has been returned
                     #move state to returned 
 
-                pass
-            elif state == "overDraft":
+                #procede to next state
+                #actionInstance.currrentState = "borrowed"
+                #actionInstance.save()
+                #ProcessActions()       #re-invoke entire state machine
+
+
+            elif actionInstance.currrentState == "overDraft":
                 #if (tool.isAvailable() == true):   #means tool has been returned
                     #calculate how many days the tool is overdue and reduce user reputation until then
                     #set user.canBorrow state to true.
@@ -104,28 +137,32 @@ def ProcessActions():
                     #move state to returned 
 
                 pass
-            elif state == "returned":
-                #delete action object
+            elif actionInstance.currrentState == "returned":
                 #Notify tool owner that his tool has been returned
+                #move to idle state
+                pass
+
+            elif actionInstance.currrentState == "idle":        #this state does nothing and will get deleted after a while
+                #delete action object
                 pass
 
 
 
-        #shed request state machine
+        # #shed request state machine
 
-        if isShedRequest() == True:
-            if state == "userShedRequest":
-                #procede to next state
-                pass
-            elif state == "askAdmins":
-                #loop through all admins of shed
-                    #generate question string asking [Admin] if [borrower]
+        # if isShedRequest() == True:
+        #     if state == "userShedRequest":
+        #         #procede to next state
+        #         pass
+        #     elif state == "askAdmins":
+        #         #loop through all admins of shed
+        #             #generate question string asking [Admin] if [borrower]
 
-                    #proced to next state
-                pass
+        #             #proced to next state
+        #         pass
 
-            elif state == "acceptDecline":
-                #get all notificaitons assosiated with this action
-                    #check if notification has been responded to correctly
+        #     elif state == "acceptDecline":
+        #         #get all notificaitons assosiated with this action
+        #             #check if notification has been responded to correctly
 
-                pass
+        #         pass
