@@ -2,11 +2,13 @@ TheSquad
 ========
 
 Names of files inside public_html/Release-x/cross-team-testing/ are:
-	Requirements.pdf
-	TestPlanTracker.xlsx
+    README.txt
+    Requirements.pdf
+    TestPlanTracker.xlsx
+    TheSquad.zip (containing our entire repository)
 
 Contact info:
-	Jake Dulin at jad5366@rit.edu
+    Jake Dulin at jad5366@rit.edu
 
 ========
 
