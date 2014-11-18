@@ -310,7 +310,7 @@ def request_accept(request, id):
         context['type'] = "Tool"
     return render_to_response("request_accept.html", context)
 
-def request_deny(request, id):
+def request_decline(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Deny")
     #actionManager.processActions()
