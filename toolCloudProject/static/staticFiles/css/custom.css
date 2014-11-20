@@ -23,6 +23,11 @@ html {
 	width: 5%;
 }
 
+#navIcon {
+  height: 25px;
+  width: 25px;
+}
+
 * {
 	-webkit-transition: .45s;
 	-moz-transition: .45s;

@@ -29,7 +29,7 @@ def home(request):
     strings = file.readlines()
     context = {}
     context['strings'] = strings
-    context.update(content.genContent(request))
+    context.update(content.genSuper())
     if request.user.is_anonymous():
         return render(request, 'loggedOutBase.html', context)
     return HttpResponseRedirect('/accounts/loggedin')
@@ -63,6 +63,7 @@ def user_register(request):
         context = {}
         context.update(csrf(request))
         context['form'] = form
+        context.update(content.genSuper())
         #Pass the context to a template
         return render_to_response('register.html', context)
     else:
@@ -89,6 +90,7 @@ def tool_submission(request):
             form = ToolCreationForm(request.user)
         context = {}
         context.update(csrf(request))
+        context.update(content.genBaseLoggedIn(request))
         context['form'] = form
         return render_to_response('tool_creation.html', context)
 
@@ -107,6 +109,7 @@ def view_profile(request, username=None):
                 except ObjectDoesNotExist:
                     context = {}
                     context['object'] = 'profile'
+                    context.update(content.genBaseLoggedIn(request))
                     return render_to_response("dne.html", context)
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
@@ -120,6 +123,7 @@ def view_profile(request, username=None):
                 except ObjectDoesNotExist:
                     context = {}
                     context['object'] = 'profile'
+                    context.update(content.genBaseLoggedIn(request))
                     return render_to_response("dne.html", context)
             else:
                 userProfile = profileUtil.getProfileFromUser(request.user)
@@ -135,6 +139,7 @@ def view_profile(request, username=None):
         context['toolsBorrowed'] = toolsBorrowed
         context['profilesInSharezone'] = profilesInSharezone
         context['sheds'] = sheds
+        context.update(content.genBaseLoggedIn(request))
         return render_to_response('view_profile.html', context)
 
 def view_current_profile(request):
@@ -162,6 +167,7 @@ def view_tool_page(request, id):
                 except ObjectDoesNotExist:
                     context = {}
                     context['object'] = 'tool'
+                    context.update(content.genBaseLoggedIn(request))
                     return render_to_response("dne.html", context)
             else:
                 return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
@@ -179,6 +185,7 @@ def view_tool_page(request, id):
                 except ObjectDoesNotExist:
                     context = {}
                     context['object'] = 'tool'
+                    context.update(content.genBaseLoggedIn(request))
                     return render_to_response("dne.html", context)
             else:
                 return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
@@ -196,7 +203,7 @@ def view_tool_page(request, id):
         context = {}
         context.update(csrf(request))
         context['tool'] = toolObj
-        context['name'] = name
+        context['name'] = name #TODO change to toolName
         context['owner'] = owner
         context['description'] = description
         context['tags'] = tags
@@ -204,6 +211,7 @@ def view_tool_page(request, id):
         context['condition'] = condition
         context['available'] = available
         context['ownedByUser'] = ownedByUser
+        context.update(content.genBaseLoggedIn(request))
         return render_to_response('tool_page.html', context)
      
 def view_shed_page(request, id):
@@ -218,6 +226,7 @@ def view_shed_page(request, id):
         else:
             context = {}
             context['object'] = 'shed'
+            context.update(content.genBaseLoggedIn(request))
             return render_to_response("dne.html", context)
         owner = shedUtil.getOwnerOfShed(shedObj)
         name = shedUtil.getNameOfShed(shedObj)
@@ -237,6 +246,7 @@ def view_shed_page(request, id):
         context['tools'] = tools
         context['meetsMin'] = meetsMinRep
         context['alreadyMember'] = shedMembership
+        context.update(content.genBaseLoggedIn(request))
         return render_to_response('shed_page.html', context)
 
 def view_community_page(request, sharezone):
@@ -250,10 +260,12 @@ def view_community_page(request, sharezone):
             context['sharezone'] = sharezone
             context['sheds'] = sheds
             context['users'] = users
+            context.update(content.genBaseLoggedIn(request))
             return render_to_response('community_page.html', context)
         else:
             context = {}
             context['object'] = 'community'
+            context.update(content.genBaseLoggedIn(request))
             return render_to_response('dne.html', context)
 
 #a view that will display all tools
@@ -265,6 +277,7 @@ def all_tools(request):
         context = {}
         context.update(csrf(request))
         context['tools'] = tools
+        context.update(content.genBaseLoggedIn(request))
         return render_to_response('all_tools.html', context)
 
 def borrow_tool(request, id):
@@ -288,12 +301,11 @@ def join_shed(request, id):
         return HttpResponseRedirect('/sheds/request_sent')
 
 def request_sent(request):
-    return render_to_response("request_sent.html")
+    return render_to_response("request_sent.html", content.genBaseLoggedIn(request))
 
 def request_accept(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Accept")
-    #actionManager.processActions()
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
@@ -308,12 +320,12 @@ def request_accept(request, id):
         toolName = toolObject.name
         context['objectName'] = shedName
         context['type'] = "Tool"
+    context.update(content.genBaseLoggedIn(request))
     return render_to_response("request_accept.html", context)
 
 def request_decline(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Deny")
-    #actionManager.processActions()
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
@@ -328,18 +340,14 @@ def request_decline(request, id):
         toolName = toolObject.name
         context['objectName'] = shedName
         context['type'] = "Tool"
+    context.update(content.genBaseLoggedIn(request))
     return render_to_response("request_deny.html", context)
 
 def view_notifications(request):
     if request.user.is_anonymous():
         return HttpResponseRedirect('/accounts/login')
     else:
-        userProfile = profileUtil.getProfileFromUser(request.user)
-        notifs = notifUtil.getAllActiveProfileNotifs(userProfile)
-        context = {}
-        context['userProfile'] = userProfile
-        context['notifs'] = notifs
-        return render_to_response('view_notifs.html', context)
+        return render_to_response('view_notifs.html', content.genViewNotifications(request))
 
 def all_sheds(request):
     if request.user.is_anonymous():
@@ -357,41 +365,44 @@ def all_sheds(request):
         context['adminSheds'] = adminSheds
         context['ownedSheds'] = ownedSheds
         context['mySheds'] = memberSheds
+        context.update(content.genBaseLoggedIn(request))
         return render_to_response('all_sheds.html', context)
 
 #a view for if a tool does not exist
 def tool_dne(request):
     return render_to_response('tool_dne.html')
 
-	
+    
 #a view for the creation of a new Shed
 def create_tool_shed(request):
-	if request.user.is_anonymous():
+    if request.user.is_anonymous():
         #tell user they need to be logged in to do that
         #add message flag that will display to user "you must be logged in to..."
-		return HttpResponseRedirect('/accounts/login/') #redirect to login page
-	else:
-		if request.method == 'POST':
-			form = ShedCreationForm(request.user, request.POST)
-			
-			if form.is_valid():
-				shed = form.save()
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
+    else:
+        if request.method == 'POST':
+            form = ShedCreationForm(request.user, request.POST)
+            
+            if form.is_valid():
+                shed = form.save()
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-				context = {}
-				context['name'] = form.cleaned_data['name']
-				return render_to_response('shed_registration_success.html', context)
-		else:
-			form = ShedCreationForm(request.user)
-		context = {}
-		context.update(csrf(request))
-		context['form'] = form
-		return render_to_response('shed_creation.html', context)
+                context = {}
+                context['name'] = form.cleaned_data['name']
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response('shed_registration_success.html', context)
+        else:
+            form = ShedCreationForm(request.user)
+        context = {}
+        context.update(csrf(request))
+        context['form'] = form
+        context.update(content.genBaseLoggedIn(request))
+        return render_to_response('shed_creation.html', context)
 
 def about_us(request):
-    return render_to_response('about_us.html')
+    return render_to_response('about_us.html', content.genSuper())
 
-#DO NOT TOUCH - team leader
+#DO NOT TOUCH - team leader (<-- lol)
 def spooked(request):
     return render_to_response('spoopy.html')
 

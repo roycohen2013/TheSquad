@@ -6,25 +6,20 @@ import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
 import utilities.notificationUtilities as notifUtil
 
-defaults = {
-	'heading' : "ToolCloud",
-	'name' : "Anonymous"
-}
-
 """
-	Build content dict using other utilities
+	Build content dict using other utilities (deprecated - TO BE DELETED)
 """
-def genContent(request):
-	if request.user.is_anonymous():#no special changes of content
-		return defaults
-	custom = defaults.copy()
-	name = request.user.username
-	replace(custom, 'name', name)
-	custom['first_name']=request.user.first_name
-	custom['last_name']=request.user.last_name
-	profile = profileUtil.getProfileFromUser(request.user)
-	custom['address']=profileUtil.getAddress(profile)
-	return custom
+#def genContent(request):
+#	if request.user.is_anonymous():#no special changes of content
+#		return defaults
+#	custom = defaults.copy()
+#	name = request.user.username
+#	replace(custom, 'name', name)
+#	custom['first_name']=request.user.first_name
+#	custom['last_name']=request.user.last_name
+#	profile = profileUtil.getProfileFromUser(request.user)
+#	custom['address']=profileUtil.getAddress(profile)
+#	return custom
 """
 	Header - String
 	Footer - String
@@ -55,7 +50,7 @@ def genBaseLoggedIn(request):
 	#get top sheds
 	results['topSheds'] = None
 	#get notifications
-	results['notifications'] = None
+	results.update(getNotifications(request))
 	return results
 
 """
@@ -69,8 +64,7 @@ def genBaseLoggedIn(request):
 			each as (name, time left, time borrowed, timestamp)
 """
 def genUserHome(request):
-	results = dict()
-	results.update(genBaseLoggedIn(request))
+	results = genBaseLoggedIn(request)
 	profile = profileUtil.getProfileFromUser(request.user)
 	tools = toolUtil.getAllToolsOwnedBy(profile)
 	sheds = shedUtil.getAllShedsJoinedBy(profile)
@@ -78,7 +72,7 @@ def genUserHome(request):
 	borrowedTools = toolUtil.getAllToolsBorrowedBy(profile)
 	#borrowedTools = None
 	#print(profile)
-	results['notif'] = notifUtil.getAllActiveProfileNotifs(profile)
+	#results['notif'] = notifUtil.getAllActiveProfileNotifs(profile)
 	sharezone = profileUtil.getSharezone(profile)
 	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
 	#not done
@@ -89,8 +83,26 @@ def genUserHome(request):
 	results['sharezoneMembers'] = sharezoneMembers
 	return results
 
-def getDefaults():
-	return defaults
+def genLogin(request):
+	return genSuper()
+
+def genViewNotifications(request):
+	#content = genBaseLoggedIn(request)
+	#content.update(getNotifications(request))
+	#return content
+	return getNotifications(request)
+
+#BEGIN UTILITY FUNCTIONS
+
+def getNotifications(request):#returns a dict with the userProfile and notifs values filled
+	if request.user.is_anonymous():#anon no notis
+		return None
+	userProfile = profileUtil.getProfileFromUser(request.user)
+	notifs = notifUtil.getAllActiveProfileNotifs(userProfile)
+	context = {}
+	context['userProfile'] = userProfile
+	context['notifs'] = notifs
+	return context
 
 def replace(dictionary, key, newValue):
 	for k in dictionary.keys():

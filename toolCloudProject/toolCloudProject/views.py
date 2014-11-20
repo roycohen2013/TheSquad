@@ -16,6 +16,7 @@ from utilities import profileUtilities as profileUtil
 def login(request):
 	c = {}
 	c.update(csrf(request))
+	c.update(content.genSuper())
 	return render_to_response('login.html',c)
 
 
@@ -36,8 +37,8 @@ def loggedin(request):
 
 
 def invalid_login(request):
-	return render_to_response('invalid_login.html')
+	return render_to_response('invalid_login.html', content.genSuper())
 
 def logout(request):
 	auth_logout(request)
-	return render_to_response('logout.html')
+	return render_to_response('logout.html', content.genSuper())
