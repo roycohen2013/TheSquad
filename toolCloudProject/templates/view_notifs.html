@@ -4,9 +4,16 @@
 <h1>Your currently pending notifications:</h1>
 {% if notifs %}
   {% for notif in notifs %}
-    <li>{{notif.content}}</li>
-    <a class="btn" href = "accounts/notifications/{{notif.id}}/request_accept">Accept</a>
-    <a class="btn" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</a>
+    <div class="notification info">
+        <div class="notification-description">
+            <p>
+                <em class="fa fa-info fa-fw fa-2x"></em>
+                {{ notif.content }}
+                <a class="btn" href = "accounts/notifications/{{notif.id}}/request_accept">Accept</a>
+                <a class="btn" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</a>
+            </p>
+        </div>
+    </div>
   {% endfor %}
 {% else %}
   <i>You have no pending notifications.</i>

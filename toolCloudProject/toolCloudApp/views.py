@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 import django.db
-from toolCloudApp.models import Profile, User, Notification, Action
+from toolCloudApp.models import Profile, User, Notification, Action, Shed
 from toolCloudApp.mailSend import sendMail
 import string
 import random
