@@ -1,3 +1,7 @@
+html {
+  font-family: "Open Sans";
+}
+
 #nav {
 	background-color: rgba(0,0,0,.4);
 }
@@ -80,7 +84,7 @@
   display: block;
   height: 100%;
   width: 15%;
-  background-color: #9ED29E;
+  background-color: #624A94;
   
   transition-delay: 0s;
   transition-duration: 0.4s;
@@ -118,95 +122,6 @@
 #userInfo {
 	margin-top: 10%;
 	height: 35%;
-}
-
-.wrapper { 
-  margin: 1em auto;
-  width: 40%
-}
-
-.notification {
-  position: relative;
-  margin: 1em auto
-}
-
-.notification-description:after {
-  content: '\f00d';
-  font: 20px FontAwesome;
-  position: absolute;
-  color: #ecf0f1;
-  top: 33%;
-  right: 3%;
-  cursor: pointer
-}
-
-  .notification .notification-description .fa {
-    color:#fff;
-    margin-right: .5em
-  }
-  .notification .notification-description p {
-    margin:0;
-    vertical-align: middle;
-    font: 300 16px/2.3 "Open Sans";
-    color:#ecf0f1;
-    padding: 10px 20px
-  }
-
-  .notification .notification-description p strong {
-    font-size: 20px;
-    margin-right: 20px;
-    text-transform: uppercase;
-    display: inline-block;
-    width: 100px
-  }
-.notification.success .notification-description{
-  position: relative;
-  background: #27ae60;
-  background: linear-gradient(
-    25deg
-    , rgba(39, 174, 96, .8) 0%
-    , rgba(46, 204, 113, .8) 15%
-    , rgba(39, 174, 96, 1) 15%
-    , #27ae60 100% 
-  )
-}
-
-.notification.error .notification-description{
-   background: #c0392b;
-    background: linear-gradient(
-    25deg
-    , rgba(192, 57, 43, .8) 0%
-    , rgba(231, 76, 60, .8) 15%
-    , rgba(231, 76, 60, 1) 15%
-    , #c0392b 100% 
-  )
-}
-
-.notification.warning .notification-description {
-  background:#d35400;
-  background: linear-gradient(
-    25deg
-    , rgba(211, 84, 0, .8) 0%
-    , rgba(230, 126, 34, .8) 15%
-    , rgba(230, 126, 34, 1) 15%
-    , #d35400 100% 
-  )
-}
-.notification.info .notification-description{
-   background:#3498db;
-  background: linear-gradient(
-    25deg
-    , rgba(41, 128, 185, .8) 0%
-    , rgba(52, 152, 219, .8) 15%
-    , rgba(52, 152, 219, 1) 15%
-    , #3498db 100%
-  )
-}
-
-@media (max-width: 90em) {
-  .wrapper {
-    width: 90%
-  }
 }
 
 #notiBell:before, #notiBell:after
