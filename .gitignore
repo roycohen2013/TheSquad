@@ -2,11 +2,5 @@ toolCloudProject/static/staticRoot/
 *.pyc
 *.sqlite3
 *.DS_Store
-
-*.pyc
-*.pyc
-*.pyc
-*.pyc
-*.pyc
-*.pyc
 toolCloudProject/newSlate.py
+
