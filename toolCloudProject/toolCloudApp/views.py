@@ -60,6 +60,7 @@ def user_register(request):
         context = {}
         context.update(csrf(request))
         context['form'] = form
+        context.update(content.genSuper())
         #Pass the context to a template
         return render_to_response('register.html', context)
     else:
