@@ -47,7 +47,6 @@ html {
   max-width: 80%;
   text-align: left;
   height: 78%;
-  background-color: rgba(143,143,143,.4);
 }
 
 #greeting {
@@ -271,4 +270,8 @@ form input {
 
 .half_height {
   height: 50%;
+}
+
+.grey_back {
+  background-color: rgba(143,143,143,.4);
 }
