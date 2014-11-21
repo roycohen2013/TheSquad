@@ -87,10 +87,9 @@ def genLogin(request):
 	return genSuper()
 
 def genViewNotifications(request):
-	#content = genBaseLoggedIn(request)
-	#content.update(getNotifications(request))
-	#return content
-	return getNotifications(request)
+	content = genBaseLoggedIn(request)
+	content.update(getNotifications(request))
+	return content
 
 #BEGIN UTILITY FUNCTIONS
 
@@ -100,7 +99,7 @@ def getNotifications(request):#returns a dict with the userProfile and notifs va
 	userProfile = profileUtil.getProfileFromUser(request.user)
 	notifs = notifUtil.getAllActiveProfileNotifs(userProfile)
 	context = {}
-	context['userProfile'] = userProfile
+	context['currentUserProfile'] = userProfile
 	context['notifs'] = notifs
 	return context
 
