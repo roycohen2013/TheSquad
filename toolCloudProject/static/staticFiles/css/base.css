@@ -123,14 +123,50 @@ html {
 
 .Message {
   display: table;
-  position: relative;
+  position: fixed;
+  top: 1em;
+  right: 1em;
   margin: 40px auto 0;
   width: 500px;
   background-color: #0074D9;
   color: #fff;
-  -webkit-transition: all 0.2s ease;
-          transition: all 0.2s ease;
+  -moz-transition: all 1.4s ease;
+  -webkit-transition: all 1.4s ease;
+  -o-transition: all 1.4s ease;
+  -ms-transition: all 1.4s ease;
+  transition: all 1.4s ease;
+  -webkit-animation: fadein 1.4s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1.4s; /* Firefox < 16 */
+  -ms-animation: fadein 1.4s; /* Internet Explorer */
+  -o-animation: fadein 1.4s; /* Opera < 12.1 */
+  animation: fadein 1.4s;
 }
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+
 .Message.is-hidden {
   opacity: 0;
   height: 0;

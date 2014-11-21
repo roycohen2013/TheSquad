@@ -178,6 +178,7 @@ class Notification(models.Model):
     options = models.CharField(max_length=280,null=True)    #CSV of question options
 
     #if type == info: content is string of text
+    #elif type == success: like info, but styled as a good thing
     #elif type == alert: same as info, but doesnt auto-dismiss and is red
     #elif type == request: content is
         #-multiple choice - question, then choices in CSV form

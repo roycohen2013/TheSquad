@@ -51,6 +51,16 @@
                   </div>
                   <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
                 </div>
+            {% elif noti.notificationType == "success" %}<!-- success type -->
+                <div class="Message Message--green" id="js-timer">
+                  <div class="Message-icon">
+                    <i class="fa fa-check"></i>
+                  </div>
+                  <div class="Message-body">
+                    <p>{{ noti.content }}</p>
+                  </div>
+                  <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+                </div>
             {% elif noti.notificationType == "alert" %}<!-- alert type -->
                 <div class="Message Message--red">
                   <div class="Message-icon">

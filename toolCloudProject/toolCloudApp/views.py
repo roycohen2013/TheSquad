@@ -25,14 +25,10 @@ import utilities.actionUtilities as actionUtil
 import utilities.content as content
 
 def home(request):
-    file = open("homePageText.txt","r")
-    strings = file.readlines()
-    context = {}
-    context['strings'] = strings
-    context.update(content.genSuper())
     if request.user.is_anonymous():
-        return render(request, 'loggedOutBase.html', context)
-    return HttpResponseRedirect('/accounts/loggedin')
+        context = content.genSuper()
+        return render(request, 'loggedOutBase.html', content.addSubTitleStrings(context))
+    return render_to_response('userHome.html', content.genUserHome(request))
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm

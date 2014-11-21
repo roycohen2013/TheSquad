@@ -33,15 +33,18 @@ def auth_view(request):
 
 
 def loggedin(request):
-	return render_to_response('userHome.html', content.genUserHome(request))
+	context = content.genUserHome(request)
+	return render_to_response('userHome.html', content.addGoodLoginNoti(context))
 
 
 def invalid_login(request):
 	c = {}
 	c.update(csrf(request))
-	c.update(content.genFailedLogin())
-	return render_to_response('login.html', c)
+	c.update(content.genSuper())
+	return render_to_response('login.html', content.addFailedLoginNoti(c))
 
 def logout(request):
 	auth_logout(request)
-	return render_to_response('logout.html', content.genSuper())
+	context = content.genSuper()
+	context = content.addSubTitleStrings(context)
+	return render_to_response('loggedOutBase.html', content.addGoodLogoutNoti(context))

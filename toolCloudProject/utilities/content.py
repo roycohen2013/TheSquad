@@ -31,15 +31,49 @@ def genSuper():
 			'footer'  : "made with <3 from the squad",
 	'copyrightYear'	  : "2014",
 			'company' : "Investiny Corp."}
+
 """
-	returns the super plus a failed login notification
+	adds the clever phrases for below the loggedOut header
 """
-def genFailedLogin():
-	content = dict()
-	content.update(genSuper())
-	content['desktopNotifs'] = [notifUtil.createTempInfoNotif("Login failed. D:"
-					+ " Please check your username and password and try again.", "alert")]
-	return content
+def addSubTitleStrings(contentDict):
+    file = open("homePageText.txt","r")
+    strings = file.readlines()
+    contentDict['strings'] = strings
+    return contentDict
+
+"""
+	adds a failed login notification to the dict and returns it
+"""
+def addFailedLoginNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Login failed. D:"
+					+ " Please check your username and password and try again.", "alert")
+	return addNoti(contentDict, newNoti)
+
+"""
+	adds a sucessful login notification to the dict and returns it
+"""
+def addGoodLoginNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Login sucessful! :D", "success")
+	return addNoti(contentDict, newNoti)
+
+"""
+	adds a sucessful logout notification to the dict and returns it
+"""
+def addGoodLogoutNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Logout sucessful. Have a good day. :)", "success")
+	return addNoti(contentDict, newNoti)
+
+"""
+	adds the passed notification to the passed dict, abiding by django content dict standard
+"""
+def addNoti(contentDict, notification):
+	if 'desktopNotifs' in contentDict:#exists, needs to be added to list
+		contentDict['desktopNotifs'] += notification
+		return contentDict
+	#does not exist yet, so we need to add it in an array
+	contentDict['desktopNotifs'] = [notification]
+	return contentDict
+
 """
 	username - String
 	first_name - String
