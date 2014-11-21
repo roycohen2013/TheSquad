@@ -93,7 +93,7 @@ def ProcessActions():
                         response = "You have been swiftly rejected from borrowing " + \
                                         actionInstance.tool.name + " from " + actionInstance.tool.shed
 
-                        notifUtil.createInfoNotif(actionInstance,actionInstance.requester,response):
+                        notifUtil.createInfoNotif(actionInstance,actionInstance.requester,response)
 
                         #proceed to next state
                         actionInstance.currrentState = "idle"
@@ -102,20 +102,27 @@ def ProcessActions():
 
             elif actionInstance.currrentState == "borrowed":
                 #check if borrowed is past timestamp
-                    #Notify {requester} that they are overdraft and they should return [tool]
-                    #Set canBorrow state to false
+                #need to update tool model with a new field toolBorrowed
+                #need to update tool utils with toolIsOverdraft()
+                if toolUtil.toolIsOverdraft(actionInstance.tool):
+                    #notify requester that they are overdraft and they should return [tool]
+                    message = "Uh oh...your " + actionInstance.tool.name + " is overdraft!"
+                    notifUtil.createInfoNotif(actionInstance, actionInstance.requester, message)
+                    #set canBorrow state to false
+                    actionInstance.requester.canBorrow = False
                     #move to overdraft state
+                    actionInstance.currentState = "overdraft"
+                    actionInstance.save()
 
-                #if (tool.isAvailable() == true):   #means tool has been returned
-                    #move state to returned 
+                # if the tool has already been returned
+                if (actionInstance.tool.isAvailable() == True):
+                    actionInstance.currentState = "returned"
+                    actionInstance.save()
 
-                #proceed to next state
-                #actionInstance.currrentState = "borrowed"
-                #actionInstance.save()
                 #ProcessActions()       #re-invoke entire state machine
 
 
-            elif actionInstance.currrentState == "overDraft":
+            elif actionInstance.currrentState == "overdraft":
                 #if (tool.isAvailable() == true):   #means tool has been returned
                     #calculate how many days the tool is overdue and reduce user reputation until then
                     #set user.canBorrow state to true.
