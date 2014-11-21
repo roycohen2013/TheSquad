@@ -37,7 +37,34 @@
 </head>
 
 <body class="full_height full_width">
-
+    {% if desktopNotifs %}
+        {% for noti in notifs %}
+            {% if noti.type == "info" %}
+                <div class="Message" id="js-timer">
+                  <div class="Message-icon">
+                    <i class="fa fa-bell-o"></i>
+                  </div>
+                  <div class="Message-body">
+                    <p>{{ noti.content }}</p>
+                  </div>
+                  <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+                </div>
+            {% else %}<!-- request type -->
+                <div class="Message Message--orange">
+                  <div class="Message-icon">
+                    <i class="fa fa-exclamation"></i>
+                  </div>
+                  <div class="Message-body">
+                    <p>{{ noti.content }}</p>
+                    <button class="Message-button btn" href = "accounts/notifications/{{notif.id}}/request_accept">Accept</button>
+                    <button class="Message-button btn" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</button>
+                  </div>
+                  <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+    {% endif %}
     {% block main %}{% endblock %}
 
     <!-- jQuery Version 1.11.0 -->
@@ -45,6 +72,9 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    <!-- Squad Custom JavaScript -->
+    <script src="{% static 'js/custom.js' %}"></script>
 
 </body>
 
