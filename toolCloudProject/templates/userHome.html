@@ -1,5 +1,6 @@
 {% extends "loggedInBase.html" %}
 {% block content %}
+<div class="full_width half_height grey_back">
 	<div id="toolSection">
 		<h1>Tools</h1>
 		{% if tools %}
@@ -20,6 +21,8 @@
 			<p>You are not a part of any sheds!</p>
 		{% endif %}
 	</div>
+</div>
+<div class="full_width half_height grey_back">
 	<div id="communitySection">
 		<h1>Community</h1>
 		{% if sharezone %}
@@ -45,4 +48,5 @@
 			<p>You have no tools borrowed.</p>
 		{% endif %}
 	</div>
+</div>
 {% endblock %}

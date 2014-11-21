@@ -2,43 +2,21 @@
 {% load staticfiles %}
 {% block main %}
 <!-- Navigation -->
-<nav id="nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-            data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">{{ heading }}
-            <img id="icon" src="{% static 'img/shed.png' %}"/></a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a id="greeting">Hello Anonymous!</a>
-                </li>
-                <li>
-                    <a id="registerBtn" href="/accounts/register">Register</a>
-                </li>
-                <li>
-                    <a id="loginBtn" href="/accounts/login">Login</a>
-                </li>
-                <li>
-                    <a id="spookBtn" href="/aspookedeh">Get Spooked!</a>
-                </li>
-                <li>
-                    <a id="aboutBtn" href="/about_us">About Us</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+<nav id="nav">
+    <div id="links">
+        <ul>
+            <li><a href="/">Home Page<img id="navIcon" src="{% static 'img/shed.png' %}"/></a></li>
+        </ul>
+        <ul>
+            <li><a href="/accounts/register">Register</a></li>
+        </ul>
+        <ul>
+            <li><a href="/accounts/login">login</a></li>
+        </ul>
+        <ul>
+            <li><a href="/about_us/">About Us</a></li>
+        </ul>
     </div>
-    <!-- /.container -->
 </nav>
 
 <!-- Page Content -->

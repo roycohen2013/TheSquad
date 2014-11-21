@@ -1,0 +1,33 @@
+{% extends "loggedInBase.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<div>
+{% if noti %}
+	{% for noti in notif %} 			NOT USED 				DO NOT USE THIS FILE!!!! Use view_notifs.html
+		{% if noti.options %}						TO DO: DELETE THIS!!!
+			<div class="notification info">
+		        <div class="notification-description">
+		            <p>
+		                <em class="fa fa-info fa-fw fa-2x"></em>
+		                {{ noti.content }}
+		            </p>
+		        </div>
+		    </div>
+		{% else }
+			<div class="notification warning">
+		        <div class="notification-description">
+		            <p>
+		                <em class="fa fa-warning fa-fw fa-2x"></em>
+		                {{ noti.content }}
+		            </p>
+		        </div>
+		    </div>
+	    {% endif %}
+	{% endfor %}
+{% else %}
+	<p>You have no notifications!</p>
+{% endif %}
+</div>
+{% endblock %}

@@ -25,8 +25,7 @@ for x in range(len(names)):
 	userName = firstName+lastName
 	x = str(x)
 	newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
-						 phoneNumber = '0000000000', streetAddress = 'address', sharezone = '14623', \
-						 city = 'Buttchester', state = 'NY', \
+						 phoneNumber = '0000000000', address = 'address', sharezone = '14623', \
 						 status = 'status')
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
