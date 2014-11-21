@@ -1,5 +1,8 @@
 html {
   font-family: "Open Sans";
+  height: 100%;
+  width: 85%;
+  margin-left: 15%;
 }
 
 #nav {
@@ -15,12 +18,12 @@ html {
 
 #content #heading {
   font-size: 4.6vw;
-  padding-top: 8vw;
+  height: 10%;
 }
 
 #iconMain {
-  height: 5%;
-  width: 5%;
+  height: 50px;
+  width: 50px;
 }
 
 #navIcon {
@@ -36,22 +39,15 @@ html {
 
 #content {
   width: 85%;
-  margin-left: 15%;
-  padding-right: 15%;
-  padding-left: 0;
 }
 
 #contentBlock {
-  width: 80%;/*contradiction TODO fix this*/
-  margin-left: 20%;
-  margin-right: 20%;
-  max-width: 60%;
-  text-align: left;
-}
-
-#contentBlock input {
-  min-width: 50%;
+  margin-left: 10%;
+  margin-right: 10%;
   max-width: 80%;
+  text-align: left;
+  height: 78%;
+  background-color: rgba(143,143,143,.4);
 }
 
 #greeting {
@@ -219,8 +215,60 @@ html {
   border-radius: 5px
 }
 
+.round_5 {
+  --webkit-border-radius: 5px;
+  --moz-border-radius: 5px;
+  border-radius: 5px
+}
+
 @media (max-width: 90em) {
   .wrapper {
     width: 90%
   }
+}
+
+form div {
+  text-align: left;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+form label {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+form input {
+  float: right;
+  width: 50%;
+  --webkit-border-radius: 5px;
+  --moz-border-radius: 5px;
+  border-radius: 5px
+}
+
+#submit {
+  width: 25%;
+  margin-left: 62.5%;
+  margin-right: 12.5%;
+}
+
+.helptext {
+  font-weight: lighter;
+}
+
+.errorlist {
+  font-weight: bold;
+  color: rgba(187,54,27,1);
+}
+
+.full_width {
+  width: 100%;
+}
+
+.full_height {
+  height: 100%;
+}
+
+.half_height {
+  height: 50%;
 }

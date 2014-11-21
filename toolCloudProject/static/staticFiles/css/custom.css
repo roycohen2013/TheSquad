@@ -59,3 +59,35 @@
   font-family: "FontAwesome";
   text-align: center;
 }
+
+#toolSection {
+  padding-left: 2%;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+#shedSection {
+  padding-left: 2%;
+  border-bottom: 1px solid #000;
+  width: 50%;
+  height: 100%;
+  float: right;
+}
+
+#communitySection {
+  padding-left: 2%;
+  border-right: 1px solid #000;
+  width: 50%;
+  height: 100%;
+  float: left;
+}
+
+#borrowedSection {
+  padding-left: 2%;
+  width: 50%;
+  height: 100%;
+  float: right;
+}

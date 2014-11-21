@@ -6,6 +6,6 @@
 <form action="/accounts/register/" method="POST"> {% csrf_token %}
 <h2>Please enter your details . . .</h2>
     {{ form.as_p }}
-<input type="submit" value="Sign Up">
+<input id="submit" class="btn-default" type="submit" value="Sign Up">
 </form>
 {% endblock %}
