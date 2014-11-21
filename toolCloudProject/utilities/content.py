@@ -74,7 +74,7 @@ def addGoodLogoutNoti(contentDict):
 	adds the passed notification to the passed dict, abiding by django content dict standard
 """
 def addNoti(contentDict, notification):
-	if 'desktopNotifs' in contentDict:#exists, needs to be added to list
+	if 'desktopNotifs' in contentDict and contentDict['desktopNotifs'] is not None:#exists, needs to be added to list
 		contentDict['desktopNotifs'] += notification
 		return contentDict
 	#does not exist yet, so we need to add it in an array
@@ -132,6 +132,24 @@ def genUserHome(request):
 	results['sharezone'] = sharezone
 	results['sharezoneMembers'] = sharezoneMembers
 	return results
+
+def genJustRegistered(account, profile):
+	results = genSuper()
+	results['username'] = account.username
+	results['first_name'] = account.first_name
+	results['last_name'] = account.last_name
+	results['picture'] = None
+	results['topSheds'] = None
+	sheds = shedUtil.getAllShedsJoinedBy(profile)
+	sharezone = profileUtil.getSharezone(profile)
+	sharezoneMembers = profileUtil.getAllProfilesInSharezone(sharezone)
+	#not done
+	results['tools'] = None
+	results['sheds'] = sheds
+	results['borrowed'] = None
+	results['sharezone'] = sharezone
+	results['sharezoneMembers'] = sharezoneMembers
+	return addGoodRegisterNoti(results)
 
 def genLogin(request):
 	return genSuper()

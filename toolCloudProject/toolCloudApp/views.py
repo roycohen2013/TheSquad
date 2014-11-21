@@ -53,13 +53,13 @@ def user_register(request):
                 newShedObject.save()
                 context = {}
                 context['name'] = form.cleaned_data['username']
-                return render_to_response('register_success.html', context)
+                context.update(content.genJustRegistered(userAccount, userProfile))
+                return render_to_response('userHome.html', context)
         else:
             form = UserRegistrationForm()
         context = {}
         context.update(csrf(request))
         context['form'] = form
-        context.update(content.genSuper())
         #Pass the context to a template
         return render_to_response('register.html', context)
     else:
