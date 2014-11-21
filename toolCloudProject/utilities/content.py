@@ -32,6 +32,15 @@ def genSuper():
 	'copyrightYear'	  : "2014",
 			'company' : "Investiny Corp."}
 """
+	returns the super plus a failed login notification
+"""
+def genFailedLogin():
+	content = dict()
+	content.update(genSuper())
+	content['desktopNotifs'] = [notifUtil.createTempInfoNotif("Login failed. D:"
+					+ " Please check your username and password and try again.", "alert")]
+	return content
+"""
 	username - String
 	first_name - String
 	last_name - String

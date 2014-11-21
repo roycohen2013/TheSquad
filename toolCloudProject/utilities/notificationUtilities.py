@@ -11,6 +11,18 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
 
+"""
+    Create a new object of the "info" type with no recipientProfile or source
+
+    Only used for non-saved 'throw-away' notifications like failed login
+"""
+def createTempInfoNotif(content, typ):
+    class Object(object):
+        pass
+    a = Object()
+    a.content = content
+    a.notificationType = typ
+    return a
 
 """
     Create a new Notification of the "info" type.

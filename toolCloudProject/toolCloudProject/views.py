@@ -37,7 +37,10 @@ def loggedin(request):
 
 
 def invalid_login(request):
-	return render_to_response('invalid_login.html', content.genSuper())
+	c = {}
+	c.update(csrf(request))
+	c.update(content.genFailedLogin())
+	return render_to_response('login.html', c)
 
 def logout(request):
 	auth_logout(request)
