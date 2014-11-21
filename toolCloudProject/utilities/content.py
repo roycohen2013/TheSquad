@@ -57,6 +57,13 @@ def addGoodLoginNoti(contentDict):
 	return addNoti(contentDict, newNoti)
 
 """
+	adds a sucessful registration notification to the dict and returns it
+"""
+def addGoodRegisterNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Registration sucessful! You are now logged in.", "success")
+	return addNoti(contentDict, newNoti)
+
+"""
 	adds a sucessful logout notification to the dict and returns it
 """
 def addGoodLogoutNoti(contentDict):
