@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 import django.db
-from toolCloudApp.models import Profile, User, Notification, Action
+from toolCloudApp.models import Profile, Tool, Shed, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
 import string
 import random
@@ -52,7 +52,7 @@ def user_register(request):
                 #sendMail(form.cleaned_data['email'],"Welcome to ToolCloud! ", "Hi " + form.cleaned_data['first_name'] + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
                 shedName = form.cleaned_data['username'] + "'s Shed"
                 userProfile = profileUtil.getProfileFromUser(userAccount)
-                newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['share_zone'],\
+                newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['zip_code'],\
                     status='status')
                 newShedObject.save()
                 context = {}

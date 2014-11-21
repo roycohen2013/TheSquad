@@ -17,9 +17,11 @@ class Profile(models.Model):
     user = models.OneToOneField(User, related_name='myProfile')
 
     timeCreated = models.DateTimeField(auto_now_add=True)
-    phoneNumber = models.CharField(max_length=50)
-    address = models.CharField(max_length=100)
+    phoneNumber = models.CharField(max_length=12)
+    streetAddress = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
     sharezone = models.CharField(max_length=5) #five digit zip code
+    state = models.CharField(max_length=2)
     status = models.CharField(max_length=50)
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     reputation = models.IntegerField(default=50) #0..100 rating
