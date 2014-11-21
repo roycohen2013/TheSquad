@@ -15,9 +15,10 @@ from toolCloudApp.models import Profile, Tool, Shed
 	Create a new Profile and save it to the database.
 """
 def createNewProfile(firstName,lastName,username,email,password,phoneNumber, \
-										address,sharezone,status,preferences_privacy):
+										address,sharezone,city,state,status,preferences_privacy):
 	newProfile = Profile(user = User.objects.create_user(username,email,password), \
-						phoneNumber = phoneNumber, address = address, sharezone = sharezone, \
+						phoneNumber = phoneNumber, streetAddress = address, sharezone = sharezone, \
+						city = city, state = state, \
 						status = status, preferences_Privacy = preferences_privacy)
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
@@ -137,20 +138,63 @@ def updatePhoneNumber(profileObj, newNumber):
 
 
 """
-	Get the address of a Profile object.
+	Get the street address of a Profile object.
 """
 def getAddress(profileObj):
-	return profileObj.address
+	return profileObj.streetAddress
 
 
 """
-	Update the address of a Profile object.
+	Get the city of a Profile object
 """
-def updateAddress(profileObj, newAddress):
-	profileObj.address = newAddress
+def getCity(profileObj):
+	return profileObj.city
+
+
+"""
+	Get the state of a Profile object
+"""
+def getState(profileObj):
+	return profileObj.state
+
+
+"""
+	Update the entire address of a Profile object(street, city, state, sharezone)
+"""
+def updateAddress(profileObj, newStreetAddress, newCity, newState, newSharezone):
+	profileObj = updateStreetAddress(profileObj, newStreetAddress)
+	profileObj = updateCity(profileObj, newCity)
+	profileObj = updateState(profileObj, newState)
+	profileObj = updateSharezone(profileObj, newSharezone)
 	profileObj.save()
 	return profileObj
 
+
+"""
+	Update the  street address of a Profile object.
+"""
+def updateStreetAddress(profileObj, newAddress):
+	profileObj.streetAddress = newAddress
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Update the city of a Profile object
+"""
+def updateCity(profileObj, newCity):
+	profileObj.city = newCity
+	profileObj.save()
+	return profileObj
+
+
+"""
+	Update the state of a Profile object
+"""
+def updateState(profileObj, newState):
+	profileObj.state = newState
+	profileObj.save()
+	return profileObj
 
 """
 	Get the reputation of a Profile object.
