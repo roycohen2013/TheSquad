@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
-
+handler404 = 'toolCloudApp.views.dne'
 urlpatterns = patterns('',
     url(r'^$','toolCloudApp.views.home', name="home"),
     url(r'^admin/', include(admin.site.urls)),
@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 	url(r'^accounts/loggedin/$', 'toolCloudProject.views.loggedin'),
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
-	url(r'^accounts/profile/$', 'toolCloudApp.views.view_current_profile'), #current user profile, redirect to URL above
+	url(r'^accounts/my_account/$', 'toolCloudApp.views.view_current_profile'),
 
 	# Notification urls
 	url(r'^accounts/notifications/$', 'toolCloudApp.views.view_notifications'),
@@ -30,6 +30,7 @@ urlpatterns = patterns('',
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
+	url(r'^tools/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_tool', name="toolEdit"),
 	url(r'^tools/request_sent/$', 'toolCloudApp.views.request_sent'),
 
 	# Shed urls

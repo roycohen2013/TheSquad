@@ -21,7 +21,8 @@ class Profile(models.Model):
     streetAddress = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
     sharezone = models.CharField(max_length=5) #five digit zip code
-    state = models.CharField(max_length=2)
+    state = models.CharField(max_length=2) #2 letter state abbreviation
+    stateName = models.CharField(max_length=20) #full state name
     status = models.CharField(max_length=50)
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     reputation = models.IntegerField(default=50) #0..100 rating
@@ -129,16 +130,18 @@ class Tool(models.Model):
     tags = models.CharField(max_length=200)#categories that apply to this tool object
     location = models.CharField(max_length=75) #current location of the tool
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
-    condition = models.IntegerField(default=0) #0-10 scale
+    condition = models.IntegerField(default=3) #1-5 scale
+    conditionReadable = models.CharField(default='Average', max_length=50)
     isAvailable = models.BooleanField()     # also used for telling if tool borrowed
     borrowedCount = models.IntegerField(default=0) # times Tool borrowed
     requestedCount = models.IntegerField(default=0) # times Tool requested
 
-    defaultMaxBorrowTime = models.IntegerField(default=30)#time measured in days only
+    borrowedTime = models.DateTimeField(null=True) # time tool was approved for borrowing
+    maxBorrowTime = models.IntegerField(default=30)#time measured in days only
     #applies to tools if free to borrow is enabled 
     #0 means unlimited time
 
-    defaultFreeToBorrow = models.IntegerField(default=0)#preferences
+    freeToBorrow = models.IntegerField(default=0)#preferences
     #0 means borrow request accepted automaticly
     #1 means aproval of borrow request required
 

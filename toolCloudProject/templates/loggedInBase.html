@@ -12,18 +12,18 @@
 				<li><a href="/">Home Page<img id="navIcon" src="{% static 'img/shed.png' %}"/></a></li>
 			</ul>
             <ul>
-                <li><a href="/accounts/profile">my profile</a></li>
+                <li><a href="/accounts/my_account">my account</a></li>
             </ul>
 			<ul>
                 <li><a href="/tools/submit">add a tool</a></li>
             </ul>
             <ul>
-                <li><a href="/sheds/">toolsheds</a></li>
+                <li><a href="/communities/{{ community }}/">community</a></li>
             </ul>
         </div>
         <div id="userInfo">
             <ul>
-                <li><a>{{ username }}</a></li>
+                <!--<li><a>{{ username }}</a></li>-->
                 <li>
                 {% if notif %}
                     <a href="/accounts/notifications"><div id="notiBell"></div></a>

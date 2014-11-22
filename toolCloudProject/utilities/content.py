@@ -93,6 +93,7 @@ def genBaseLoggedIn(request):
 	results = dict()
 	results.update(genSuper())
 	results['username'] = request.user.username
+	results['community'] = profileUtil.getSharezone(profileUtil.getProfileFromUser(request.user))
 	results['first_name'] = request.user.first_name
 	results['last_name'] = request.user.last_name
 	#get pict location

@@ -5,6 +5,7 @@
 <h1>{{name}}</h1>
 <h2>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h2>
 <p>{{description}}</p>
+<h2>Condition: {{condition}}</h2>
 <h2>Tags</h2>
 {% if tags %}
   <p>{{ tags }}</p>
@@ -12,8 +13,10 @@
   <i>The owner has not tagged this tool with anything.</i>
 {% endif %}
 
-{% if available and not ownedByUser %}
+{% if available and not ownedByUser and meetsMin %}
   <a class="btn" href="/tools/{{ tool.id }}/borrow">Borrow this tool</a>
+{% elif not meetsMin %}
+  <h2>Sorry, but you do not meet the minimum reputation set by the owner to borrow this tool.</h2>
 {% elif not ownedByUser %}
   <h2>Sorry, but this tool is currently not available to borrow.</h2>
   {% if borrower %}

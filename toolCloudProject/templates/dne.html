@@ -1,7 +1,7 @@
 {% extends "loggedInBase.html" %}
 
 {% block content %}
-{% if object is not None %}
+{% if object != None %}
   <h1>Sorry, that {{object}} was not found!</h1>
 {% else %}
   <h1>Sorry, that page was not found!</h1>

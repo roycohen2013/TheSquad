@@ -2,8 +2,9 @@
 
 {% block content %}
 <h1>Sharezone {{sharezone}}</h1>
+<ul>
 {% if sheds %}
-  <h2>Sheds in this community:</h2>
+  <h2>Sheds in this community</h2>
   {% for shed in sheds %}
     <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
   {% endfor %}
@@ -18,4 +19,5 @@
 {% else %}
   <i>There are currently no users in this community.</i>
 {% endif %}
+</ul>
 {% endblock %}

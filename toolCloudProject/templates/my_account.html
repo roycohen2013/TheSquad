@@ -1,0 +1,15 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+
+<h1>My Account</h1>
+<ul>
+  <li>Username: {{ userProfile.user.username }}</li>
+  <li>Name: {{ userProfile.user.first_name }} {{ userProfile.user.last_name }}</li>
+  <li>Email address: {{ userProfile.user.email }}</li>
+  <li>Phone Number: {{ userProfile.phoneNumber }}</li>
+  <li>Address: {{ streetAddress }}, {{ city }}, {{ state }}, {{ sharezone }}</li>
+  <li>Reputation: {{ reputation }}</li>
+  <li>Joined ToolCloud on: {{ timeStamp }}</li>
+</ul>
+<a class="btn" href="/">Edit account information</a>	<a class="btn" href="/">Change password</a>

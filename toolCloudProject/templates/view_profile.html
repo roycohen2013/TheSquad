@@ -33,19 +33,19 @@
   {% endif %}
   
   {% if userProfile.user == currentUser %}
-    <h2>Other users in your ShareZone</h2>
+    <h2>Sheds</h2>
   {% else %}
-    <h2>Other users in this user's ShareZone</h2>
+    <h2>Sheds</h2>
   {% endif %}
-  {% if profilesInSharezone %}
-    {% for profile in profilesInSharezone %}
-      <li><a href = "/accounts/profile/{{ profile.user.username }}">{{ profile.user.username }}</a></li>
+  {% if sheds %}
+    {% for shed in sheds %}
+      <li><a href = "/sheds/{{ shed.id }}">{{ shed.name }}</a></li>
     {% endfor %}
   {% else %}
     {% if userProfile.user == currentUser %}
-      <i>There are currently no other users in your ShareZone!</i>
+      <i>You don't currently belong to any sheds!!</i>
     {% else %}
-      <i>There are currently no other users in this user's ShareZone!</i>
+      <i>This user does not currently belong to any sheds!</i>
     {% endif %}
   {% endif %} 
 </ul>

@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 import django.db
 from toolCloudApp.models import Profile, Tool, Shed, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
+from datetime import datetime
 import string
 import random
 #import toolCloudApp.stateMachines.actionManager
@@ -102,56 +103,58 @@ def view_profile(request, username=None):
         #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
-        if request.method == 'POST':
-            if username is not None:
-                try:
-                    userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
-                except ObjectDoesNotExist:
-                    context = {}
-                    context['object'] = 'profile'
-                    context.update(content.genBaseLoggedIn(request))
-                    return render_to_response("dne.html", context)
-            else:
-                userProfile = profileUtil.getProfileFromUser(request.user)
-            toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
-            toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
+        if username is not None:
+            try:
+                userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
+            except ObjectDoesNotExist:
+                context = {}
+                context['object'] = 'profile'
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response("dne.html", context)
         else:
-            if username is not None:
-                try:
-                    userProfile = profileUtil.getProfileFromUser(User.objects.get(username=username))
-                except ObjectDoesNotExist:
-                    context = {}
-                    context['object'] = 'profile'
-                    context.update(content.genBaseLoggedIn(request))
-                    return render_to_response("dne.html", context)
-            else:
-                userProfile = profileUtil.getProfileFromUser(request.user)
-            toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
-            toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-            profilesInSharezone = profileUtil.getAllOtherProfilesInSharezone(userProfile)
-            sheds = shedUtil.getAllShedsJoinedBy(userProfile)
+            userProfile = profileUtil.getProfileFromUser(request.user)
+        toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
+        toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
+        profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
+        sheds = shedUtil.getAllShedsJoinedBy(userProfile)
         context = {}
         context.update(csrf(request))
         context['currentUser'] = request.user
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
-        context['profilesInSharezone'] = profilesInSharezone
+        context['profilesInShareZone'] = profilesInShareZone
         context['sheds'] = sheds
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('view_profile.html', context)
 
 def view_current_profile(request):
-    """this view redirects accounts/profile to the profile of the current logged in user
+    """this view displays account information and allows users to edit their information
     """
     if request.user.is_anonymous():
         #tell user they need to be logged in to do that
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
-        username = request.user.username
-        print(' ')
-        return HttpResponseRedirect(reverse('profile', args=(username,))) #comma for args to make string not look like a list of characters
+        currentUser = request.user
+        profileObj = profileUtil.getProfileFromUser(currentUser)
+        reputation = profileUtil.getReputation(userProfile)
+        timeCreated = userProfile.timeCreated
+        streetAddress = profileUtil.getStreetAddress(userProfile)
+        city = profileUtil.getCity(userProfile)
+        state = profileUtil.getStateName(userProfile)
+        shareZone = profileUtil.getSharezone(userProfile)
+        timeStamp = datetime.fromtimestamp(timeCreated)
+        context = {}
+        context.update(csrf(request))
+        context['userProfile'] = profileObj 
+        context['timeStamp'] = timeStamp
+        context['streetAddress'] = streetAddress
+        context['reputation'] = reputation
+        context['city'] = city
+        context['state'] = state
+        context['sharezone'] = shareZone
+        context.update(content.genBaseLoggedIn(request))
+        return render_to_response('my_account.html', context)
 
 #a view that will allow us to see an individual tool
 def view_tool_page(request, id):
@@ -160,46 +163,28 @@ def view_tool_page(request, id):
         #add message flag that will display to user "you must be logged in to..."
         return HttpResponseRedirect('/accounts/login') #redirect to login page
     else:
-        if request.method == 'POST':
-            if id is not None:
-                try:
-                    toolObj = toolUtil.getToolFromID(id)
-                except ObjectDoesNotExist:
-                    context = {}
-                    context['object'] = 'tool'
-                    context.update(content.genBaseLoggedIn(request))
-                    return render_to_response("dne.html", context)
-            else:
-                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
-            owner = toolUtil.getToolOwner(toolObj)
-            name = toolUtil.getToolName(toolObj)
-            description = toolUtil.getToolDescription(toolObj)
-            tags = toolUtil.getToolTags(toolObj)
-            borrower = toolUtil.getToolBorrower(toolObj)
-            condition = toolUtil.getToolCondition(toolObj)
-            available = toolUtil.isToolAvailable(toolObj)
+        if id is not None:
+            try:
+                toolObj = toolUtil.getToolFromID(id)
+            except ObjectDoesNotExist:
+                context = {}
+                context['object'] = 'tool'
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response("dne.html", context)
         else:
-            if id is not None:
-                try:
-                    toolObj = toolUtil.getToolFromID(id)
-                except ObjectDoesNotExist:
-                    context = {}
-                    context['object'] = 'tool'
-                    context.update(content.genBaseLoggedIn(request))
-                    return render_to_response("dne.html", context)
-            else:
-                return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
-            owner = toolUtil.getToolOwner(toolObj)
-            name = toolUtil.getToolName(toolObj)
-            description = toolUtil.getToolDescription(toolObj)
-            tags = toolUtil.getToolTags(toolObj)
-            borrower = toolUtil.getToolBorrower(toolObj)
-            condition = toolUtil.getToolCondition(toolObj)
-            available = toolUtil.isToolAvailable(toolObj)
-            if profileUtil.getProfileFromUser(request.user) == owner:
-                ownedByUser = True
-            else:
-                ownedByUser = False
+            return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+        owner = toolUtil.getToolOwner(toolObj)
+        name = toolUtil.getToolName(toolObj)
+        description = toolUtil.getToolDescription(toolObj)
+        tags = toolUtil.getToolTags(toolObj)
+        borrower = toolUtil.getToolBorrower(toolObj)
+        condition = toolUtil.getToolConditionReadable(toolObj)
+        available = toolUtil.isToolAvailable(toolObj)
+        if profileUtil.getProfileFromUser(request.user) == owner:
+            ownedByUser = True
+        else:
+            ownedByUser = False
+        meetsMinRep = (profileUtil.getReputation(profileUtil.getProfileFromUser(request.user)) >= toolObj.minimumReputation)
         context = {}
         context.update(csrf(request))
         context['tool'] = toolObj
@@ -208,9 +193,10 @@ def view_tool_page(request, id):
         context['description'] = description
         context['tags'] = tags
         context['borrower'] = borrower
-        context['condition'] = condition
+        context['condition'] = conditionReadable
         context['available'] = available
         context['ownedByUser'] = ownedByUser
+        context['meetsMin'] = meetsMinRep
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('tool_page.html', context)
      
@@ -222,7 +208,10 @@ def view_shed_page(request, id):
             try:
                 shedObj = shedUtil.getShedFromID(id)
             except ObjectDoesNotExist:
-                return render_to_response("shed_dne.html")
+                context = {}
+                context['object'] = 'shed'
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response("dne.html", context)
         else:
             context = {}
             context['object'] = 'shed'
@@ -367,11 +356,6 @@ def all_sheds(request):
         context['mySheds'] = memberSheds
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('all_sheds.html', context)
-
-#a view for if a tool does not exist
-def tool_dne(request):
-    return render_to_response('tool_dne.html')
-
     
 #a view for the creation of a new Shed
 def create_tool_shed(request):
@@ -405,6 +389,10 @@ def about_us(request):
 #DO NOT TOUCH - team leader (<-- lol)
 def spooked(request):
     return render_to_response('spoopy.html')
+
+def dne(request):
+    context.update(content.genBaseLoggedIn(request))
+    return render_to_response("dne.html", context)
 
 def spooky(request):
     return render_to_response('spagett.html')

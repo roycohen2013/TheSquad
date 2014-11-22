@@ -25,8 +25,7 @@ import random
 written by Jackson
 """
 
-class UserRegistrationForm(UserCreationForm):
-    STATE_CHOICES = ( \
+STATE_CHOICES = ( \
         ('AL','Alabama'), \
         ('AK', 'Alaska'), \
         ('AZ', 'Arizona'), \
@@ -78,6 +77,20 @@ class UserRegistrationForm(UserCreationForm):
         ('WI', 'Wisconsin'), \
         ('WY', 'Wyoming') \
         )
+
+CONDITION_CHOICES = ( \
+    (1, 'Filthy'), \
+    (2, 'Not the best'), \
+    (3, 'Average'), \
+    (4, 'Good looking'), \
+    (5, 'Superb') \
+    )
+
+STATE_DICT = dict(STATE_CHOICES)
+
+CONDITION_DICT = dict(CONDITION_CHOICES)
+
+class UserRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(required = True)
     street_address = forms.CharField(required = True)
     city = forms.CharField(required = True)
@@ -95,6 +108,7 @@ class UserRegistrationForm(UserCreationForm):
         newProfile.streetAddress = self.cleaned_data['street_address']
         newProfile.sharezone = self.cleaned_data['zip_code']
         newProfile.state = self.cleaned_data['state']
+        newProfile.stateName = STATE_DICT[self.cleaned_data['state']]
         newProfile.picture = ''
         newProfile.status = ''
         newProfile.reputation = 50
@@ -111,6 +125,9 @@ class UserRegistrationForm(UserCreationForm):
 """
 
 class ToolCreationForm(ModelForm):
+    condition = forms.ChoiceField(choices=CONDITION_CHOICES, required=True)
+    maximum_borrow_time = forms.IntegerField(max_value=60, min_value=1, required=False)
+    minimum_reputation = forms.IntegerField(max_value=100, min_value=0, required=False)
 
     def __init__(self, user, *args, **kwargs):
         self.userObject = user
@@ -118,13 +135,16 @@ class ToolCreationForm(ModelForm):
 
     class Meta:
         model = Tool
-        fields = ('name', 'description', 'tags', 'condition')
+        fields = ('name', 'description', 'tags')
 
     def save(self,commit = True):
         tool = super(ToolCreationForm, self).save(commit = False)
         #tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(7))
         tool.timeCreated = timezone.now()
         tool.timeLastEdited = timezone.now()
+        tool.conditionReadable = CONDITION_DICT[self.cleaned_data['condition']]
+        tool.maxBorrowTime = self.cleaned_data['maximum_borrow_time']
+        tool.minimumReputation = self.cleaned_data['minimum_reputation']
         tool.owner = profileUtil.getProfileFromUser(self.userObject)
         tool.isAvailable = 1
         tool.location = ''

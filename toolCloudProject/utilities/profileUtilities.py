@@ -158,6 +158,10 @@ def getState(profileObj):
 	return profileObj.state
 
 
+def getStateName(profileObj):
+	return profileObj.stateName
+	
+
 """
 	Update the entire address of a Profile object(street, city, state, sharezone)
 """

@@ -143,6 +143,10 @@ def getToolCondition(toolObj):
 	return toolObj.condition
 
 
+def getToolConditionReadable(toolObj):
+	return toolObj.conditionReadable
+
+	
 """
 	Update the condition of a tool.
 """
