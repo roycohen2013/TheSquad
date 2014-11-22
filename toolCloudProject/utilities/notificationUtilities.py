@@ -80,25 +80,23 @@ def isRequestNotif(notifObj):
 
 """
     For tool borrow request notification when the recipient clicks
-    "Accept" button. This will change the currentState of the notification
+    "Accept" button. This will change the response of the notification
     to "Accept" which will be handled by actionManager.py and will delete
     the notification from the database.
 """
 def acceptBorrowRequest(notifObj):
-    notifObj.sourceAction.currentState = "Accept"
-    notifObj.sourceAction.save()
+    notifObj.response = "Accept"
     notifObj.save()
 
 """
     For tool borrow request notification when the recipient clicks
-    "Deny" button. This will change the currentState of the notification
+    "Deny" button. This will change the response of the notification
     to "Deny" which will be handled by actionManager.py and will delete
     the notification from the database and send a notification to the
     requester of the tool saying you've been declined.
 """
 def denyBorrowRequest(notifObj):
-    notifObj.soureAction.currentState = "Deny"
-    notifObj.soureAction.save()
+    notifObj.response =  "Deny"
     notifObj.save()
 
 """
