@@ -6,18 +6,18 @@
 <h1>{{ name }}</h1>
 <h2>Owner: {{ owner.user.username }}</h2>
 <ul>
-  <h2>Admins: </h2>
+  <h2>Admins</h2>
   {% for admin in admins %}
     <li><a href = "/accounts/profile/{{admin.user.username}}">{{ admin.user.username }}</a></li>
   {% endfor %}
 </ul>  
 <ul>
-  <h2>Members: </h2>
+  <h2>Members</h2>
   {% for member in members %}
     <li><a href = "/accounts/profile/{{member.user.username}}">{{ member.user.username }}</a></li>
   {% endfor %}
 
-  <h2>Tools: </h2>
+  <h2>Tools</h2>
   {% if tools %}
     {% for tool in tools %}
       <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>

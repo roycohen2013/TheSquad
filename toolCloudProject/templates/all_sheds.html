@@ -1,7 +1,7 @@
 {% extends "loggedInBase.html" %}
 
 {% block content %}
-<h1>All Sheds on ToolCloud:</h1>
+<h1>All Sheds on ToolCloud</h1>
 {% if sheds %}
   {% for shed in sheds %}
     <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
