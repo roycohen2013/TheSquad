@@ -25,7 +25,7 @@ import random
 written by Jackson
 """
 
-STATE_CHOICES = ( \
+STATE_CHOICES = [ \
         ('AL','Alabama'), \
         ('AK', 'Alaska'), \
         ('AZ', 'Arizona'), \
@@ -76,15 +76,15 @@ STATE_CHOICES = ( \
         ('WV', 'West Virginia'), \
         ('WI', 'Wisconsin'), \
         ('WY', 'Wyoming') \
-        )
+        ]
 
-CONDITION_CHOICES = ( \
+CONDITION_CHOICES = [ \
     (1, 'Filthy'), \
     (2, 'Not the best'), \
     (3, 'Average'), \
     (4, 'Good looking'), \
     (5, 'Superb') \
-    )
+    ]
 
 STATE_DICT = dict(STATE_CHOICES)
 
@@ -107,6 +107,7 @@ class UserRegistrationForm(UserCreationForm):
         newProfile.phoneNumber = self.cleaned_data['phone_number']
         newProfile.streetAddress = self.cleaned_data['street_address']
         newProfile.sharezone = self.cleaned_data['zip_code']
+        newProfile.city = self.cleaned_data['city']
         newProfile.state = self.cleaned_data['state']
         newProfile.stateName = STATE_DICT[self.cleaned_data['state']]
         newProfile.picture = ''
@@ -139,13 +140,13 @@ class ToolCreationForm(ModelForm):
 
     def save(self,commit = True):
         tool = super(ToolCreationForm, self).save(commit = False)
-        #tool.toolID = ''.join(random.choice(string.ascii_letters) for i in range(7))
+        tool.owner = profileUtil.getProfileFromUser(self.userObject)
         tool.timeCreated = timezone.now()
         tool.timeLastEdited = timezone.now()
-        tool.conditionReadable = CONDITION_DICT[self.cleaned_data['condition']]
+        tool.condition = self.cleaned_data['condition']
+        tool.conditionReadable = CONDITION_DICT[int(self.cleaned_data['condition'])]
         tool.maxBorrowTime = self.cleaned_data['maximum_borrow_time']
         tool.minimumReputation = self.cleaned_data['minimum_reputation']
-        tool.owner = profileUtil.getProfileFromUser(self.userObject)
         tool.isAvailable = 1
         tool.location = ''
         tool.picture = ''

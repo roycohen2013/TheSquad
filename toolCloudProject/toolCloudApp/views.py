@@ -56,9 +56,12 @@ def user_register(request):
                 newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['zip_code'],\
                     status='status')
                 newShedObject.save()
+                newShedObject.members.add(userProfile)
+                newShedObject.admins.add(userProfile)
+                newShedObject.save()
                 context = {}
                 context['name'] = form.cleaned_data['username']
-                return render_to_response('register_success.html', context)
+                return render_to_response('userHome.html', context)
         else:
             form = UserRegistrationForm()
         context = {}
@@ -190,7 +193,7 @@ def view_tool_page(request, id):
         context['description'] = description
         context['tags'] = tags
         context['borrower'] = borrower
-        context['condition'] = conditionReadable
+        context['condition'] = condition
         context['available'] = available
         context['ownedByUser'] = ownedByUser
         context['meetsMin'] = meetsMinRep

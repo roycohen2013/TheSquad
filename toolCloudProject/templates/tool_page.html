@@ -3,10 +3,10 @@
 {% block content %}
 
 <h1>{{name}}</h1>
-<h2>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h2>
+<h3>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h2>
 <p>{{description}}</p>
-<h2>Condition: {{condition}}</h2>
-<h2>Tags</h2>
+<h3>Condition: {{ condition }}</h2>
+<h3>Tags</h3>
 {% if tags %}
   <p>{{ tags }}</p>
 {% else %}

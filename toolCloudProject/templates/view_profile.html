@@ -6,7 +6,7 @@
 <h1>{{ userProfile.user.username }}'s Profile</h1>
 <h2>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h2>
 <ul>
-  <h2>Tools owned</h2>
+  <h3>Tools owned</h3>
   {% if toolsOwned %}
     {% for tool in toolsOwned %}
       <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
@@ -19,7 +19,7 @@
     {% endif %}
   {% endif %}
 
-  <h2>Tools borrowed</h2>
+  <h3>Tools borrowed</h3>
   {% if toolsBorrowed %}
     {% for tool in toolsBorrowed %}
       <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
@@ -33,9 +33,9 @@
   {% endif %}
   
   {% if userProfile.user == currentUser %}
-    <h2>Sheds</h2>
+    <h3>Sheds</h3>
   {% else %}
-    <h2>Sheds</h2>
+    <h3>Sheds</h3>
   {% endif %}
   {% if sheds %}
     {% for shed in sheds %}
