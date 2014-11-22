@@ -31,12 +31,9 @@ import utilities.notificationUtilities as notifUtil
 import utilities.actionUtilities as actionUtil
 
 def ProcessActions():
-
     #Re-process all action objects on every call
     for actionInstance in getAllActions():
-
         #states allow system to process and respond to all actions asynchronously
-
         #Tool borrow state machine
         if isToolRequest() == True:
 
@@ -47,54 +44,51 @@ def ProcessActions():
                 #ProcessActions()   #re-invoke entire state machine
 
             if actionInstance.currrentState == "askOwner":
-                #send a response notification to the user who's tool is being requested
-                #the response options will be "Accept" or "Decline"
-                
+                #send a request notification to the user who's tool is being requested
+                #the response options will be "Accept" or "Deny"
+                """ ADAM LOOK HERE!! """
+                #we must update the UI so that two buttons display with "Accept" or "Deny"
+                #the UI will do this for all notifications that eval to true on the isRequestNotif() utility
+                #clicking accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
+                #both of those functions are apart of notificationUtilities
                 question = "Can " + actionInstance.requester.name + " borrow your " + \
                                 actionInstance.tool.name + " from " + actionInstance.tool.shed + "?"
                 userOptions = "Accept,Deny" #adding options       
-                
                 notifUtil.createResponseNotif(actionInstance, actionInstance.tool.owner, \
                                                             question, options = userOptions)
-
                 #proceed to next state
                 actionInstance.currrentState = "acceptDecline"
                 actionInstance.save()
-
                 #ProcessActions()       #re-invoke entire state machine
 
-
             elif actionInstance.currrentState == "acceptDecline":
-                #if the owner of the tool has responded to the tool request notification
-                if notifHasResponse(getNotifOfAction(actionInstance)) == True:
-                   
+                #if the owner of the tool has responded to the tool request notification:
+                if notifHasResponse(getNotifOfAction(actionInstance)):
+                   # if the owner of the tool accepted the tool request:
                     if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
-                        #start timer for when tool is overdue (set end time)
-                        #move tool location to requester's shed
-
-                        #target shed is the requester's personal shed
-                        targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
-                        #remove the tool from it's old location first
-                        shedUtil.removeToolFromShed(actionInstance.tool.shed,actionInstance.tool)
-                        #then add the tool to the requester's personal shed
-                        shedUtil.addToolToShed(targetShed,actionInstance.tool)
+                        #update the tool's borrowedTime field
+                        actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
                         toolUtil.updateToolBorrower(actionInstance.tool,getUserOfProfile(actionInstance.requester))
-
+                        #move tool location to requester's shed
+                        targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
+                        #remove the tool from it's old location first
+                        shedUtil.removeToolFromShed(actionInstance.tool.shed, actionInstance.tool)
+                        #then add the tool to the requester's personal shed
+                        shedUtil.addToolToShed(targetShed, actionInstance.tool)
+                        #delete the borrow request notification from the database so it no longer displays
+                        actionUtil.getNotifOfAction(actionInstance).delete()
                         #proceed to next state
                         actionInstance.currrentState = "borrowed"
                         actionInstance.save()
-                        actionUtil.getNotifOfAction(actionInstance).delete()
                         #ProcessActions()       #re-invoke entire state machine
 
-                    else: # the owner of the tool declined the borrowing of the tool
-
+                    # the owner of the tool declined the borrowing of the tool
+                    else:
                         #send an info notification to the requester saying he was denied
-                        response = "You have been swiftly rejected from borrowing " + \
+                        response = "You have been denied from borrowing " + \
                                         actionInstance.tool.name + " from " + actionInstance.tool.shed
-
                         notifUtil.createInfoNotif(actionInstance,actionInstance.requester,response)
-
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
@@ -134,10 +128,10 @@ def ProcessActions():
                 #Notify tool owner that his tool has been returned
                 #move to idle state
                 pass
-
-            elif actionInstance.currrentState == "idle":        #this state does nothing and will get deleted after a while
+            
+            elif actionInstance.currrentState == "idle":
                 #delete action object
-                pass
+                actionInstance.delete()
 
 
 
