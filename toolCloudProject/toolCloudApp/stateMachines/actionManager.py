@@ -1,14 +1,31 @@
 """
 What calls action manager:
-    automated
     when .save() is called on an action object
     when .save() is called on a notification object
+What action manager does:
+    Updates every single Action object in the database
+    depending on what state each object is currently in.
+    Basically contains the all of the logic behind tool borrowing
+    and shed requests.
 
-^^ We still need to overwrite save to actually do this ^^
-Until then, none of this is actually going to work.
-Once we overwrite save() for Action and Notification models by
-adding a call to ProcessAction() at the end, notifications should
-start working so long as the UI properly displays notification objects.
+ADAM (Code Fairy) LOOK HERE!!
+
+    When a person clicks the button on the UI to request a tool, the UI should
+    call a method in actionUtilities called createBorrowRequestAction(tool, requester).
+    This will create an action object with a currentState equal to "userBorrowRequest"
+    which will ultimately result in sending a request notification to the owner of the tool.
+    
+    We must update the UI so that two buttons display with "Accept" or "Deny" for
+    all tool request notifications. The UI will do this for all notifications that
+    evaluate to true after calling the isRequestNotif() notification utility on them.
+    Clicking the accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
+    Both of those functions are apart of notificationUtilities and will change the action
+    object's currentState field to "borrowed" or "idle" respectively.
+
+    We must update the UI so that when the "Return Tool" button is clicked,
+    it calls a tool utility called returnTool(toolObject) which changes the
+    action object's currentState field to "returned". This'll ultimately create a new
+    info notif telling the owner that the tool has been returned.
 """
 
 import sys
@@ -25,23 +42,11 @@ import utilities.notificationUtilities as notifUtil
 import utilities.actionUtilities as actionUtil
 
 """
-    ADAM LOOK HERE!!
-
-    When a person clicks the button to request a tool, the UI should
-    call a method in actionUtilities called createBorrowRequestAction(tool, requester)
-    
-    We must update the UI so that two buttons display with "Accept" or "Deny" for
-    all tool request notifications. The UI will do this for all notifications that
-    evaluate to true after calling the isRequestNotif() notification utility on them.
-    Clicking the accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
-    Both of those functions are apart of notificationUtilities.
-
-    We must update the UI so that when the "Return Tool" button is clicked,
-    it calls a toolUtility called returnTool(toolObject) which changes the
-    action object's currentState field to "returned".
+    Update every Action object in the database depending
+    on what state each action is currently in.
 """
-def ProcessActions():
-    #Re-process all action objects on every call
+def processActions():
+    #Re-process all action objects in the database
     for actionInstance in getAllActions():
         #states allow system to process and respond to all actions asynchronously
         #Tool borrow state machine
@@ -133,3 +138,4 @@ def ProcessActions():
     # we still need to add code for shed request notifications!
     # so far we only have the functionality for tool borrowing,
     # but nothing for sheds
+    

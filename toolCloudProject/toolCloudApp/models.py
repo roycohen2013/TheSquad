@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils import timezone
+from stateMachines import actionManager
 
 
 """
@@ -45,17 +46,6 @@ class Profile(models.Model):
                     "Sharezone: " + self.sharezone]
         return ",".join(myList)
 
-    """
-        Overrides save to work with generic notifications.
-    """
-    def save(self, *args, **kwargs):
-        #do_something()
-        super(Profile, self).save(*args, **kwargs) # Call the "real" save() method.
-        self.object_id = self.id
-        super(Profile, self).save(*args, **kwargs) # Call the "real" save() method.
-        #do_something_else()
-
-
 
 """
     The Shed class stores all information about a particular shed
@@ -74,8 +64,6 @@ class Shed(models.Model):
     longitude = models.IntegerField(default=-1)
     status = models.CharField(max_length=50)
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
-
-
 
     privacy = models.IntegerField(default=-1)               
     #public: 0 - Open anyone can see the shed and borrow from it. Request to join is accepted automaticly
@@ -100,18 +88,6 @@ class Shed(models.Model):
         myList = ["Name: " + self.name, "Sharezone: " + self.sharezone, \
                         "Owned by " + self.owner.user.username]
         return ",".join(myList)
-
-    """
-        Overrides save to work with generic notifications.
-    """
-    def save(self, *args, **kwargs):
-        #do_something()
-        super(Shed, self).save(*args, **kwargs) # Call the "real" save() method.
-        self.object_id = self.id
-        #print (content_type)
-        super(Shed, self).save(*args, **kwargs) # Call the "real" save() method.
-        #do_something_else()
-
 
 
 """
@@ -158,24 +134,11 @@ class Tool(models.Model):
                     "Borrowed by" + self.borrower.name, "My shed: " + self.myShed.name]
         return ",".join(myList)
 
-    """
-        Overrides save to work with generic notifications.
-    """
-    def save(self, *args, **kwargs):
-        #do_something()
-        super(Tool, self).save(*args, **kwargs) # Call the "real" save() method.
-        
-        self.object_id = self.id
-        super(Tool, self).save(*args, **kwargs) # Call the "real" save() method.
-        #do_something_else()
-
-
 
 """
     Provides functionality for notifications.
 """
 class Notification(models.Model):
-    
 
     recipient = models.ForeignKey('Profile', related_name='myNotifications')#reciever of notification
 
@@ -202,15 +165,12 @@ class Notification(models.Model):
     response = models.CharField(max_length="40",null=True)#Starts off being null. when filled out the notification has been responded to
 
     """
-        Overrides save to work with generic notifications.
+        Overrides save() to additionally call processActions() in actionManager.py
+        which will update all notifications and actions
     """
     def save(self, *args, **kwargs):
-        #do_something()
         super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
-        self.object_id = self.id
-        super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
-        #do_something_else()
-
+        actionManager.processActions()
 
 
 """
@@ -228,15 +188,12 @@ class Action(models.Model):
 
 
     """
-        Overrides save to work with generic notifications.
+        Overrides save() to additionally call processActions() in actionManager.py
+        which will update all notifications and actions
     """
     def save(self, *args, **kwargs):
         #do_something()
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
-        
-        self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','     
-        
-        self.object_id = self.id
-
+        self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
-        #do_something_else()
+        actionManager.processActions()
