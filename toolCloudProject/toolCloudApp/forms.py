@@ -26,8 +26,63 @@ written by Jackson
 """
 
 class UserRegistrationForm(UserCreationForm):
+    STATE_CHOICES = ( \
+        ('AL','Alabama'), \
+        ('AK', 'Alaska'), \
+        ('AZ', 'Arizona'), \
+        ('AR', 'Arkansas'), \
+        ('CA', 'California'), \
+        ('CO', 'Colorado'), \
+        ('CT', 'Connecticut'), \
+        ('DE', 'Delaware'), \
+        ('FL', 'Florida'), \
+        ('GA', 'Georgia'), \
+        ('HI', 'Hawaii'), \
+        ('IH', 'Idaho'), \
+        ('IL', 'Illinois'), \
+        ('IN', 'Indiana'), \
+        ('IA', 'Iowa'), \
+        ('KS', 'Kansas'), \
+        ('KY', 'Kentucky'), \
+        ('LA', 'Louisiana'), \
+        ('ME', 'Maine'), \
+        ('MD', 'Maryland'), \
+        ('MA', 'Massachusetts'), \
+        ('MI', 'Michigan'), \
+        ('MN', 'Minnesota'), \
+        ('MI', 'Mississippi'), \
+        ('MO', 'Missouri'), \
+        ('MT', 'Montana'), \
+        ('NE', 'Nebraska'), \
+        ('NV', 'Nevada'), \
+        ('NH', 'New Hampshire'), \
+        ('NJ', 'New Jersey'), \
+        ('NM', ' New Mexico'), \
+        ('NY', 'New York'), \
+        ('NC', 'North Carolina'), \
+        ('ND', 'North Dakota'), \
+        ('OH', 'Ohio'), \
+        ('OK', 'Oklahoma'), \
+        ('OR', 'Oregon'), \
+        ('PA', 'Pennsylvania'), \
+        ('RI', 'Rhode Island'), \
+        ('SC', 'South Carolina'), \
+        ('SD', 'South Dakota'), \
+        ('TN', 'Tennessee'), \
+        ('TX', 'Texas'), \
+        ('UT', 'Utah'), \
+        ('VT', 'Vermont'), \
+        ('VA', 'Virginia'), \
+        ('WA', 'Washington'), \
+        ('WV', 'West Virginia'), \
+        ('WI', 'Wisconsin'), \
+        ('WY', 'Wyoming') \
+        )
     phone_number = forms.CharField(required = True)
-    share_zone = forms.CharField(required = True)
+    street_address = forms.CharField(required = True)
+    city = forms.CharField(required = True)
+    state = forms.ChoiceField(choices = STATE_CHOICES, required = True)
+    zip_code = forms.CharField(required = True)
 
     class Meta:
         model = User
@@ -37,7 +92,9 @@ class UserRegistrationForm(UserCreationForm):
         user = super(UserRegistrationForm, self).save(commit = False)
         newProfile = Profile()
         newProfile.phoneNumber = self.cleaned_data['phone_number']
-        newProfile.sharezone = self.cleaned_data['share_zone']
+        newProfile.streetAddress = self.cleaned_data['street_address']
+        newProfile.sharezone = self.cleaned_data['zip_code']
+        newProfile.state = self.cleaned_data['state']
         newProfile.picture = ''
         newProfile.status = ''
         newProfile.reputation = 50

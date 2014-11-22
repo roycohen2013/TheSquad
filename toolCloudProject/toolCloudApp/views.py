@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate, login, logout
 from django.core.context_processors import csrf
 import django.db
-from toolCloudApp.models import Profile, User, Notification, Action, Shed
+from toolCloudApp.models import Profile, Tool, Shed, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
 import string
 import random
@@ -25,10 +25,14 @@ import utilities.actionUtilities as actionUtil
 import utilities.content as content
 
 def home(request):
+    file = open("homePageText.txt","r")
+    strings = file.readlines()
+    context = {}
+    context['strings'] = strings
+    context.update(content.genSuper())
     if request.user.is_anonymous():
-        context = content.genSuper()
-        return render(request, 'loggedOutBase.html', content.addSubTitleStrings(context))
-    return render_to_response('userHome.html', content.genUserHome(request))
+        return render(request, 'loggedOutBase.html', context)
+    return HttpResponseRedirect('/accounts/loggedin')
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm
@@ -48,13 +52,12 @@ def user_register(request):
                 #sendMail(form.cleaned_data['email'],"Welcome to ToolCloud! ", "Hi " + form.cleaned_data['first_name'] + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
                 shedName = form.cleaned_data['username'] + "'s Shed"
                 userProfile = profileUtil.getProfileFromUser(userAccount)
-                newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['share_zone'],\
+                newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['zip_code'],\
                     status='status')
                 newShedObject.save()
                 context = {}
                 context['name'] = form.cleaned_data['username']
-                context.update(content.genJustRegistered(userAccount, userProfile))
-                return render_to_response('userHome.html', context)
+                return render_to_response('register_success.html', context)
         else:
             form = UserRegistrationForm()
         context = {}
