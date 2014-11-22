@@ -9,7 +9,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed
-import actionUtilities as actionUtil
 
 
 """
@@ -46,7 +45,7 @@ def toolIsOverdraft(toolObj):
 	borrowed tool.
 """
 def returnTool(toolObj):
-	actionObj = actionUtil.getBorrowedToolAction(toolObj)
+	actionObj = actionUtilities.getBorrowedToolAction(toolObj)
 	actionObj.currentState = "returned"
 	actionObj.save()
 
