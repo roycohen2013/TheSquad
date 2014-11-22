@@ -27,7 +27,7 @@
   {% endif %}
 </ul>  
 {% if currentUserProfile.user == currentUser and meetsMin and not alreadyMember %}
-  <a class="btn" href="/sheds/{{shed.id}}/join">Join this shed</a>
+  <a class="btn btn-default" href="/sheds/{{shed.id}}/join">Join this shed</a>
 {% elif not meetsMin %}
   <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>
 {% endif %} 

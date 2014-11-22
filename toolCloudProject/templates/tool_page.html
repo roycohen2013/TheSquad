@@ -14,7 +14,7 @@
 {% endif %}
 
 {% if available and not ownedByUser and meetsMin %}
-  <a class="btn" href="/tools/{{ tool.id }}/borrow">Borrow this tool</a>
+  <a class="btn btn-default" href="/tools/{{ tool.id }}/borrow">Borrow this tool</a>
 {% elif not meetsMin %}
   <h2>Sorry, but you do not meet the minimum reputation set by the owner to borrow this tool.</h2>
 {% elif not ownedByUser %}

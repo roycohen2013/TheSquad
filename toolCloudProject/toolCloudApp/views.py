@@ -136,18 +136,17 @@ def view_current_profile(request):
         return HttpResponseRedirect('/accounts/login/') #redirect to login page
     else:
         currentUser = request.user
-        profileObj = profileUtil.getProfileFromUser(currentUser)
+        userProfile = profileUtil.getProfileFromUser(currentUser)
         reputation = profileUtil.getReputation(userProfile)
         timeCreated = userProfile.timeCreated
-        streetAddress = profileUtil.getStreetAddress(userProfile)
+        streetAddress = profileUtil.getAddress(userProfile)
         city = profileUtil.getCity(userProfile)
         state = profileUtil.getStateName(userProfile)
         shareZone = profileUtil.getSharezone(userProfile)
-        timeStamp = datetime.fromtimestamp(timeCreated)
         context = {}
         context.update(csrf(request))
-        context['userProfile'] = profileObj 
-        context['timeStamp'] = timeStamp
+        context['userProfile'] = userProfile
+        context['timeStamp'] = timeCreated
         context['streetAddress'] = streetAddress
         context['reputation'] = reputation
         context['city'] = city
