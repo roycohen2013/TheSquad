@@ -134,11 +134,12 @@ class Tool(models.Model):
     borrowedCount = models.IntegerField(default=0) # times Tool borrowed
     requestedCount = models.IntegerField(default=0) # times Tool requested
 
-    defaultMaxBorrowTime = models.IntegerField(default=30)#time measured in days only
+    borrowedTime = models.DateTimeField(null=True) # time tool was approved for borrowing
+    maxBorrowTime = models.IntegerField(default=30)#time measured in days only
     #applies to tools if free to borrow is enabled 
     #0 means unlimited time
 
-    defaultFreeToBorrow = models.IntegerField(default=0)#preferences
+    freeToBorrow = models.IntegerField(default=0)#preferences
     #0 means borrow request accepted automaticly
     #1 means aproval of borrow request required
 
