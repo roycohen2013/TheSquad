@@ -1,31 +1,14 @@
 """
 What calls action manager:
-    automated
     when .save() is called on an action object
     when .save() is called on a notification object
+What action manager does:
+    Updates every single Action object in the database
+    depending on what state each object is currently in.
+    Basically contains the all of the logic behind tool borrowing
+    and shed requests.
 
-^^ We still need to overwrite save to actually do this ^^
-Until then, none of this is actually going to work.
-Once we overwrite save() for Action and Notification models by
-adding a call to ProcessAction() at the end, notifications should
-start working so long as the UI properly displays notification objects.
-"""
-
-import sys
-sys.path.append("..")
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
-from django.contrib.auth.models import User
-from django.utils import timezone
-from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
-import utilities.profileUtilities as profileUtil
-import utilities.shedUtilities as shedUtil
-import utilities.toolUtilities as toolUtil
-import utilities.notificationUtilities as notifUtil
-import utilities.actionUtilities as actionUtil
-
-"""
-    ADAM (Code Fairy) LOOK HERE!!
+ADAM (Code Fairy) LOOK HERE!!
 
     When a person clicks the button on the UI to request a tool, the UI should
     call a method in actionUtilities called createBorrowRequestAction(tool, requester).
@@ -42,8 +25,26 @@ import utilities.actionUtilities as actionUtil
     it calls a toolUtility called returnTool(toolObject) which changes the
     action object's currentState field to "returned".
 """
+
+import sys
+sys.path.append("..")
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
+from django.contrib.auth.models import User
+from django.utils import timezone
+from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
+import utilities.profileUtilities as profileUtil
+import utilities.shedUtilities as shedUtil
+import utilities.toolUtilities as toolUtil
+import utilities.notificationUtilities as notifUtil
+import utilities.actionUtilities as actionUtil
+
+"""
+    Update every Action object in the database depending
+    on what state each action is currently in.
+"""
 def processActions():
-    #Re-process all action objects on every call
+    #Re-process all action objects in the database
     for actionInstance in getAllActions():
         #states allow system to process and respond to all actions asynchronously
         #Tool borrow state machine
