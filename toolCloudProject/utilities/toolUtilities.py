@@ -9,6 +9,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from django.contrib.auth.models import User
 from django.utils import timezone
 from toolCloudApp.models import Profile, Tool, Shed
+import actionUtilities as actionUtil
 
 
 """
@@ -26,6 +27,28 @@ def createNewTool(name, description, ownerObj, location, picture, isAvailable, \
 	toolObject.preferences = preferences
 	toolObject.save()
 	return toolObject
+
+"""
+	Called by actionManager.py to check to see if a tool is overdraft
+"""
+def toolIsOverdraft(toolObj):
+	# subtracting two datetime objects yields a datetime.timedelta object
+	# which has a "days" field that we can use here to compare against
+	# the tool's maxBorrowTime to see if it is overdraft.
+	# Taikhoom - test this
+	timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
+	if (timeSinceBorrowed.days > toolObj.maxBorrowTime):
+		return True
+	return False
+
+"""
+	Called by the UI when the "Return" button is clicked on a
+	borrowed tool.
+"""
+def returnTool(toolObj):
+	actionObj = actionUtil.getBorrowedToolAction(toolObj)
+	actionObj.currentState = "returned"
+	actionObj.save()
 
 
 """
