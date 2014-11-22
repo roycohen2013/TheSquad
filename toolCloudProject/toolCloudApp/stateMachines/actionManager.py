@@ -8,7 +8,7 @@ What calls action manager:
 Until then, none of this is actually going to work.
 Once we overwrite save() for Action and Notification models by
 adding a call to ProcessAction() at the end, notifications should
-start working.
+start working so long as the UI properly displays notification objects.
 """
 
 import sys
@@ -25,11 +25,20 @@ import utilities.notificationUtilities as notifUtil
 import utilities.actionUtilities as actionUtil
 
 """
-    ADAM LOOK HERE!! (and in the big blob ProcessActions() below as well)
+    ADAM LOOK HERE!!
+
     When a person clicks the button to request a tool, the UI should
-    call a method in actionUtilities called
-        createBorrowRequestAction(tool, requester)
-    That is all the button needs to do...we believe..
+    call a method in actionUtilities called createBorrowRequestAction(tool, requester)
+    
+    We must update the UI so that two buttons display with "Accept" or "Deny" for
+    all tool request notifications. The UI will do this for all notifications that
+    evaluate to true after calling the isRequestNotif() notification utility on them.
+    Clicking the accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
+    Both of those functions are apart of notificationUtilities.
+
+    We must update the UI so that when the "Return Tool" button is clicked,
+    it calls a toolUtility called returnTool(toolObject) which changes the
+    action object's currentState field to "returned".
 """
 def ProcessActions():
     #Re-process all action objects on every call
@@ -46,11 +55,6 @@ def ProcessActions():
             if actionInstance.currrentState == "askOwner":
                 #send a request notification to the user who's tool is being requested
                 #the response options will be "Accept" or "Deny"
-                """ ADAM LOOK HERE!! """
-                #we must update the UI so that two buttons display with "Accept" or "Deny"
-                #the UI will do this for all notifications that eval to true on the isRequestNotif() utility
-                #clicking accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
-                #both of those functions are apart of notificationUtilities
                 question = "Can " + actionInstance.requester.name + " borrow your " + \
                                 actionInstance.tool.name + " from " + actionInstance.tool.shed + "?"
                 userOptions = "Accept,Deny" #adding options       
@@ -111,11 +115,7 @@ def ProcessActions():
                 #disable the user from borrowing any more tools
                 actionInstance.tool.borrower.canBorrow = False
 
-            """ ADAM LOOK HERE!!! """
-            # moving into the "returned" state is handled by the UI
-            # when "Return Tool" button is clicked, it calls a toolUtility
-            # called returnTool(toolObjct) that changes the action's state
-            # to "returned"
+            #moving into the "returned" state is handled by the UI
             elif actionInstance.currrentState == "returned":
                 #notify tool owner that his tool has been returned
                 message = "Your " + actionInstance.tool.name + " has been returned to " + \
