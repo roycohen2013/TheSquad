@@ -7,7 +7,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils import timezone
-from stateMachines import actionManager
 
 
 """
@@ -170,7 +169,6 @@ class Notification(models.Model):
     """
     def save(self, *args, **kwargs):
         super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
-        actionManager.processActions()
 
 
 """
@@ -196,4 +194,3 @@ class Action(models.Model):
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
         self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','
         super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
-        actionManager.processActions()

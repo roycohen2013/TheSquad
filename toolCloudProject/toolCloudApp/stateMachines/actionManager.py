@@ -34,12 +34,11 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 from django.contrib.auth.models import User
 from django.utils import timezone
-from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
-import utilities.profileUtilities as profileUtil
-import utilities.shedUtilities as shedUtil
-import utilities.toolUtilities as toolUtil
-import utilities.notificationUtilities as notifUtil
-import utilities.actionUtilities as actionUtil
+from utilities import profileUtilities as profileUtil
+from utilities import shedUtilities as shedUtil
+from utilities import toolUtilities as toolUtil
+from utilities import notificationUtilities as notifUtil
+from utilities import actionUtilities as actionUtil
 
 """
     Update every Action object in the database depending
@@ -115,7 +114,7 @@ def processActions():
             elif actionInstance.currrentState == "overdraft":
                 #reduce user reputation by 5 for every day the tool is late!
                 timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
-                for day in range(timeSinceBorrowed.days:
+                for day in range(timeSinceBorrowed.days):
                     actionInstance.tool.borrower.reputation -= 5
                 #disable the user from borrowing any more tools
                 actionInstance.tool.borrower.canBorrow = False
@@ -138,4 +137,3 @@ def processActions():
     # we still need to add code for shed request notifications!
     # so far we only have the functionality for tool borrowing,
     # but nothing for sheds
-    
