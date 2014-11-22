@@ -25,10 +25,12 @@ import utilities.notificationUtilities as notifUtil
 import utilities.actionUtilities as actionUtil
 
 """
-    ADAM LOOK HERE!!
+    ADAM (Code Fairy) LOOK HERE!!
 
-    When a person clicks the button to request a tool, the UI should
-    call a method in actionUtilities called createBorrowRequestAction(tool, requester)
+    When a person clicks the button on the UI to request a tool, the UI should
+    call a method in actionUtilities called createBorrowRequestAction(tool, requester).
+    This will create an action object with a currentState equal to "userBorrowRequest"
+    which will ultimately result in sending a request notification to the owner of the tool.
     
     We must update the UI so that two buttons display with "Accept" or "Deny" for
     all tool request notifications. The UI will do this for all notifications that
@@ -40,7 +42,7 @@ import utilities.actionUtilities as actionUtil
     it calls a toolUtility called returnTool(toolObject) which changes the
     action object's currentState field to "returned".
 """
-def ProcessActions():
+def processActions():
     #Re-process all action objects on every call
     for actionInstance in getAllActions():
         #states allow system to process and respond to all actions asynchronously
