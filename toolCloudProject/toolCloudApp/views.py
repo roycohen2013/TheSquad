@@ -115,7 +115,6 @@ def view_profile(request, username=None):
             userProfile = profileUtil.getProfileFromUser(request.user)
         toolsOwned = toolUtil.getAllToolsOwnedBy(userProfile)
         toolsBorrowed = toolUtil.getAllToolsBorrowedBy(userProfile)
-        profilesInShareZone = profileUtil.getAllOtherProfilesInShareZone(userProfile)
         sheds = shedUtil.getAllShedsJoinedBy(userProfile)
         context = {}
         context.update(csrf(request))
@@ -123,7 +122,6 @@ def view_profile(request, username=None):
         context['userProfile'] = userProfile
         context['toolsOwned'] = toolsOwned
         context['toolsBorrowed'] = toolsBorrowed
-        context['profilesInShareZone'] = profilesInShareZone
         context['sheds'] = sheds
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('view_profile.html', context)
