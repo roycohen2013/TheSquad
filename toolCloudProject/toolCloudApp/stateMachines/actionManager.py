@@ -19,11 +19,13 @@ ADAM (Code Fairy) LOOK HERE!!
     all tool request notifications. The UI will do this for all notifications that
     evaluate to true after calling the isRequestNotif() notification utility on them.
     Clicking the accept button will call acceptBorrowRequest(), deny calls denyBorrowRequest()
-    Both of those functions are apart of notificationUtilities.
+    Both of those functions are apart of notificationUtilities and will change the action
+    object's currentState field to "borrowed" or "idle" respectively.
 
     We must update the UI so that when the "Return Tool" button is clicked,
-    it calls a toolUtility called returnTool(toolObject) which changes the
-    action object's currentState field to "returned".
+    it calls a tool utility called returnTool(toolObject) which changes the
+    action object's currentState field to "returned". This'll ultimately create a new
+    info notif telling the owner that the tool has been returned.
 """
 
 import sys
@@ -136,3 +138,4 @@ def processActions():
     # we still need to add code for shed request notifications!
     # so far we only have the functionality for tool borrowing,
     # but nothing for sheds
+    
