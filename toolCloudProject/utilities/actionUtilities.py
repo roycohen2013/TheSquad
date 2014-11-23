@@ -42,7 +42,7 @@ def createShedRequestAction(shed,requester):
 	Get notification object from Action object
 """
 def getNotifOfAction(actionObj):
-	return actionObj.sourceActionNotifications
+	return actionObj.sourceActionNotification.all()[0]
 
 
 """

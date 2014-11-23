@@ -155,11 +155,6 @@ def genJustRegistered(account, profile):
 def genLogin(request):
 	return genSuper()
 
-def genViewNotifications(request):
-	content = genBaseLoggedIn(request)
-	content.update(getNotifications(request))
-	return content
-
 #BEGIN UTILITY FUNCTIONS
 
 def getNotifications(request):#returns a dict with the userProfile and notifs values filled

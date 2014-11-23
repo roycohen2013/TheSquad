@@ -39,7 +39,7 @@ def createInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 
     newNotification.save()
-    actionManager.processActions()
+    #actionManager.processActions()
     return newNotification
 
 
@@ -57,7 +57,7 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
     newNotification.save()
-    actionManager.processActions()
+    #actionManager.processActions()
     return newNotification
 
 
@@ -205,9 +205,10 @@ def isNotifFromAction(notifObj):
     Returns True if the notification has been responded to.
 """
 def notifHasResponse(notifObj):
-    if (notifObj.response == ""):
-        return False
-    return True
+    return (notifObj.response is not None)
+    #if (notifObj.response == ""):
+    #    return False
+    #return True
 
 
 """

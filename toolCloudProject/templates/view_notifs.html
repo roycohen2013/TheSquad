@@ -1,19 +1,52 @@
 {% extends "loggedInBase.html" %}
 
 {% block content %}
-<h1>Your currently pending notifications</h1>
+<h1>Your currently pending <b>PHAT</b> notifications</h1>
 {% if notifs %}
-  {% for notif in notifs %}
-    <div class="notification info">
-        <div class="notification-description">
-            <p>
-                <em class="fa fa-info fa-fw fa-2x"></em>
-                {{ notif.content }}
-                <a class="btn btn-success" href = "accounts/notifications/{{notif.id}}/request_accept">Accept</a>
-                <a class="btn btn-danger" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</a>
-            </p>
+  {% for noti in notifs %}
+    {% if noti.notificationType == "request" %}<!-- request type -->
+      <div class="Message-listed Message--orange">
+        <div class="Message-icon">
+          <i class="fa fa-exclamation"></i>
         </div>
-    </div>
+        <div class="Message-body">
+          <p>{{ noti.content }}</p>
+          <button class="Message-button btn btn-success"  href = "accounts/notifications/{{notif.id}}/request_accept">Accept</button>
+          <button class="Message-button btn btn-danger" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</button>
+        </div>
+        <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+      </div>
+    {% elif noti.notificationType == "success" %}<!-- success type -->
+      <div class="Message-listed Message--green" id="js-timer">
+        <div class="Message-icon">
+          <i class="fa fa-check"></i>
+        </div>
+        <div class="Message-body">
+          <p>{{ noti.content }}</p>
+        </div>
+        <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+      </div>
+    {% elif noti.notificationType == "alert" %}<!-- alert type -->
+      <div class="Message-listed Message--red">
+        <div class="Message-icon">
+          <i class="fa fa-times"></i>
+        </div>
+        <div class="Message-body">
+          <p>{{ noti.content }}</p>
+        </div>
+        <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+      </div>
+    {% else %} <!-- info type (default) -->
+      <div class="Message-listed" id="js-timer">
+        <div class="Message-icon">
+          <i class="fa fa-bell-o"></i>
+        </div>
+        <div class="Message-body">
+          <p>{{ noti.content }}</p>
+        </div>
+        <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
+      </div>
+    {% endif %}
   {% endfor %}
 {% else %}
   <i>You have no pending notifications.</i>

@@ -1,6 +1,6 @@
 #notiBell:before, #notiBell:after
 {
-  color: #151515;
+  color: inherit;
   text-indent: 0;
   content: "";
   position: absolute;
@@ -18,7 +18,7 @@
 {
   content: "\f0f3";
   font-family: "FontAwesome";
-  text-align: center;
+  text-align: right;
   box-shadow: none;
   transform-origin: 70% -1px;
   animation-name: ring;
@@ -29,14 +29,14 @@
 @keyframes ring
   {
     0% { transform: rotate(0deg) }
-    15% { transform: rotate(-4.5deg) }
+    15% { transform: rotate(-2.5deg) }
     25% { transform: rotate(4.5deg) }
-    35% { transform: rotate(-4.5deg) }
-    45% { transform: rotate(4.5deg) }
-    55% { transform: rotate(-4.5deg) }
-    65% { transform: rotate(4.5deg) }
+    35% { transform: rotate(-6.5deg) }
+    45% { transform: rotate(8.5deg) }
+    55% { transform: rotate(-8.5deg) }
+    65% { transform: rotate(6.5deg) }
     75% { transform: rotate(-4.5deg) }
-    85% { transform: rotate(4.5deg) }
+    85% { transform: rotate(2.5deg) }
     100% { transform: rotate(0deg) }
   }
 
