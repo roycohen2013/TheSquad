@@ -11,8 +11,12 @@
         </div>
         <div class="Message-body">
           <p>{{ noti.content }}</p>
-          <button class="Message-button btn btn-success"  href = "accounts/notifications/{{notif.id}}/request_accept">Accept</button>
-          <button class="Message-button btn btn-danger" href = "accounts/notifications/{{notif.id}}/request_decline">Decline</button>
+          <button class="Message-button btn btn-success"
+          onclick="location.href='/accounts/notifications/{{noti.id}}/request_accept'">
+          Accept</button>
+          <button class="Message-button btn btn-danger"
+          onclick="location.href='/accounts/notifications/{{noti.id}}/request_decline'">
+          Decline</button>
         </div>
         <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
       </div>
