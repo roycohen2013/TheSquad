@@ -65,6 +65,9 @@ def processActions():
                 processActions()
 
             if actionInstance.currrentState == "askOwner":
+                #proceed to next state
+                actionInstance.currrentState = "acceptDecline"
+                actionInstance.save()
                 #send a request notification to the user who's tool is being requested
                 #the response options will be "Accept" or "Deny"
                 question = "Can " + actionInstance.requester.user.username + " borrow your " + \
@@ -72,16 +75,13 @@ def processActions():
                 userOptions = "Accept,Deny" #adding options       
                 utilities.notificationUtilities.createResponseNotif(actionInstance, actionInstance.tool.owner, \
                                                             question, options = userOptions)
-                #proceed to next state
-                actionInstance.currrentState = "acceptDecline"
-                actionInstance.save()
                 processActions()
 
             elif actionInstance.currrentState == "acceptDecline":
                 #if the owner of the tool has responded to the tool request notification:
-                if utilities.notificationUtilities.notifHasResponse(getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(actionUtil.getNotifOfAction(actionInstance)):
                    # if the owner of the tool accepted the tool request:
-                    if utilities.notificationUtilities.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getNotifOfAction(actionInstance)) == 'Accept':
                         #update the tool's borrowedTime field
                         actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
@@ -104,12 +104,12 @@ def processActions():
                     else:
                         #send an info notification to the requester saying he was denied
                         response = "You have been denied from borrowing " + \
-                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed
+                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
-                processActions()
+                    processActions()
 
             elif actionInstance.currrentState == "borrowed":
                 #check if borrowedTime of tool was older than [maxBorrowTime] days ago
@@ -191,6 +191,7 @@ def processActions():
                 processActions()
 
             elif actionInstance.currentState == "idle":
+                print("help im dying")
                 #delete the action object from the database
                 actionInstance.delete()
                 processActions()

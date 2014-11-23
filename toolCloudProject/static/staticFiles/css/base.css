@@ -55,11 +55,14 @@ html {
   color: rgba(3,3,150,.8);
 }
 
+#nav {
+  color: #151515;
+}
+
 #nav a {
   text-transform: uppercase;
-  text-decoration: none;
+  text-decoration: none;  
   color: #151515;
-  
   transition-delay: 0s;
   transition-duration: 0.36s;
   transition-property: all;
@@ -75,6 +78,10 @@ html {
 
 #nav:hover a {
   text-indent:0px;
+  color: #EEFFE5;
+}
+
+#nav:hover {
   color: #EEFFE5;
 }
 
@@ -141,6 +148,33 @@ html {
   -ms-animation: fadein 1.4s; /* Internet Explorer */
   -o-animation: fadein 1.4s; /* Opera < 12.1 */
   animation: fadein 1.4s;
+}
+
+.Message-listed {
+  display: table;
+  position: relative;
+  z-index: 1000;
+  margin: 8px;
+  top: .5em;
+  right: .5em;
+  width: 75%;
+  background-color: #0074D9;
+  color: #fff;
+  opacity: .7;
+  -moz-transition: all 1.4s ease;
+  -webkit-transition: all 1.4s ease;
+  -o-transition: all 1.4s ease;
+  -ms-transition: all 1.4s ease;
+  transition: all 1.4s ease;
+  -webkit-animation: fadein 1.4s; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: fadein 1.4s; /* Firefox < 16 */
+  -ms-animation: fadein 1.4s; /* Internet Explorer */
+  -o-animation: fadein 1.4s; /* Opera < 12.1 */
+  animation: fadein 1.4s;
+}
+
+.Message-listed:hover {
+  opacity: 1;
 }
 
 .Message:hover {

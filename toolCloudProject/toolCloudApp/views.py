@@ -390,7 +390,7 @@ def view_notifications(request):
     if request.user.is_anonymous():
         return HttpResponseRedirect('/accounts/login')
     else:
-        return render_to_response('view_notifs.html', content.genViewNotifications(request))
+        return render_to_response('view_notifs.html', content.genBaseLoggedIn(request))
 
 def all_sheds(request):
     if request.user.is_anonymous():
