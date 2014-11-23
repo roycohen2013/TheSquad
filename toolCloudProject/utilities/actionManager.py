@@ -68,7 +68,7 @@ def processActions():
                 #send a request notification to the user who's tool is being requested
                 #the response options will be "Accept" or "Deny"
                 question = "Can " + actionInstance.requester.user.username + " borrow your " + \
-                                actionInstance.tool.name + " from " + actionInstance.tool.shed + "?"
+                                actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + "?"
                 userOptions = "Accept,Deny" #adding options       
                 notifUtil.createResponseNotif(actionInstance, actionInstance.tool.owner, \
                                                             question, options = userOptions)
@@ -89,9 +89,9 @@ def processActions():
                         #move tool location to requester's shed
                         targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
                         #save the name of the shed that the tool used to be in
-                        actionInstance.workSpace = actionInstance.tool.shed.name
+                        actionInstance.workSpace = actionInstance.tool.myShed.name
                         #remove the tool from it's old location first
-                        shedUtil.removeToolFromShed(actionInstance.tool.shed, actionInstance.tool)
+                        shedUtil.removeToolFromShed(actionInstance.tool.myShed, actionInstance.tool)
                         #then add the tool to the requester's personal shed
                         shedUtil.addToolToShed(targetShed, actionInstance.tool)
                         #delete the borrow request notification from the database so it no longer displays
@@ -104,7 +104,7 @@ def processActions():
                     else:
                         #send an info notification to the requester saying he was denied
                         response = "You have been denied from borrowing " + \
-                                        actionInstance.tool.name + " from " + actionInstance.tool.shed
+                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed
                         notifUtil.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
@@ -141,7 +141,7 @@ def processActions():
                 #update the tool's borrower field
                 actionInstance.tool.borrower = None
                 #remove the tool from personal shed and move it back to the shed it was borrowed from
-                shedUtil.removeToolFromShed(actionInstance.tool.shed, actionInstance.tool)
+                shedUtil.removeToolFromShed(actionInstance.tool.myShed, actionInstance.tool)
                 oldShed = toolUtil.getShedByName(actionInstance.workSpace)
                 shedUtil.addToolToShed(oldShed, actionInstance.tool)
                 #move to idle state
