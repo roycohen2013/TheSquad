@@ -19,7 +19,7 @@ import utilities.toolUtilities as toolUtils
 import unittest
 
 
-#@unittest.skip("skipping UI tests tests")    #can be used for skipping past certain tests
+@unittest.skip("skipping UI tests tests")    #can be used for skipping past certain tests
 class UITests (LiveServerTestCase):
 	fixtures = ['initDBData.json']
 	

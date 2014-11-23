@@ -28,7 +28,7 @@ class profileTests (TestCase):
 
             self.genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "Coruscant", "Coruscant", "active", 0) #mk User
             
-            self.getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
+            self.getProfile = Profile.objects.get (streetAddress = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
         
         except:
             self.fail ("Error while generating user")
@@ -104,8 +104,8 @@ class profileTests (TestCase):
     def test_UpdateAddress(self):
         """
         """
-        profUtils.updateAddress (self.getProfile, "Hut, Dune Sea, near Mos Eisley, Tatooine")
-        self.assertEqual (profUtils.getAddress (self.getProfile), "Hut, Dune Sea, near Mos Eisley, Tatooine")
+        profUtils.updateAddress (self.getProfile, "Hut, Dune Sea", "Mos Eisley", "Tatooine", "Sandpeople")
+        self.assertEqual (profUtils.getAddress (self.getProfile), "Hut, Dune Sea")
 
 
     def test_GetShareZone(self):
