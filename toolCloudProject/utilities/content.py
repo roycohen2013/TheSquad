@@ -7,20 +7,6 @@ import utilities.toolUtilities as toolUtil
 import utilities.notificationUtilities as notifUtil
 
 """
-	Build content dict using other utilities (deprecated - TO BE DELETED)
-"""
-#def genContent(request):
-#	if request.user.is_anonymous():#no special changes of content
-#		return defaults
-#	custom = defaults.copy()
-#	name = request.user.username
-#	replace(custom, 'name', name)
-#	custom['first_name']=request.user.first_name
-#	custom['last_name']=request.user.last_name
-#	profile = profileUtil.getProfileFromUser(request.user)
-#	custom['address']=profileUtil.getAddress(profile)
-#	return custom
-"""
 	Header - String
 	Footer - String
 	copyrightYear - String
