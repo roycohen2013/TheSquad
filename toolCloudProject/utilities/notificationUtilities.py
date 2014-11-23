@@ -37,8 +37,8 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     elif isinstance(sourceObj, Action):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 
-
     newNotification.save()
+    processActions()
     return newNotification
 
 
@@ -55,8 +55,8 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
     elif isinstance(sourceObj, Action):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
-    # newNotification = Notification(source=sourceObj, content = content, recipient=recipientProfile,notificationType="request")
     newNotification.save()
+    processActions()
     return newNotification
 
 
@@ -87,6 +87,7 @@ def isRequestNotif(notifObj):
 def acceptBorrowRequest(notifObj):
     notifObj.response = "Accept"
     notifObj.save()
+    processActions()
 
 """
     For tool borrow request notification when the recipient clicks
@@ -98,6 +99,7 @@ def acceptBorrowRequest(notifObj):
 def denyBorrowRequest(notifObj):
     notifObj.response =  "Deny"
     notifObj.save()
+    processActions()
 
 """
     Gets all the notifications for a Profile object.

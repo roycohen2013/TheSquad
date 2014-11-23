@@ -7,9 +7,6 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils import timezone
-import sys
-sys.path.append("..")
-from utilities import actionManager
 
 """
     The Profile class is an extension of Django's User class
@@ -165,13 +162,6 @@ class Notification(models.Model):
 
     response = models.CharField(max_length="40",null=True)#Starts off being null. when filled out the notification has been responded to
 
-    """
-        Overrides save() to additionally call processActions() in actionManager.py
-        which will update all notifications and actions
-    """
-    def save(self, *args, **kwargs):
-        super(Notification, self).save(*args, **kwargs) # Call the "real" save() method.
-        actionManager.processActions()
 
 
 """
@@ -186,15 +176,3 @@ class Action(models.Model):
     currrentState = models.CharField(max_length=20)
     timeStamps = models.CharField(max_length=560,default = "")#CSV timestamps for every state
     workSpace = models.CharField(max_length=200,null = True)#for use in state machine
-
-
-    """
-        Overrides save() to additionally call processActions() in actionManager.py
-        which will update all notifications and actions
-    """
-    def save(self, *args, **kwargs):
-        #do_something()
-        super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
-        self.timeStamps += "[" + self.currrentState +" "+ str(timezone.now()) + "]"  + ','
-        super(Action, self).save(*args, **kwargs) # Call the "real" save() method.
-        actionManager.processActions()

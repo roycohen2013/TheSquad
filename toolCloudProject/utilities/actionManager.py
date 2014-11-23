@@ -62,6 +62,7 @@ def processActions():
                 #proceed to next state where the owner is asked if this user can borrow his tool
                 actionInstance.currrentState = "askOwner"
                 actionInstance.save()
+                processActions()
 
             if actionInstance.currrentState == "askOwner":
                 #send a request notification to the user who's tool is being requested
@@ -74,6 +75,7 @@ def processActions():
                 #proceed to next state
                 actionInstance.currrentState = "acceptDecline"
                 actionInstance.save()
+                processActions()
 
             elif actionInstance.currrentState == "acceptDecline":
                 #if the owner of the tool has responded to the tool request notification:
@@ -107,6 +109,7 @@ def processActions():
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
+                processActions()
 
             elif actionInstance.currrentState == "borrowed":
                 #check if borrowedTime of tool was older than [maxBorrowTime] days ago
@@ -117,10 +120,13 @@ def processActions():
                     #move to overdraft state
                     actionInstance.currentState = "overdraft"
                     actionInstance.save()
+                processActions()
 
             elif actionInstance.currrentState == "overdraft":
                 #disable the user from borrowing any more tools
                 actionInstance.tool.borrower.canBorrow = False
+                actionInstance.save()
+                processActions()
 
             #moving into the "returned" state is handled by the UI
             elif actionInstance.currrentState == "returned":
@@ -141,10 +147,12 @@ def processActions():
                 #move to idle state
                 actionInstance.currentState = "idle"
                 actionInstance.save()
+                processActions()
 
             elif actionInstance.currrentState == "idle":
                 #delete action object
                 actionInstance.delete()
+                processActions()
 
     
         elif actionUtil.isShedRequest(actionObj) == True:
@@ -160,6 +168,7 @@ def processActions():
                 #move to acceptDeny state
                 actionInstance.currentState = "acceptDeny"
                 actionInstance.save()
+                processActions()
 
             elif actionInstance.currentState == "acceptDeny":
                 #if the notification has been responded to
@@ -179,7 +188,9 @@ def processActions():
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
+                processActions()
 
             elif actionInstance.currentState == "idle":
                 #delete the action object from the database
                 actionInstance.delete()
+                processActions()

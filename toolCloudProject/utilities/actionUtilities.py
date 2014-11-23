@@ -22,6 +22,7 @@ from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 def createBorrowRequestAction(tool,requester):
 	newAction = Action(tool=tool,requester = requester,actionType="tool",currrentState = "userBorrowRequest")
 	newAction.save()
+	processActions()
 	return newAction
 
 
@@ -32,6 +33,7 @@ def createBorrowRequestAction(tool,requester):
 def createShedRequestAction(shed,requester):
 	newAction = Action(shed=shed,requester = requester,actionType="shed",currrentState= "userShedRequest")
 	newAction.save()
+	processActions()
 	return newAction
 
 
