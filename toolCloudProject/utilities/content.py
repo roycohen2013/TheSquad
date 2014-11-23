@@ -74,14 +74,14 @@ def addGoodLogoutNoti(contentDict):
 	adds a borrow request sent notification
 """
 def addBorrowRequestNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Borrow request sent.")
+	newNoti = notifUtil.createTempInfoNotif("Borrow request sent.", "success")
 	return addNoti(contentDict, newNoti)
 
 """
 	adds a shed join request sent notification
 """
 def addShedJoinRequestNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Shed join request sent.")
+	newNoti = notifUtil.createTempInfoNotif("Shed join request sent.", "success")
 	return addNoti(contentDict, newNoti)
 
 """
