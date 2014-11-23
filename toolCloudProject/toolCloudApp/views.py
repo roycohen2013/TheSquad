@@ -98,6 +98,37 @@ def tool_submission(request):
         context['form'] = form
         return render_to_response('tool_creation.html', context)
 
+def edit_tool(request, id):
+    #stuff
+
+#a view for the creation of a new Shed
+def create_tool_shed(request):
+    if request.user.is_anonymous():
+        #tell user they need to be logged in to do that
+        #add message flag that will display to user "you must be logged in to..."
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
+    else:
+        if request.method == 'POST':
+            form = ShedCreationForm(request.user, request.POST)
+            
+            if form.is_valid():
+                shed = form.save()
+                #send email
+                #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
+                context = {}
+                context['name'] = form.cleaned_data['name']
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response('shed_registration_success.html', context)
+        else:
+            form = ShedCreationForm(request.user)
+        context = {}
+        context.update(csrf(request))
+        context['form'] = form
+        context.update(content.genBaseLoggedIn(request))
+        return render_to_response('shed_creation.html', context)
+
+def edit_shed(request, id):
+    #other stuff
 
 #a view that allows the user to see their profile
 def view_profile(request, username=None):
@@ -360,32 +391,6 @@ def all_sheds(request):
         context['mySheds'] = memberSheds
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('all_sheds.html', context)
-    
-#a view for the creation of a new Shed
-def create_tool_shed(request):
-    if request.user.is_anonymous():
-        #tell user they need to be logged in to do that
-        #add message flag that will display to user "you must be logged in to..."
-        return HttpResponseRedirect('/accounts/login/') #redirect to login page
-    else:
-        if request.method == 'POST':
-            form = ShedCreationForm(request.user, request.POST)
-            
-            if form.is_valid():
-                shed = form.save()
-                #send email
-                #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-                context = {}
-                context['name'] = form.cleaned_data['name']
-                context.update(content.genBaseLoggedIn(request))
-                return render_to_response('shed_registration_success.html', context)
-        else:
-            form = ShedCreationForm(request.user)
-        context = {}
-        context.update(csrf(request))
-        context['form'] = form
-        context.update(content.genBaseLoggedIn(request))
-        return render_to_response('shed_creation.html', context)
 
 def about_us(request):
     return render_to_response('about_us.html', content.genSuper())
