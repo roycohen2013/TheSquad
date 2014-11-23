@@ -71,6 +71,20 @@ def addGoodLogoutNoti(contentDict):
 	return addNoti(contentDict, newNoti)
 
 """
+	adds a borrow request sent notification
+"""
+def addBorrowRequestNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Borrow request sent.")
+	return addNoti(contentDict, newNoti)
+
+"""
+	adds a shed join request sent notification
+"""
+def addShedJoinRequestNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Shed join request sent.")
+	return addNoti(contentDict, newNoti)
+
+"""
 	adds the passed notification to the passed dict, abiding by django content dict standard
 """
 def addNoti(contentDict, notification):

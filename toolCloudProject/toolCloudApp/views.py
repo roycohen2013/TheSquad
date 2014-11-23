@@ -157,7 +157,7 @@ def view_current_profile(request):
         return render_to_response('my_account.html', context)
 
 #a view that will allow us to see an individual tool
-def view_tool_page(request, id):
+def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to the content dict
     if request.user.is_anonymous():
         #tell user they need to be logged in to that
         #add message flag that will display to user "you must be logged in to..."
@@ -198,9 +198,11 @@ def view_tool_page(request, id):
         context['ownedByUser'] = ownedByUser
         context['meetsMin'] = meetsMinRep
         context.update(content.genBaseLoggedIn(request))
+        if contextArg:
+            context.update(contextArg)
         return render_to_response('tool_page.html', context)
      
-def view_shed_page(request, id):
+def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to the content dict
     if request.user.is_anonymous():
         return HttpResponseRedirect("/accounts/login")
     else:
@@ -236,6 +238,8 @@ def view_shed_page(request, id):
         context['meetsMin'] = meetsMinRep
         context['alreadyMember'] = shedMembership
         context.update(content.genBaseLoggedIn(request))
+        if contextArg:
+            context.update(contextArg)
         return render_to_response('shed_page.html', context)
 
 def view_community_page(request, sharezone):
@@ -277,7 +281,7 @@ def borrow_tool(request, id):
         toolObject = toolUtil.getToolFromID(id)
         ownerProfile = toolObject.owner
         actionObject = actionUtil.createBorrowRequestAction(toolObject, borrowerProfile)
-        return HttpResponseRedirect('/tools/request_sent')
+        return HttpResponseRedirect('/tools/' + id + '/request_sent')
 
 def join_shed(request, id):
     if request.user.is_anonymous():
@@ -287,7 +291,7 @@ def join_shed(request, id):
         shedObject = shedUtil.getShedFromID(id)
         ownerProfile = shedObject.owner
         actionObject = actionUtil.createShedRequestAction(shedObject, joinerProfile)
-        return HttpResponseRedirect('/sheds/request_sent')
+        return HttpResponseRedirect('/sheds/' + id + '/request_sent')
 
 def request_sent(request):
     return render_to_response("request_sent.html", content.genBaseLoggedIn(request))
