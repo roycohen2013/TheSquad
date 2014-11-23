@@ -270,7 +270,7 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         userProfile = profileUtil.getProfileFromUser(request.user)
         meetsMinRep = userProfile.reputation >= shedObj.minimumReputation
         shedMembership = shedUtil.checkForMembership(userProfile, id)
-        actions = actionUtil.getProfileAction
+        actions = actionUtil.getProfileAction(profileUtil.getProfileFromUser(request.user))
         actionRequest = None
         for action in actions:
             if action.shed == shedObj:
