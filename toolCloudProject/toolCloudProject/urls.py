@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from utilities import content
 
 from django.contrib import admin
 admin.autodiscover()
@@ -31,14 +32,15 @@ urlpatterns = patterns('',
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', name="toolPage"),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
 	url(r'^tools/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_tool', name="toolEdit"),
-	url(r'^tools/request_sent/$', 'toolCloudApp.views.request_sent'),
+	url(r'^tools/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_tool_page', content.addBorrowRequestNoti(dict())),
 
 	# Shed urls
 	url(r'^sheds/$', 'toolCloudApp.views.all_sheds'),
 	url(r'^sheds/create/$', 'toolCloudApp.views.create_tool_shed'),
 	url(r'^sheds/(?P<id>\d+)/$', 'toolCloudApp.views.view_shed_page', name="shedPage"),
 	url(r'^sheds/(?P<id>\d+)/join/$', 'toolCloudApp.views.join_shed', name="joinRequest"),
-	url(r'^sheds/request_sent/$', 'toolCloudApp.views.request_sent'),
+	url(r'^sheds/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_shed', name="shedEdit"),
+	url(r'^sheds/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_shed_page', content.addShedJoinRequestNoti(dict())),
 
 	# Community urls
 	url(r'^communities/(?P<sharezone>\d+)/$', 'toolCloudApp.views.view_community_page', name="communityPage"),
