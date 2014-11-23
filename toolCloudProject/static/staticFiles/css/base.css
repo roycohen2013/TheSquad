@@ -182,15 +182,15 @@ html {
 }
 
 .Message--orange {
-  background-color: #F39C12;
+  background-color: rgb(254,116,71);
 }
 
 .Message--red {
-  background-color: #FF4136;
+  background-color: rgb(182,40,15);
 }
 
 .Message--green {
-  background-color: #2ECC40;
+  background-color: rgb(103,233,103);
 }
 
 .Message-icon {
@@ -224,7 +224,6 @@ html {
   border: none;
   padding: 10px 15px;
   font-size: 16px;
-  font-family: 'Source Sans Pro';
   color: #fff;
   outline: none;
   cursor: pointer;
@@ -268,7 +267,8 @@ form label {
   font-size: 20px;
 }
 
-form input {
+form input,
+form select {
   float: right;
   width: 50%;
   --webkit-border-radius: 5px;
