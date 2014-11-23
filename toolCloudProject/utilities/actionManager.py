@@ -70,7 +70,7 @@ def processActions():
                 question = "Can " + actionInstance.requester.user.username + " borrow your " + \
                                 actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + "?"
                 userOptions = "Accept,Deny" #adding options       
-                notifUtil.createResponseNotif(actionInstance, actionInstance.tool.owner, \
+                utilities.notificationUtilities.createResponseNotif(actionInstance, actionInstance.tool.owner, \
                                                             question, options = userOptions)
                 #proceed to next state
                 actionInstance.currrentState = "acceptDecline"
@@ -79,9 +79,9 @@ def processActions():
 
             elif actionInstance.currrentState == "acceptDecline":
                 #if the owner of the tool has responded to the tool request notification:
-                if notifUtil.notifHasResponse(getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(getNotifOfAction(actionInstance)):
                    # if the owner of the tool accepted the tool request:
-                    if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
                         #update the tool's borrowedTime field
                         actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
@@ -105,7 +105,7 @@ def processActions():
                         #send an info notification to the requester saying he was denied
                         response = "You have been denied from borrowing " + \
                                         actionInstance.tool.name + " from " + actionInstance.tool.myShed
-                        notifUtil.createInfoNotif(actionInstance,actionInstance.requester,response)
+                        utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
@@ -116,7 +116,7 @@ def processActions():
                 if toolUtil.toolIsOverdraft(actionInstance.tool):
                     #notify requester that they are overdraft and they should return [tool]
                     message = "Uh oh...your " + actionInstance.tool.name + " is overdraft!"
-                    notifUtil.createInfoNotif(actionInstance, actionInstance.requester, message)
+                    utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.requester, message)
                     #move to overdraft state
                     actionInstance.currentState = "overdraft"
                     actionInstance.save()
@@ -133,7 +133,7 @@ def processActions():
                 #notify tool owner that his tool has been returned
                 message = "Your " + actionInstance.tool.name + " has been returned to " + \
                                 actionInstance.tool.myShed.name
-                notifUtil.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
+                utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
                 #reduce user reputation by 5 for every day the tool is late!
                 timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
                 for day in range(timeSinceBorrowed.days):
@@ -172,9 +172,9 @@ def processActions():
 
             elif actionInstance.currentState == "acceptDeny":
                 #if the notification has been responded to
-                if notifUtil.notifHasResponse(getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(getNotifOfAction(actionInstance)):
                     #if the admin responded 'Accept'
-                    if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
                         #add the guy to the shed
                         shedUtil.addMemberToShed(actionInstance.shed, actionInstance.requester)
                         #delete the notif that asked about accepting and denying
@@ -184,7 +184,7 @@ def processActions():
                     else:
                         #send an info notification to the requester saying he was denied
                         message = "You have been denied from joining " + actionInstance.shed.name
-                        notifUtil.createInfoNotif(actionInstance,actionInstance.requester,message)
+                        utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,message)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
