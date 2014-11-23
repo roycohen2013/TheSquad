@@ -33,7 +33,7 @@ def home(request):
     context.update(content.genSuper())
     if request.user.is_anonymous():
         return render(request, 'loggedOutBase.html', context)
-    return HttpResponseRedirect('/accounts/loggedin')
+    return render_to_response('userHome.html', content.genUserHome(request))
 
 #Import a user registration form
 from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm

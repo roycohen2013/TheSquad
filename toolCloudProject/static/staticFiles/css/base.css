@@ -123,13 +123,14 @@ html {
 
 .Message {
   display: table;
-  position: fixed;
-  top: 1em;
-  right: 1em;
-  margin: 40px auto 0;
-  width: 500px;
+  position: absolute;
+  z-index: 1000;
+  top: .5em;
+  right: .5em;
+  width: 30%;
   background-color: #0074D9;
   color: #fff;
+  opacity: .7;
   -moz-transition: all 1.4s ease;
   -webkit-transition: all 1.4s ease;
   -o-transition: all 1.4s ease;
@@ -140,6 +141,10 @@ html {
   -ms-animation: fadein 1.4s; /* Internet Explorer */
   -o-animation: fadein 1.4s; /* Opera < 12.1 */
   animation: fadein 1.4s;
+}
+
+.Message:hover {
+  opacity: 1;
 }
 
 @keyframes fadein {
