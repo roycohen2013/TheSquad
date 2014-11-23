@@ -36,11 +36,11 @@ ADAM (Code Fairy) LOOK HERE!!
     by the state machine.
 """
 
-import profileUtilities as profileUtil
-import shedUtilities as shedUtil
-import toolUtilities as toolUtil
-import notificationUtilities as notifUtil
-import actionUtilities as actionUtil
+import utilities.profileUtilities as profileUtil
+import utilities.shedUtilities as shedUtil
+import utilities.toolUtilities as toolUtil
+import utilities.notificationUtilities
+import utilities.actionUtilities as actionUtil
 import sys
 sys.path.append("..")
 import os

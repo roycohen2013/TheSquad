@@ -2,7 +2,7 @@
     Provides functionality for all front end requests regarding notifications.
 """
 
-import actionManager
+import utilities.actionManager
 import sys
 sys.path.append("..")
 import os
