@@ -2,6 +2,7 @@
     Provides functionality for all front end requests regarding notifications.
 """
 
+import actionManager
 import sys
 sys.path.append("..")
 import os
@@ -38,7 +39,7 @@ def createInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 
     newNotification.save()
-    processActions()
+    actionManager.processActions()
     return newNotification
 
 
@@ -56,7 +57,7 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
     newNotification.save()
-    processActions()
+    actionManager.processActions()
     return newNotification
 
 
@@ -87,7 +88,7 @@ def isRequestNotif(notifObj):
 def acceptBorrowRequest(notifObj):
     notifObj.response = "Accept"
     notifObj.save()
-    processActions()
+    actionManager.processActions()
 
 """
     For tool borrow request notification when the recipient clicks
@@ -99,7 +100,7 @@ def acceptBorrowRequest(notifObj):
 def denyBorrowRequest(notifObj):
     notifObj.response =  "Deny"
     notifObj.save()
-    processActions()
+    actionManager.processActions()
 
 """
     Gets all the notifications for a Profile object.

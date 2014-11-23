@@ -48,7 +48,7 @@ def returnTool(toolObj):
 	actionObj = actionUtilities.getBorrowedToolAction(toolObj)
 	actionObj.currentState = "returned"
 	actionObj.save()
-
+	actionManager.processActions()
 
 """
 	Get the name of a tool.
