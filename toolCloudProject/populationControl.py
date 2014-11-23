@@ -61,6 +61,7 @@ for x in range(len(toolNames)):
 	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
 					isAvailable = True, tags = 'tags')
 	newTool.owner = profileObjects[x%len(profileObjects)]
+	newTool.myShed = shedObjects[x%len(shedObjects)]
 	newTool.save()
 	toolObjects.append(newTool)
 
