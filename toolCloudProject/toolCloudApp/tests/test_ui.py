@@ -58,12 +58,20 @@ class UITests (LiveServerTestCase):
 		
 		self.selenium.find_element_by_id ("id_phone_number").send_keys ("0000000000")
 		
-		self.selenium.find_element_by_id ("id_share_zone").send_keys ("Minas Tirith")
+		self.selenium.find_element_by_id ("id_street_address").send_keys ("1 Citadel, 4th level")
+		
+		self.selenium.find_element_by_id ("id_city").send_keys ("Minas Tirith")
+		
+		for obj in self.selenium.find_elements_by_id ("id_state"):
+			obj.click()
+			break
+		
+		self.selenium.find_element_by_id ("id_zip_code").send_keys ("11111")
 		
 		self.selenium.find_element_by_xpath("//*[@value='Sign Up']").click()
 
 		try:
-			Profile.objects.get (sharezone = "Minas Tirith")
+			Profile.objects.get (city = "Minas Tirith")
 		except:
 			self.fail ("New user not saved!")
 		
@@ -76,6 +84,10 @@ class UITests (LiveServerTestCase):
 		self.selenium.find_element_by_id ("id_description").send_keys ("The reforged blade that was broken")
 		
 		self.selenium.find_element_by_id ("id_tags").send_keys  ("sword")
+		
+		self.selenium.find_element_by_id ("id_maximum_borrow_time").send_keys ("2")
+		
+		self.selenium.find_element_by_id ("id_minimum_reputation").send_keys ("100")
 		
 		self.selenium.find_element_by_xpath("//*[@value='Submit Tool']").click()
 
@@ -102,7 +114,7 @@ class UITests (LiveServerTestCase):
 		self.selenium.get (self.live_server_url + "/tools/")
 		
 		body = self.selenium.find_element_by_tag_name ("body").text
-		body = body.split ("All Tools on ToolCloud:")[1]
+		body = body.split ("All Tools on ToolCloud")[1]
 		body = body.split ("\n")
 		
 		for ind_tool in Tool.objects.all():
@@ -111,9 +123,9 @@ class UITests (LiveServerTestCase):
 				self.fail (name + " missing from list!")
 	
 	def test_shed_joining_other (self):
-		self.selenium.get (self.live_server_url + "/sheds/1/")
+		self.selenium.get (self.live_server_url + "/sheds/1/join/")
 		
-		self.selenium.find_element_by_xpath("//button[contains(.,'Join this shed')]").click()
+		#self.selenium.find_element_by_xpath("//button[contains(.,'Join this shed')]").click()
 		
 		self.assertIn (profUtils.getProfileFromUsername ("TaikhoomAttar"), Shed.objects.get (name = "Jake's Shed").members.all())
 	
