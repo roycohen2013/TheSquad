@@ -5,7 +5,7 @@
 {% if notifs %}
   {% for noti in notifs %}
     {% if noti.notificationType == "request" %}<!-- request type -->
-      <div class="Message-listed Message--orange">
+      <div class="Message Message-listed Message--orange">
         <div class="Message-icon">
           <i class="fa fa-exclamation"></i>
         </div>
@@ -21,7 +21,7 @@
         <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
       </div>
     {% elif noti.notificationType == "success" %}<!-- success type -->
-      <div class="Message-listed Message--green" id="js-timer">
+      <div class="Message Message-listed Message--green" id="js-timer">
         <div class="Message-icon">
           <i class="fa fa-check"></i>
         </div>
@@ -31,7 +31,7 @@
         <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
       </div>
     {% elif noti.notificationType == "alert" %}<!-- alert type -->
-      <div class="Message-listed Message--red">
+      <div class="Message Message-listed Message--red">
         <div class="Message-icon">
           <i class="fa fa-times"></i>
         </div>
@@ -41,7 +41,7 @@
         <button class="Message-close js-messageClose"><i class="fa fa-times"></i></button>
       </div>
     {% else %} <!-- info type (default) -->
-      <div class="Message-listed" id="js-timer">
+      <div class="Message Message-listed" id="js-timer">
         <div class="Message-icon">
           <i class="fa fa-bell-o"></i>
         </div>
