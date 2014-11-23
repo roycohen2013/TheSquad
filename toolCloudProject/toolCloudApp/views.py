@@ -100,6 +100,7 @@ def tool_submission(request):
 
 def edit_tool(request, id):
     #stuff
+    pass
 
 #a view for the creation of a new Shed
 def create_tool_shed(request):
@@ -129,7 +130,8 @@ def create_tool_shed(request):
 
 def edit_shed(request, id):
     #other stuff
-
+    pass
+    
 #a view that allows the user to see their profile
 def view_profile(request, username=None):
     if request.user.is_anonymous():
