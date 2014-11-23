@@ -346,9 +346,6 @@ def join_shed(request, id):
         actionObject = actionUtil.createShedRequestAction(shedObject, joinerProfile)
         return HttpResponseRedirect('/sheds/' + id + '/request_sent')
 
-def request_sent(request):
-    return render_to_response("request_sent.html", content.genBaseLoggedIn(request))
-
 def request_accept(request, id):
     notifObject = Notification.objects.get(id = id)
     notifObject = notifUtil.respondToNotif(notifObj, "Accept")
