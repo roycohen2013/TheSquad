@@ -348,7 +348,7 @@ def join_shed(request, id):
 
 def request_accept(request, id):
     notifObject = Notification.objects.get(id = id)
-    notifObject = notifUtil.respondToNotif(notifObj, "Accept")
+    notifObject = notifUtil.respondToNotif(notifObject, "Accept")
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
@@ -368,7 +368,7 @@ def request_accept(request, id):
 
 def request_decline(request, id):
     notifObject = Notification.objects.get(id = id)
-    notifObject = notifUtil.respondToNotif(notifObj, "Deny")
+    notifObject = notifUtil.respondToNotif(notifObject, "Deny")
     actionObject = notifUtil.getNotifSourceObject(notifObject)
     requesterProfile = actionObject.requester
     context = {}
