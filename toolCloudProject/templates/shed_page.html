@@ -26,8 +26,10 @@
     <i>No one has submitted any tools to this shed yet!</i>
   {% endif %}
 </ul>  
-{% if meetsMin and not alreadyMember %}
+{% if meetsMin and not alreadyMember and not pendingRequest %}
   <a class="btn btn-default" href="/sheds/{{shed.id}}/join">Join this shed</a>
+{% elif pendingRequest %}
+  <i>Your request to join this shed is currently pending.</i>
 {% elif not meetsMin %}
   <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>
 {% endif %} 

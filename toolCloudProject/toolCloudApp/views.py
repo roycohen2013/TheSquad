@@ -131,7 +131,7 @@ def create_tool_shed(request):
 def edit_shed(request, id):
     #other stuff
     pass
-    
+
 #a view that allows the user to see their profile
 def view_profile(request, username=None):
     if request.user.is_anonymous():
@@ -213,6 +213,15 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         borrower = toolUtil.getToolBorrower(toolObj)
         condition = toolUtil.getToolConditionReadable(toolObj)
         available = toolUtil.isToolAvailable(toolObj)
+        actions = actionUtil.getProfileAction(profileUtil.getProfileFromUser(request.user))
+        actionRequest = None
+        for action in actions:
+            if action.tool == toolObj:
+                actionRequest = action
+        if actionRequest:
+            pendingRequest = True
+        else:
+            pendingRequest = False
         if profileUtil.getProfileFromUser(request.user) == owner:
             ownedByUser = True
         else:
@@ -230,6 +239,7 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         context['available'] = available
         context['ownedByUser'] = ownedByUser
         context['meetsMin'] = meetsMinRep
+        context['pendingRequest'] = pendingRequest
         context.update(content.genBaseLoggedIn(request))
         if contextArg:
             context.update(contextArg)
@@ -260,6 +270,15 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         userProfile = profileUtil.getProfileFromUser(request.user)
         meetsMinRep = userProfile.reputation >= shedObj.minimumReputation
         shedMembership = shedUtil.checkForMembership(userProfile, id)
+        actions = actionUtil.getProfileAction
+        actionRequest = None
+        for action in actions:
+            if action.shed == shedObj:
+                actionRequest = action
+        if actionRequest:
+            pendingRequest = True
+        else:
+            pendingRequest = False
         context = {}
         context.update(csrf(request))
         context['shed'] = shedObj
@@ -270,6 +289,7 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         context['tools'] = tools
         context['meetsMin'] = meetsMinRep
         context['alreadyMember'] = shedMembership
+        context['pendingRequest'] = pendingRequest
         context.update(content.genBaseLoggedIn(request))
         if contextArg:
             context.update(contextArg)

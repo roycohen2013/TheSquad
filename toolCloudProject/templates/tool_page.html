@@ -13,12 +13,14 @@
   <i>The owner has not tagged this tool with anything.</i>
 {% endif %}
 
-{% if available and not ownedByUser and meetsMin %}
+{% if available and not ownedByUser and meetsMin and not pendingRequest %}
   <a class="btn btn-default" href="/tools/{{ tool.id }}/borrow">Borrow this tool</a>
+{% elif pendingRequest %}
+  <i>Your request to borrow this tool is currently pending.</i>
 {% elif not meetsMin %}
-  <h2>Sorry, but you do not meet the minimum reputation set by the owner to borrow this tool.</h2>
+  <i>Sorry, but you do not meet the minimum reputation set by the owner to borrow this tool.</i>
 {% elif not ownedByUser %}
-  <h2>Sorry, but this tool is currently not available to borrow.</h2>
+  <i>Sorry, but this tool is currently not available to borrow.</i>
   {% if borrower %}
     <h1>Current borrower: <a href = "/accounts/profile/{{borrower.user.username}}">{{borrower.user.username}}</a></h1>
   {% endif %}
