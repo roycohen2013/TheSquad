@@ -19,14 +19,14 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
 # python manage.py test toolCloudApp.tests -v 2
 
 
-@unittest.skip("skipping Profile tests")    #can be used for skipping past certain tests
+#@unittest.skip("skipping Profile tests")    #can be used for skipping past certain tests
 class profileTests (TestCase):
     fixtures = ["initDBData.json"]
 
     def setUp (self):
         try:
 
-            self.genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "active", 0) #mk User
+            self.genProfile = profUtils.createNewProfile ("Obi-Wan", "Kenobi", "ben", "ben@jedi.edu","satine", "0000000000", "Room 42, Jedi Temple Master's Quarters", "Jedi Temple", "Coruscant", "Coruscant", "active", 0) #mk User
             
             self.getProfile = Profile.objects.get (address = "Room 42, Jedi Temple Master's Quarters") #make sure we can catch him from the db
         
