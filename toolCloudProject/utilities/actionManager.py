@@ -36,17 +36,16 @@ ADAM (Code Fairy) LOOK HERE!!
     by the state machine.
 """
 
+import profileUtilities as profileUtil
+import shedUtilities as shedUtil
+import toolUtilities as toolUtil
+import notificationUtilities as notifUtil
+import actionUtilities as actionUtil
 import sys
 sys.path.append("..")
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "toolCloudProject.settings")
-from django.contrib.auth.models import User
 from django.utils import timezone
-from utilities import profileUtilities as profileUtil
-from utilities import shedUtilities as shedUtil
-from utilities import toolUtilities as toolUtil
-from utilities import notificationUtilities as notifUtil
-from utilities import actionUtilities as actionUtil
 
 """
     Update every Action object in the database depending
@@ -54,7 +53,7 @@ from utilities import actionUtilities as actionUtil
 """
 def processActions():
     #Re-process all action objects in the database
-    for actionInstance in getAllActions():
+    for actionInstance in actionUtil.getAllActions():
         #states allow system to process and respond to all actions asynchronously
         #Tool borrow state machine
         if actionUtil.isToolRequest() == True:
@@ -78,7 +77,7 @@ def processActions():
 
             elif actionInstance.currrentState == "acceptDecline":
                 #if the owner of the tool has responded to the tool request notification:
-                if notifHasResponse(getNotifOfAction(actionInstance)):
+                if notifUtil.notifHasResponse(getNotifOfAction(actionInstance)):
                    # if the owner of the tool accepted the tool request:
                     if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
                         #update the tool's borrowedTime field
@@ -155,7 +154,7 @@ def processActions():
                 #send shed request notif to all admins of shed and the shed owner
                 adminList = shedUtil.getAllAdminsOfShed(actionInstance.shed)
                 for admin in adminList:
-                    createShedRequestAction(actionInstance.shed,actionInstance.requester)
+                    actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
                 #also send a shed request notif to the owner of the shed
                 actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.shed.owner)
                 #move to acceptDeny state
@@ -164,7 +163,7 @@ def processActions():
 
             elif actionInstance.currentState == "acceptDeny":
                 #if the notification has been responded to
-                if notifHasResponse(getNotifOfAction(actionInstance)):
+                if notifUtil.notifHasResponse(getNotifOfAction(actionInstance)):
                     #if the admin responded 'Accept'
                     if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
                         #add the guy to the shed
@@ -184,4 +183,3 @@ def processActions():
             elif actionInstance.currentState == "idle":
                 #delete the action object from the database
                 actionInstance.delete()
-
