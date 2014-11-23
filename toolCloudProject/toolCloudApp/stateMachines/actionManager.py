@@ -26,6 +26,14 @@ ADAM (Code Fairy) LOOK HERE!!
     it calls a tool utility called returnTool(toolObject) which changes the
     action object's currentState field to "returned". This'll ultimately create a new
     info notif telling the owner that the tool has been returned.
+
+    #### ADDITIONAL SHED JOINING UI IMPLEMENTATIONS #####
+
+    When the "Join Shed" button is clicked on the UI, the UI should call a actionUtilities
+    method createShedRequestAction(shed,requester). That should be all that button needs to do.
+
+    No other shed joining UI stuff is needed. Everything else from that point on is handled
+    by the state machine.
 """
 
 import sys
@@ -49,7 +57,7 @@ def processActions():
     for actionInstance in getAllActions():
         #states allow system to process and respond to all actions asynchronously
         #Tool borrow state machine
-        if isToolRequest() == True:
+        if actionUtil.isToolRequest() == True:
 
             if actionInstance.currrentState == "userBorrowRequest":  #entry point
                 #proceed to next state where the owner is asked if this user can borrow his tool
@@ -79,6 +87,8 @@ def processActions():
                         toolUtil.updateToolBorrower(actionInstance.tool,getUserOfProfile(actionInstance.requester))
                         #move tool location to requester's shed
                         targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
+                        #save the name of the shed that the tool used to be in
+                        actionInstance.workSpace = actionInstance.tool.shed.name
                         #remove the tool from it's old location first
                         shedUtil.removeToolFromShed(actionInstance.tool.shed, actionInstance.tool)
                         #then add the tool to the requester's personal shed
@@ -105,17 +115,11 @@ def processActions():
                     #notify requester that they are overdraft and they should return [tool]
                     message = "Uh oh...your " + actionInstance.tool.name + " is overdraft!"
                     notifUtil.createInfoNotif(actionInstance, actionInstance.requester, message)
-                    #set canBorrow state to false
-                    actionInstance.requester.canBorrow = False
                     #move to overdraft state
                     actionInstance.currentState = "overdraft"
                     actionInstance.save()
 
             elif actionInstance.currrentState == "overdraft":
-                #reduce user reputation by 5 for every day the tool is late!
-                timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
-                for day in range(timeSinceBorrowed.days):
-                    actionInstance.tool.borrower.reputation -= 5
                 #disable the user from borrowing any more tools
                 actionInstance.tool.borrower.canBorrow = False
 
@@ -125,6 +129,16 @@ def processActions():
                 message = "Your " + actionInstance.tool.name + " has been returned to " + \
                                 actionInstance.tool.myShed.name
                 notifUtil.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
+                #reduce user reputation by 5 for every day the tool is late!
+                timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
+                for day in range(timeSinceBorrowed.days):
+                    actionInstance.tool.borrower.reputation -= 5
+                #update the tool's borrower field
+                actionInstance.tool.borrower = None
+                #remove the tool from personal shed and move it back to the shed it was borrowed from
+                shedUtil.removeToolFromShed(actionInstance.tool.shed, actionInstance.tool)
+                oldShed = toolUtil.getShedByName(actionInstance.workSpace)
+                shedUtil.addToolToShed(oldShed, actionInstance.tool)
                 #move to idle state
                 actionInstance.currentState = "idle"
                 actionInstance.save()
@@ -133,7 +147,41 @@ def processActions():
                 #delete action object
                 actionInstance.delete()
 
-    # end of for loop and end of ProcessActions() function
-    # we still need to add code for shed request notifications!
-    # so far we only have the functionality for tool borrowing,
-    # but nothing for sheds
+    
+        elif actionUtil.isShedRequest(actionObj) == True:
+
+            #this state will be entered when the "Join Shed" button is clicked
+            if actionInstance.currentState == "userShedRequest":
+                #send shed request notif to all admins of shed and the shed owner
+                adminList = shedUtil.getAllAdminsOfShed(actionInstance.shed)
+                for admin in adminList:
+                    createShedRequestAction(actionInstance.shed,actionInstance.requester)
+                #also send a shed request notif to the owner of the shed
+                actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.shed.owner)
+                #move to acceptDeny state
+                actionInstance.currentState = "acceptDeny"
+                actionInstance.save()
+
+            elif actionInstance.currentState == "acceptDeny":
+                #if the notification has been responded to
+                if notifHasResponse(getNotifOfAction(actionInstance)):
+                    #if the admin responded 'Accept'
+                    if notifUtil.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
+                        #add the guy to the shed
+                        shedUtil.addMemberToShed(actionInstance.shed, actionInstance.requester)
+                        #delete the notif that asked about accepting and denying
+                        actionUtil.getNotifOfAction(actionInstance).delete()
+                        actionInstance.currentState = "idle"
+                        actionInstance.save()
+                    else:
+                        #send an info notification to the requester saying he was denied
+                        message = "You have been denied from joining " + actionInstance.shed.name
+                        notifUtil.createInfoNotif(actionInstance,actionInstance.requester,message)
+                        #proceed to next state
+                        actionInstance.currrentState = "idle"
+                        actionInstance.save()
+
+            elif actionInstance.currentState == "idle":
+                #delete the action object from the database
+                actionInstance.delete()
+
