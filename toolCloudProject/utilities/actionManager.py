@@ -67,7 +67,7 @@ def processActions():
             if actionInstance.currrentState == "askOwner":
                 #send a request notification to the user who's tool is being requested
                 #the response options will be "Accept" or "Deny"
-                question = "Can " + actionInstance.requester.name + " borrow your " + \
+                question = "Can " + actionInstance.requester.user.username + " borrow your " + \
                                 actionInstance.tool.name + " from " + actionInstance.tool.shed + "?"
                 userOptions = "Accept,Deny" #adding options       
                 notifUtil.createResponseNotif(actionInstance, actionInstance.tool.owner, \
