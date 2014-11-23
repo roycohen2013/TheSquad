@@ -56,7 +56,7 @@ def processActions():
     for actionInstance in actionUtil.getAllActions():
         #states allow system to process and respond to all actions asynchronously
         #Tool borrow state machine
-        if actionUtil.isToolRequest() == True:
+        if actionUtil.isToolRequest(actionInstance):
 
             if actionInstance.currrentState == "userBorrowRequest":  #entry point
                 #proceed to next state where the owner is asked if this user can borrow his tool
@@ -155,7 +155,7 @@ def processActions():
                 processActions()
 
     
-        elif actionUtil.isShedRequest(actionObj) == True:
+        elif actionUtil.isShedRequest(actionInstance):
 
             #this state will be entered when the "Join Shed" button is clicked
             if actionInstance.currentState == "userShedRequest":
