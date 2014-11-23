@@ -124,7 +124,7 @@ class toolTests (TestCase):
     def test_GetToolCondition(self):
         """
         """
-        self.assertEqual (0, toolUtils.getToolCondition (self.ncTool))  #default value is 0
+        self.assertEqual (3, toolUtils.getToolCondition (self.ncTool))  #default value is 0
 
 
 
