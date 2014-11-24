@@ -86,6 +86,8 @@ def processActions():
                         actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
                         toolUtil.updateToolBorrower(actionInstance.tool,actionInstance.requester)
+                        #set tool to be unavailable to borrow by other users
+                        toolUtil.updateToolAvailability(actionInstance.tool, False)
                         #move tool location to requester's shed
                         targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")[0]
                         #save the name of the shed that the tool used to be in
@@ -97,14 +99,19 @@ def processActions():
                         #delete the borrow request notification from the database so it no longer displays
                         actionUtil.getNotifOfAction(actionInstance).delete()
                         #proceed to next state
+                        response = "Your request to borrow " + \
+                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
+                                        " has been accepted!"
+                        utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.requester, response)
                         actionInstance.currrentState = "borrowed"
                         actionInstance.save()
 
                     # the owner of the tool declined the borrowing of the tool
                     else:
                         #send an info notification to the requester saying he was denied
-                        response = "You have been denied from borrowing " + \
-                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name
+                        response = "Your request to borrow " + \
+                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
+                                        " has been denied."
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
@@ -119,7 +126,7 @@ def processActions():
                     #move to overdraft state
                     actionInstance.currentState = "overdraft"
                     actionInstance.save()
-                processActions()
+                    processActions()
 
             elif actionInstance.currrentState == "overdraft":
                 #disable the user from borrowing any more tools

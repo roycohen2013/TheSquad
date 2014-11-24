@@ -35,7 +35,7 @@ for x in range(len(names)):
 	profileObjects.append(newProfile)
 
 	
-shedNames = ["JakeDulin's Shed", "RoyCohen's Shed", "Alex's Shed", "TaikhoomAttar's Shed", \
+shedNames = ["JakeDulin's Shed", "RoyCohen's Shed", "AlexBowen's Shed", "TaikhoomAttar's Shed", \
 				"JacksonMcMahon's Shed", "AdamWalsh's Shed"]
 
 shedObjects = []

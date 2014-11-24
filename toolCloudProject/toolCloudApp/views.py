@@ -227,6 +227,8 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         else:
             ownedByUser = False
         meetsMinRep = (profileUtil.getReputation(profileUtil.getProfileFromUser(request.user)) >= toolObj.minimumReputation)
+        profileObj = (profileUtil.getProfileFromUser(request.user))
+        canBorrow = profileObj.canBorrow
         context = {}
         context.update(csrf(request))
         context['tool'] = toolObj
@@ -240,6 +242,7 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         context['ownedByUser'] = ownedByUser
         context['meetsMin'] = meetsMinRep
         context['pendingRequest'] = pendingRequest
+        context['canBorrow'] = canBorrow
         context.update(content.genBaseLoggedIn(request))
         if contextArg:
             context.update(contextArg)
