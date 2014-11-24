@@ -78,6 +78,13 @@ def addRequestDeniedNoti(contentDict):
 	return addNoti(contentDict, newNoti)
 
 """
+	adds a returned tool notification (for tool borrower)
+"""
+def addToolReturnedNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Tool returned.", "success")
+	return addNoti(contentDict, newNoti)
+
+"""
 	adds a request approved notification
 """
 def addRequestApprovedNoti(contentDict):

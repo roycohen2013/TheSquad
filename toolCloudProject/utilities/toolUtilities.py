@@ -1,7 +1,6 @@
 """
 	Provides functionality for all front end requests regarding tools.
 """
-
 import sys
 sys.path.append("..")
 import os
@@ -40,15 +39,6 @@ def toolIsOverdraft(toolObj):
 		return True
 	return False
 
-"""
-	Called by the UI when the "Return" button is clicked on a
-	borrowed tool.
-"""
-def returnTool(toolObj):
-	actionObj = actionUtilities.getBorrowedToolAction(toolObj)
-	actionObj.currentState = "returned"
-	actionObj.save()
-	actionManager.processActions()
 
 """
 	Get the name of a tool.

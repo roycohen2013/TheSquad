@@ -31,6 +31,9 @@ urlpatterns = patterns('',
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', {'contextArg': None}, name="toolPage"),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
+	url(r'^tools/(?P<id>\d+)/return/$', 'toolCloudApp.views.return_tool', name="toolReturn"),
+	url(r'^tools/(?P<id>\d+)/returned/$', 'toolCloudApp.views.view_tool_page', \
+		{'contextArg': content.addToolReturnedNoti(dict())}, name="toolReturned"),
 	url(r'^tools/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_tool', name="toolEdit"),
 	url(r'^tools/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_tool_page', \
 		{'contextArg': content.addBorrowRequestNoti(dict())}),

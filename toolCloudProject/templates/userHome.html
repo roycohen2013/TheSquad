@@ -42,7 +42,7 @@
 		<h1>Borrowed</h1>
 		{% if borrowed %}
 			{% for tool in borrowed %}
-				<li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
+				<li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a><a class="btn btn-default" href="/tools/{{ tool.id }}/return">Return this tool</a></li>
 			{% endfor %}
 		{% else %}
 			<p>You have no tools borrowed.</p>

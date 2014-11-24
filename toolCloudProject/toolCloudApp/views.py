@@ -23,6 +23,7 @@ import utilities.shedUtilities as shedUtil
 import utilities.toolUtilities as toolUtil
 import utilities.notificationUtilities as notifUtil
 import utilities.actionUtilities as actionUtil
+import utilities.actionManager as actionManager
 import utilities.content as content
 
 def home(request):
@@ -217,7 +218,8 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         actionRequest = None
         for action in actions:
             if action.tool == toolObj:
-                actionRequest = action
+                if action.currrentState == "userBorrowRequest" or action.currrentState == "acceptDecline":
+                    actionRequest = action
         if actionRequest:
             pendingRequest = True
         else:
@@ -236,6 +238,7 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         context['owner'] = owner
         context['description'] = description
         context['tags'] = tags
+        context['currentProfile'] = profileObj
         context['borrower'] = borrower
         context['condition'] = condition
         context['available'] = available
@@ -338,6 +341,17 @@ def borrow_tool(request, id):
         ownerProfile = toolObject.owner
         actionObject = actionUtil.createBorrowRequestAction(toolObject, borrowerProfile)
         return HttpResponseRedirect('/tools/' + id + '/request_sent')
+
+def return_tool(request, id):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        toolObj = toolUtil.getToolFromID(id)
+        actionObj = actionUtil.getBorrowedToolAction(toolObj)
+        actionObj.currrentState = "returned"
+        actionObj.save()
+        actionManager.processActions()
+        return HttpResponseRedirect('/tools/' + id + '/returned')
 
 def join_shed(request, id):
     if request.user.is_anonymous():

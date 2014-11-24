@@ -58,13 +58,13 @@ def processActions():
         #Tool borrow state machine
         if actionUtil.isToolRequest(actionInstance):
 
-            if actionInstance.currrentState == "userBorrowRequest":  #entry point
+            if actionInstance.currrentState == "":  #entry point
                 #proceed to next state where the owner is asked if this user can borrow his tool
-                actionInstance.currrentState = "askOwner"
+                actionInstance.currrentState = "userBorrowRequest"
                 actionInstance.save()
                 processActions()
 
-            if actionInstance.currrentState == "askOwner":
+            if actionInstance.currrentState == "userBorrowRequest":
                 #proceed to next state
                 actionInstance.currrentState = "acceptDecline"
                 actionInstance.save()
@@ -100,7 +100,7 @@ def processActions():
                         actionUtil.getNotifOfAction(actionInstance).delete()
                         #proceed to next state
                         response = "Your request to borrow " + \
-                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
+                                        actionInstance.tool.name + " from " + actionInstance.workSpace + \
                                         " has been accepted!"
                         utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.requester, response)
                         actionInstance.currrentState = "borrowed"
@@ -110,7 +110,7 @@ def processActions():
                     else:
                         #send an info notification to the requester saying he was denied
                         response = "Your request to borrow " + \
-                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
+                                        actionInstance.tool.name + " from " + actionInstance.workSpace + \
                                         " has been denied."
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
@@ -121,7 +121,7 @@ def processActions():
                 #check if borrowedTime of tool was older than [maxBorrowTime] days ago
                 if toolUtil.toolIsOverdraft(actionInstance.tool):
                     #notify requester that they are overdraft and they should return [tool]
-                    message = "Uh oh...your " + actionInstance.tool.name + " is overdraft!"
+                    message = "Uh oh...your " + actionInstance.tool.name + " is overdrafted!"
                     utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.requester, message)
                     #move to overdraft state
                     actionInstance.currentState = "overdraft"
@@ -138,22 +138,23 @@ def processActions():
             elif actionInstance.currrentState == "returned":
                 #notify tool owner that his tool has been returned
                 message = "Your " + actionInstance.tool.name + " has been returned to " + \
-                                actionInstance.tool.myShed.name
+                                actionInstance.workSpace + ". "
                 utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
                 #reduce user reputation by 5 for every day the tool is late!
-                timeSinceBorrowed = timezone.now() - toolObj.borrowedTime
+                timeSinceBorrowed = timezone.now() - actionInstance.tool.borrowedTime
                 for day in range(timeSinceBorrowed.days):
                     actionInstance.tool.borrower.reputation -= 5
                 #update the tool's borrower field
                 actionInstance.tool.borrower = None
+                #set tool to be unavailable to borrow by other users
+                toolUtil.updateToolAvailability(actionInstance.tool, True)
                 #remove the tool from personal shed and move it back to the shed it was borrowed from
                 shedUtil.removeToolFromShed(actionInstance.tool.myShed, actionInstance.tool)
-                oldShed = toolUtil.getShedByName(actionInstance.workSpace)
+                oldShed = shedUtil.getShedByName(actionInstance.workSpace)[0]
                 shedUtil.addToolToShed(oldShed, actionInstance.tool)
                 #move to idle state
                 actionInstance.currentState = "idle"
                 actionInstance.save()
-                processActions()
 
             elif actionInstance.currrentState == "idle":
                 #delete action object
@@ -197,7 +198,6 @@ def processActions():
                 processActions()
 
             elif actionInstance.currentState == "idle":
-                print("help im dying")
                 #delete the action object from the database
                 actionInstance.delete()
                 processActions()

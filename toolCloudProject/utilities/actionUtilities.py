@@ -104,7 +104,7 @@ def getToolActions(toolObj):
 def getBorrowedToolAction(toolObj):
 	allToolActions = Action.objects.filter(tool=toolObj)
 	for action in allToolActions:
-		if (action.tool.isAvailable() == False):
+		if (action.tool.isAvailable == False):
 			return action
 	# this is a hacky approach but if we can't find the tool that is
 	# being borrowed we'll just return the first one instead of causing
