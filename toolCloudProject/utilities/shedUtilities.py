@@ -32,14 +32,15 @@ def getShedByName(name):
 	Adds a tool to a shed.
 """
 def addToolToShed(shedObj, toolObj):
-	shedObj.toolsInShed.add(toolObj)
+	toolObj.myShed = shedObj
 
 
 """
-	Remove a tool from a shed.
+	Remove a tool from a shed. Returns old location
 """
 def removeToolFromShed(shedObj, toolObj):
-	shedObj.toolsInShed.remove(toolObj)
+	toolObj.myShed = None
+	return shedObj
 
 
 """

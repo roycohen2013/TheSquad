@@ -71,6 +71,20 @@ def addShedJoinRequestNoti(contentDict):
 	return addNoti(contentDict, newNoti)
 
 """
+	adds a request denied notification
+"""
+def addRequestDeniedNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Request denied.", "info")
+	return addNoti(contentDict, newNoti)
+
+"""
+	adds a request approved notification
+"""
+def addRequestApprovedNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Request approved.", "info")
+	return addNoti(contentDict, newNoti)
+
+"""
 	adds the passed notification to the passed dict, abiding by django content dict standard
 """
 def addNoti(contentDict, notification):

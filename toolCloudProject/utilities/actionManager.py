@@ -85,9 +85,9 @@ def processActions():
                         #update the tool's borrowedTime field
                         actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
-                        toolUtil.updateToolBorrower(actionInstance.tool,getUserOfProfile(actionInstance.requester))
+                        toolUtil.updateToolBorrower(actionInstance.tool,actionInstance.requester)
                         #move tool location to requester's shed
-                        targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")
+                        targetShed = shedUtil.getShedByName(profileUtil.getUserOfProfile(actionInstance.requester).username + "'s Shed")[0]
                         #save the name of the shed that the tool used to be in
                         actionInstance.workSpace = actionInstance.tool.myShed.name
                         #remove the tool from it's old location first
@@ -109,7 +109,6 @@ def processActions():
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
-                    processActions()
 
             elif actionInstance.currrentState == "borrowed":
                 #check if borrowedTime of tool was older than [maxBorrowTime] days ago

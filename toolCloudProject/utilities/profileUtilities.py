@@ -53,7 +53,7 @@ def getAllOtherProfilesInSharezone(profileObj):
 """
 	Get the Django User object related to this Profile object.
 """
-def getUserofProfile(profileObj):
+def getUserOfProfile(profileObj):
 	return profileObj.user
 
 

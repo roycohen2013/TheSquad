@@ -361,10 +361,11 @@ def request_accept(request, id):
     elif actionUtil.isToolRequest(actionObject):
         toolObject = actionObject.tool
         toolName = toolObject.name
-        context['objectName'] = shedName
+        context['objectName'] = toolName
         context['type'] = "Tool"
     context.update(content.genBaseLoggedIn(request))
-    return render_to_response("request_accept.html", context)
+    actionUtil.forceProcessActions()
+    return render_to_response("view_notifs.html", content.addRequestApprovedNoti(context))
 
 def request_decline(request, id):
     notifObject = Notification.objects.get(id = id)
@@ -381,10 +382,11 @@ def request_decline(request, id):
     elif actionUtil.isToolRequest(actionObject):
         toolObject = actionObject.tool
         toolName = toolObject.name
-        context['objectName'] = shedName
+        context['objectName'] = toolName
         context['type'] = "Tool"
     context.update(content.genBaseLoggedIn(request))
-    return render_to_response("request_deny.html", context)
+    actionUtil.forceProcessActions()
+    return render_to_response("view_notifs.html", content.addRequestDeniedNoti(context))
 
 def view_notifications(request):
     if request.user.is_anonymous():

@@ -136,14 +136,7 @@ def getNotifContent(notifObj):
     Get the source object of a notification.
 """
 def getNotifSourceObject(notifObj):
-    if notifObj.sourceShed != None:
-        return notifObj.sourceShed
-    elif notifObj.sourceTool != None:
-        return notifObj.sourceTool
-    elif notifObj.sourceProfile != None:
-        return notifObj.sourceProfile
-    elif notifObj.sourceAction != None:
-        return notifObj.sourceAction
+    return notifObj.sourceAction
 
         
 """
@@ -227,6 +220,7 @@ def getNotifResponse(notifObj):
 def respondToNotif(notifObj, myResponse):
     notifObj.response = myResponse  
     notifObj.save()
+    return notifObj
 
 
 """

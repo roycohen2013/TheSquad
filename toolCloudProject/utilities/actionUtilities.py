@@ -14,6 +14,12 @@ from toolCloudApp.models import Profile, Tool, Shed,Notification,Action
 
 
 """
+	forces processing of actions
+"""
+def forceProcessActions():
+	utilities.actionManager.processActions()
+
+"""
 	Will be called by the UI when a person hits the button
 	to request to borrow a tool. This will create an action object 
 	with a currentState equal to "userBorrowRequest" which will be processed
