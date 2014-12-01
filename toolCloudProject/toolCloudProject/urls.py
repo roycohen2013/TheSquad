@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
 	url(r'^accounts/my_account/$', 'toolCloudApp.views.view_current_profile'),
+	url(r'^accounts/password/$', 'toolCloudApp.views.passwordreset'),
 
 	# Notification urls
 	url(r'^accounts/notifications/$', 'toolCloudApp.views.view_notifications'),

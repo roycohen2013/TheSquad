@@ -190,3 +190,9 @@ class ShedCreationForm(ModelForm):
 class debugForm(forms.Form): #Note that it is not inheriting from forms.ModelForm
     a = forms.CharField(widget = forms.Textarea)
     #All my attributes here
+    
+class passwordResetForm(forms.Form): #Note that it is not inheriting from forms.ModelForm
+    password = forms.CharField(required = True, widget=forms.PasswordInput())
+    confirm_password = forms.CharField(required = True, widget=forms.PasswordInput())
+    #All my attributes here
+    

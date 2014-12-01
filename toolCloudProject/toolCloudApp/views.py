@@ -37,7 +37,7 @@ def home(request):
     return render_to_response('userHome.html', content.genUserHome(request))
 
 #Import a user registration form
-from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm
+from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm, passwordResetForm
 
 
 # User Register View
@@ -444,3 +444,24 @@ def dne(request):
 
 def spooky(request):
     return render_to_response('spagett.html')
+    
+def passwordreset(request):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = passwordResetForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            passone = form.cleaned_data.get ("password")
+            passtoo = form.cleaned_data.get ("confirm_password")
+            if (passone == passtoo):
+                request.user.set_password (passone)
+                request.user.save()
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = passwordResetForm()
+
+    return render(request, 'password_reset.html', {'form': form})
