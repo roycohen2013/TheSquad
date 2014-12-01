@@ -108,9 +108,11 @@ def processActions():
 
                     # the owner of the tool declined the borrowing of the tool
                     else:
+                        #delete the borrow request notification from the database so it no longer displays
+                        actionUtil.getNotifOfAction(actionInstance).delete()
                         #send an info notification to the requester saying he was denied
                         response = "Your request to borrow " + \
-                                        actionInstance.tool.name + " from " + actionInstance.workSpace + \
+                                        actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
                                         " has been denied."
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,response)
                         #proceed to next state
@@ -159,45 +161,46 @@ def processActions():
             elif actionInstance.currrentState == "idle":
                 #delete action object
                 actionInstance.delete()
-                processActions()
 
     
         elif actionUtil.isShedRequest(actionInstance):
 
             #this state will be entered when the "Join Shed" button is clicked
-            if actionInstance.currentState == "userShedRequest":
+            if actionInstance.currrentState == "userShedRequest":
                 #send shed request notif to all admins of shed and the shed owner
                 adminList = shedUtil.getAllAdminsOfShed(actionInstance.shed)
+                print(adminList)
                 for admin in adminList:
-                    actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
-                #also send a shed request notif to the owner of the shed
-                actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.shed.owner)
+                    newAction = actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
+                    content = "Can " + newAction.requester.user.username +  ' join your shed "' + \
+                                newAction.shed.name + '?"'
+                    userOptions = "Accept,Deny"
+                    utilities.notificationUtilities.createResponseNotif(newAction,admin,content,userOptions)
+                    newAction.currrentState = 'acceptDeny'
+                    newAction.save()
                 #move to acceptDeny state
-                actionInstance.currentState = "acceptDeny"
+                actionInstance.currrentState = "idle"
                 actionInstance.save()
-                processActions()
 
-            elif actionInstance.currentState == "acceptDeny":
+            elif actionInstance.currrentState == "acceptDeny":
                 #if the notification has been responded to
-                if utilities.notificationUtilities.notifHasResponse(getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(actionUtil.getNotifOfAction(actionInstance)):
                     #if the admin responded 'Accept'
-                    if utilities.notificationUtilities.getNotifResponse(getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getNotifOfAction(actionInstance)) == 'Accept':
                         #add the guy to the shed
                         shedUtil.addMemberToShed(actionInstance.shed, actionInstance.requester)
                         #delete the notif that asked about accepting and denying
                         actionUtil.getNotifOfAction(actionInstance).delete()
-                        actionInstance.currentState = "idle"
+                        actionInstance.currrentState = "idle"
                         actionInstance.save()
                     else:
                         #send an info notification to the requester saying he was denied
-                        message = "You have been denied from joining " + actionInstance.shed.name
+                        message = "You have been denied from joining " + actionInstance.shed.name + "."
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,message)
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
-                processActions()
 
-            elif actionInstance.currentState == "idle":
+            elif actionInstance.currrentState == "idle":
                 #delete the action object from the database
                 actionInstance.delete()
-                processActions()

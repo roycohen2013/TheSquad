@@ -361,6 +361,7 @@ def join_shed(request, id):
         shedObject = shedUtil.getShedFromID(id)
         ownerProfile = shedObject.owner
         actionObject = actionUtil.createShedRequestAction(shedObject, joinerProfile)
+        actionManager.processActions()
         return HttpResponseRedirect('/sheds/' + id + '/request_sent')
 
 def request_accept(request, id):

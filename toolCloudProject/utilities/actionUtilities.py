@@ -40,7 +40,6 @@ def createBorrowRequestAction(tool,requester):
 def createShedRequestAction(shed,requester):
 	newAction = Action(shed=shed,requester = requester,actionType="shed",currrentState= "userShedRequest")
 	newAction.save()
-	utilities.actionManager.processActions()
 	return newAction
 
 
