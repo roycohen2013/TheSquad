@@ -7,6 +7,7 @@ html {
 
 #nav {
   background-color: rgba(0,0,0,.4);
+  min-width: 190px;
 }
 
 #icon {
@@ -340,6 +341,10 @@ form select {
 
 .grey_back {
   background-color: rgba(143,143,143,.4);
+}
+
+.left {
+  text-align: left;
 }
 
 .center {

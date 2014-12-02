@@ -3,14 +3,16 @@
 {% block title %}{{ section.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ userProfile.user.username }}'s Profile</h1>
-<h2>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h2>
-<ul>
+<div id="container" class="center">
+  <h1>{{ userProfile.user.username }}'s Profile</h1>
+  <h2>{{ userProfile.user.first_name}} {{ userProfile.user.last_name }}</h2>
   <h3>Tools owned</h3>
   {% if toolsOwned %}
-    {% for tool in toolsOwned %}
-      <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
-    {% endfor %}
+    <ul class="profileList">
+      {% for tool in toolsOwned %}
+        <li class="left"><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
+      {% endfor %}
+    </ul>
   {% else %}
     {% if userProfile.user == currentUser %}
       <i>You haven't submitted any tools yet!</i>
@@ -21,9 +23,11 @@
 
   <h3>Tools borrowed</h3>
   {% if toolsBorrowed %}
+    <ul class="profileList">
     {% for tool in toolsBorrowed %}
-      <li><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
+      <li class="left"><a href = "/tools/{{tool.id}}">{{ tool.name }}</a></li>
     {% endfor %}
+    </ul>
   {% else %}
     {% if userProfile.user == currentUser %}
       <i>You aren't currently borrowing any tools!</i>
@@ -32,15 +36,13 @@
     {% endif %}
   {% endif %}
   
-  {% if userProfile.user == currentUser %}
-    <h3>Sheds</h3>
-  {% else %}
-    <h3>Sheds</h3>
-  {% endif %}
+  <h3>Sheds</h3>
   {% if sheds %}
+    <ul class="profileList">
     {% for shed in sheds %}
-      <li><a href = "/sheds/{{ shed.id }}">{{ shed.name }}</a></li>
+      <li class="left"><a href = "/sheds/{{ shed.id }}">{{ shed.name }}</a></li>
     {% endfor %}
+    </ul>
   {% else %}
     {% if userProfile.user == currentUser %}
       <i>You don't currently belong to any sheds!!</i>
@@ -48,5 +50,5 @@
       <i>This user does not currently belong to any sheds!</i>
     {% endif %}
   {% endif %} 
-</ul>
+</div>
 {% endblock %}
