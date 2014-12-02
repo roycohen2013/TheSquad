@@ -28,6 +28,10 @@ import utilities.content as content
 from toolCloudApp.forms import debugForm
 
 def debug(request):
+    if request.user.is_anonymous():
+        #tell user they need to be logged in to do that
+        #add message flag that will display to user "you must be logged in to..."
+        return HttpResponseRedirect('/accounts/login/') #redirect to login page
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
