@@ -1,23 +1,27 @@
 {% extends "loggedInBase.html" %}
 
 {% block content %}
-<h1>Sharezone {{sharezone}}</h1>
-<ul>
-{% if sheds %}
-  <h2>Sheds in this community</h2>
-  {% for shed in sheds %}
-    <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
-  {% endfor %}
-{% else %}
-  <i>There are currently no sheds in this community.</i>
-{% endif %}
-{% if users %}
-  <h2>Users in this community</h2>
-  {% for profile in users %}
-    <li><a href = "/accounts/profile/{{profile.user.username}}">{{ profile.user.username }}</a></li>
-  {% endfor %}
-{% else %}
-  <i>There are currently no users in this community.</i>
-{% endif %}
-</ul>
+<div id ="container" class="center">
+  <h1>Sharezone {{sharezone}}</h1>
+  {% if sheds %}
+    <h2>Sheds in this community</h2>
+    <ul class="left profileList">
+    {% for shed in sheds %}
+      <li><a href = "/sheds/{{shed.id}}">{{ shed.name }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <i>There are currently no sheds in this community.</i>
+  {% endif %}
+  {% if users %}
+    <h2>Users in this community</h2>
+    <ul class="left profileList">
+    {% for profile in users %}
+      <li><a href = "/accounts/profile/{{profile.user.username}}">{{ profile.user.username }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <i>There are currently no users in this community.</i>
+  {% endif %}
+</div>
 {% endblock %}
