@@ -29,10 +29,10 @@ print ("========== NEW SLATE PROGRAM INITIATING ==========")
 print ("")
 
 
-print(Fore.GREEN + 'THE SQUAD NOW IN COLOR, '
-    + Fore.RED + 'red, '
-    + Fore.RESET + 'normal, '
-    , end='')
+# print(Fore.GREEN + 'THE SQUAD NOW IN COLOR, '
+#     + Fore.RED + 'red, '
+#     + Fore.RESET + 'normal, '
+#     , end='')
 
 # Get the arguments list 
 #cmdargs = str(sys.argv)
@@ -105,20 +105,20 @@ if mode == 1:
     print("")
 
 
+#Used for automatic unit testing
+# print ("--> Unit Tests starting...")
 
-print ("--> Unit Tests starting...")
+# print ("")
 
-print ("")
-
-if mode == 1:
-    if platform.system() == 'Linux' or platform.system() == 'Darwin':
-        os.system('rm toolCloudApp/fixtures/initDBData.json')
-        os.system('python3 manage.py dumpdata > toolCloudApp/fixtures/initDBData.json')
-        os.system('python3 manage.py test toolCloudApp.tests')
-    else:
-        os.system('python manage.py test toolCloudApp.tests')
-    print("")
-print ("-->Unit Tests Complete")
+# if mode == 1:
+#     if platform.system() == 'Linux' or platform.system() == 'Darwin':
+#         os.system('rm toolCloudApp/fixtures/initDBData.json')
+#         os.system('python3 manage.py dumpdata > toolCloudApp/fixtures/initDBData.json')
+#         os.system('python3 manage.py test toolCloudApp.tests')
+#     else:
+#         os.system('python manage.py test toolCloudApp.tests')
+#     print("")
+# print ("-->Unit Tests Complete")
 
 
 
