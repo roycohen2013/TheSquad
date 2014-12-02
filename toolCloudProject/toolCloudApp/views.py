@@ -163,7 +163,7 @@ def view_profile(request, username=None):
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('view_profile.html', context)
 
-def view_current_profile(request):
+def view_current_profile(request, contextArg):
     """this view displays account information and allows users to edit their information
     """
     if request.user.is_anonymous():
@@ -188,6 +188,8 @@ def view_current_profile(request):
         context['state'] = state
         context['sharezone'] = shareZone
         context.update(content.genBaseLoggedIn(request))
+        if contextArg:
+            context.update(contextArg)
         return render_to_response('my_account.html', context)
 
 #a view that will allow us to see an individual tool
@@ -445,7 +447,7 @@ def dne(request):
 def spooky(request):
     return render_to_response('spagett.html')
     
-def passwordreset(request):
+def password_reset(request):
     if request.user.is_anonymous():
         return HttpResponseRedirect('/accounts/login')
     # if this is a POST request we need to process the form data
@@ -459,7 +461,7 @@ def passwordreset(request):
             if (passone == passtoo):
                 request.user.set_password (passone)
                 request.user.save()
-
+            return HttpResponseRedirect('/accounts/my_account/password_changed')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = passwordResetForm()

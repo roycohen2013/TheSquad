@@ -31,7 +31,7 @@ def addSubTitleStrings(contentDict):
 	adds a failed login notification to the dict and returns it
 """
 def addFailedLoginNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Login failed. D:"
+	newNoti = notifUtil.createTempInfoNotif("Login failed."
 					+ " Please check your username and password and try again.", "alert")
 	return addNoti(contentDict, newNoti)
 
@@ -39,21 +39,25 @@ def addFailedLoginNoti(contentDict):
 	adds a sucessful login notification to the dict and returns it
 """
 def addGoodLoginNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Login sucessful! :D", "success")
+	newNoti = notifUtil.createTempInfoNotif("Login successful!", "success")
 	return addNoti(contentDict, newNoti)
 
 """
 	adds a sucessful registration notification to the dict and returns it
 """
 def addGoodRegisterNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Registration sucessful! You are now logged in.", "success")
+	newNoti = notifUtil.createTempInfoNotif("Registration successful! You are now logged in.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodPasswordChangeNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Password changed successfully.", "success")
 	return addNoti(contentDict, newNoti)
 
 """
 	adds a sucessful logout notification to the dict and returns it
 """
 def addGoodLogoutNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Logout sucessful. Have a good day. :)", "success")
+	newNoti = notifUtil.createTempInfoNotif("Logout successful. Have a good day.", "success")
 	return addNoti(contentDict, newNoti)
 
 """

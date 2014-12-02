@@ -19,8 +19,10 @@ urlpatterns = patterns('',
 	url(r'^accounts/loggedin/$', 'toolCloudProject.views.loggedin'),
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
-	url(r'^accounts/my_account/$', 'toolCloudApp.views.view_current_profile'),
-	url(r'^accounts/password/$', 'toolCloudApp.views.passwordreset'),
+	url(r'^accounts/my_account/$', 'toolCloudApp.views.view_current_profile', {'contextArg': None}, name="my_account"),
+	url(r'^accounts/my_account/password_changed/$', 'toolCloudApp.views.view_current_profile', \
+		{'contextArg': content.addGoodPasswordChangeNoti(dict())}),
+	url(r'^accounts/change_password/$', 'toolCloudApp.views.password_reset'),
 
 	# Notification urls
 	url(r'^accounts/notifications/$', 'toolCloudApp.views.view_notifications'),
