@@ -470,24 +470,45 @@ def password_reset(request):
     return render(request, 'password_reset.html', {'form': form})
 
 def search(request):
-    query_string = ''
-    found_entries = None
-    results = []
-    if ('q' in request.GET) and request.GET['q'].strip():
-        query_string = request.GET['q']
-        
-        entry_query = get_query(query_string, ['name'])
-        print(query_string)
-        found_entries = Tool.objects.filter(name__icontains=query_string)
-        for i in found_entries:
-            results = results + [i]
-        print(results)
-
-        #return render_to_response('search.html')
-
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        query_string = ''
+        found_entries = None
+        tool_results = []
+        profile_results =[]
+        shed_results = []
+        if ('q' in request.GET) and request.GET['q'].strip():
+            query_string = request.GET['q']
+            if query_string == '' or None:
+                tool_results = []
+                profile_results = []
+                shed_results = []
+            else:
+                entry_query = get_query(query_string, ['name'])
+                found_tools = Tool.objects.filter(name__icontains=query_string)
+                tool_results = list(found_tools)
+                found_tools = Tool.objects.filter(tags__icontains=query_string)
+                for tool in found_tools:
+                    if tool not in tool_results:
+                        tool_results += list(tool)
+                found_profiles = Profile.objects.filter(user__username__icontains=query_string)
+                profile_results = list(found_profiles)
+                found_profiles = Profile.objects.filter(user__first_name__icontains=query_string)
+                for profile in found_profiles:
+                    if profile not in profile_results:
+                        profile_results += list(profile)
+                found_profiles = Profile.objects.filter(user__last_name__icontains=query_string)
+                for profile in found_profiles:
+                    if profile not in profile_results:
+                        profile_results += list(profile)
+                found_sheds = Shed.objects.filter(name__icontains=query_string)
+                shed_results = list(found_sheds)
         context = {}
         context.update(csrf(request))
-        context['results'] = results
+        context['p_results'] = profile_results
+        context['t_results'] = tool_results
+        context['s_results'] = shed_results
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('search.html', context)
         

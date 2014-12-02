@@ -2,13 +2,28 @@
 
 {% block content %}
 
-<h1>Your Search Results</h1>
-{% if results %}
-  {% for result in results %}
-    <li><a href = "/tools/{{result.id}}">{{ result }}</a></li>
+<h1>Your search results</h1>
+<ul>
+{% if t_results %}
+  <h3>Tools returned by your search query</h3>
+  {% for t in t_results %}
+    <li><a href = "/tools/{{t.id}}">{{ t.name }}</a></li>
   {% endfor %}
-{% else %}
-  <i>Something's not right here...no tools found on the site!</i>
 {% endif %}
-
+{% if p_results %}
+  <h3>Profiles returned by your search query</h3>
+  {% for p in p_results %}
+    <li><a href = "/accounts/profile/{{p.user.username}}">{{ p.user.username }}</a></li>
+  {% endfor %}
+{% endif %}
+{% if s_results %}
+  <h3>Sheds returned by your search query</h3>
+  {% for s in s_results %}
+    <li><a href = "/sheds/{{s.id}}">{{ s.name }}</a></li>
+  {% endfor %}    
+{% endif %}
+{% if t_results == None and s_results == None and p_results == None %}
+  <i>Your search returned no results.</i>
+{% endif %}
+</ul>
 {% endblock %}
