@@ -1,6 +1,6 @@
 {% extends "loggedInBase.html" %}
 {% block content %}
-<div class="full_width half_height grey_back">
+<div id="topHome" class="full_width half_height">
 	<div id="toolSection">
 		<h1>Tools</h1>
 		{% if tools %}
@@ -22,7 +22,7 @@
 		{% endif %}
 	</div>
 </div>
-<div class="full_width half_height grey_back">
+<div id="botHome" class="full_width half_height">
 	<div id="communitySection">
 		<h1>Community</h1>
 		{% if sharezone %}

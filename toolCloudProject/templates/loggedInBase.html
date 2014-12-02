@@ -10,25 +10,14 @@
         <div id="links">
 			<ul>
 				<li><a href="/">Home Page<img id="navIcon" src="{% static 'img/shed.png' %}"/></a></li>
-			</ul>
-            </ul>
-            <ul>
                 <li><a href="/accounts/my_account">my account</a></li>
-            </ul>
-			<ul>
                 <li><a href="/tools/submit">add a tool</a></li>
-            </ul>
-            <ul>
                 <li><a href="/communities/{{ community }}/">community</a></li>
             </ul>
-            <ul>
-                <form method="get" action="/search/">
-                    <input type="submit" value="Search"/>
-                    <input type="text" name="q" id="id_q"/>
-                </form>
-            </ul>
-            
-        <br>
+            <form id="searchBar" method="get" action="/search/">
+                <input id="searchBtn" type="submit" value="Search"/>
+                <input type="text" name="q" id="id_q"/>
+            </form>
         </br>
         </div>
         <div id="userInfo">

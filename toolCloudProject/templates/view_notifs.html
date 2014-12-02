@@ -1,7 +1,7 @@
 {% extends "loggedInBase.html" %}
 
 {% block content %}
-<h1>Your currently pending <b>PHAT</b> notifications</h1>
+<h1>Your currently pendingm notifications</h1>
 {% if notifs %}
   {% for noti in notifs %}
     {% if noti.notificationType == "request" %}<!-- request type -->
