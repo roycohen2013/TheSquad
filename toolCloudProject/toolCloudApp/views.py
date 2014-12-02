@@ -481,9 +481,10 @@ def search(request):
         if ('q' in request.GET) and request.GET['q'].strip():
             query_string = request.GET['q']
             if query_string == '' or None:
-                tool_results = []
-                profile_results = []
-                shed_results = []
+                tool_results = None
+                profile_results = None
+                shed_results = None
+                no_results = True
             else:
                 entry_query = get_query(query_string, ['name'])
                 found_tools = Tool.objects.filter(name__icontains=query_string)
@@ -504,11 +505,16 @@ def search(request):
                         profile_results += list(profile)
                 found_sheds = Shed.objects.filter(name__icontains=query_string)
                 shed_results = list(found_sheds)
+                all_results = shed_results + profile_results + tool_results
+                no_results = False
+                if all_results == []:
+                    no_results = True
         context = {}
         context.update(csrf(request))
         context['p_results'] = profile_results
         context['t_results'] = tool_results
         context['s_results'] = shed_results
+        context['no_results'] = no_results
         context.update(content.genBaseLoggedIn(request))
         return render_to_response('search.html', context)
         

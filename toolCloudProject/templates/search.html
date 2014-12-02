@@ -22,7 +22,7 @@
     <li><a href = "/sheds/{{s.id}}">{{ s.name }}</a></li>
   {% endfor %}    
 {% endif %}
-{% if t_results == None and s_results == None and p_results == None %}
+{% if no_results %}
   <i>Your search returned no results.</i>
 {% endif %}
 </ul>
