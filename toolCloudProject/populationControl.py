@@ -1,6 +1,7 @@
 """
 	Populates the database with THE SQUAD.
 	All 6 members of the squad will have their own account, shed, and tools.
+	Also adds an account for Al.
 """
 
 import os
@@ -11,9 +12,7 @@ import django.db
 import string
 import random
 
-#print("--> Populating Database...")
-
-names = [ ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', 'Bowen'] , \
+names = [ ['Al', 'Arujunan'] , ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', 'Bowen'] , \
 			['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
 
 profileObjects = []
@@ -25,8 +24,8 @@ for x in range(len(names)):
 	userName = firstName+lastName
 	x = str(x)
 	newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
-						 phoneNumber = '0000000000', streetAddress = 'address', sharezone = '14623', \
-						 city = 'Buttchester', state = 'NY', stateName = 'New York', \
+						 phoneNumber = '1234567892', streetAddress = '1 Lomb Memorial Drive', sharezone = '14623', \
+						 city = 'Rochester', state = 'NY', stateName = 'New York', \
 						 status = 'status')
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
@@ -35,7 +34,7 @@ for x in range(len(names)):
 	profileObjects.append(newProfile)
 
 	
-shedNames = ["JakeDulin's Shed", "RoyCohen's Shed", "AlexBowen's Shed", "TaikhoomAttar's Shed", \
+shedNames = ["AlArujunan's Shed", "JakeDulin's Shed", "RoyCohen's Shed", "AlexBowen's Shed", "TaikhoomAttar's Shed", \
 				"JacksonMcMahon's Shed", "AdamWalsh's Shed"]
 
 shedObjects = []
@@ -51,8 +50,10 @@ for x in range(len(shedNames)):
 	shedObjects.append(newShed)
 
 
-toolNames = ['Hammer','Wrench','Screwdriver','Hoe','Drill','Impact Wrench', \
-		     'Shovel', 'Saw', 'Electric Screwdriver', 'Nail Gun']
+toolNames = ['Claw Hammer','Wrench','Screwdriver','Hoe','Drill','Impact Wrench', \
+		     'Shovel', 'Hand Saw', 'Electric Screwdriver', 'Nail Gun', '3D Printer', 'Heat Gun', \
+		     'Circular Saw', 'Nibbler', 'Belt Sander', 'Chainsaw', 'Hedge clippers', 'Pressure Washer',
+		     'Wet Vacuum', 'Shamwow', 'Tile Saw', 'Socket Wrench', 'Sledgehammer', 'Reciprocating Saw']
 
 toolObjects = []
 
@@ -60,8 +61,8 @@ for x in range(len(toolNames)):
 
 	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
 					isAvailable = True, tags = 'tags')
-	newTool.owner = profileObjects[x%len(profileObjects)]
-	newTool.myShed = shedObjects[x%len(shedObjects)]
+	newTool.owner = profileObjects[x % len(profileObjects)]
+	newTool.myShed = shedObjects[x % len(shedObjects)]
 	newTool.save()
 	toolObjects.append(newTool)
 

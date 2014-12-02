@@ -1,5 +1,8 @@
-TheSquad
+Team Name: TheSquad
+Members: Jake Dulin, Roy Cohen, Alex Bowen, Taikhoom Attar, Jackson McMahon, Adam Walsh
 ========
+
+Cross Team Testing:
 
 Names of files inside public_html/Release-x/cross-team-testing/ are:
     README.txt
@@ -23,20 +26,13 @@ Installation instructions:
 4. Open a web browser and enter localhost:8000 in the URL address box. This will bring you to the home page of our website. From here, you can try logging in with any of the following accounts that our newSlate.py program created for you. You can also instead make an account yourself by clicking “Register” but these are provided for easy access.
 
 Usernames:
-JakeDulin
-RoyCohen
-AlexBowen
-TaikhoomAttar
-JacksonMcMahon
-AdamWalsh
+    AlArujunan
+    JakeDulin
+    RoyCohen
+    AlexBowen
+    TaikhoomAttar
+    JacksonMcMahon
+    AdamWalsh
 
-Passwords:
-password (for all accounts)
-
-
-5. You may also log into the systems backend with the following credentials.
-
-Default credentials:
-
-username: root
-Password: root
+Passwords (same for all accounts initially - you may click Change Password on My Account page if desired):
+    password
