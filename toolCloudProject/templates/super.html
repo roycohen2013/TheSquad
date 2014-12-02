@@ -13,7 +13,12 @@
     has never been so easy!">
     <meta name="author" content="The Squad">
 
-    <title>{{ title }}</title>
+    <title>
+    {% if title %}
+      {{ title }}
+    {% else %}
+      ToolCloud
+    {% endif %}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">

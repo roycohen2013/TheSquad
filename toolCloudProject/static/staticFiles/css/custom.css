@@ -62,6 +62,14 @@
 
 #topHome, #botHome {
   color: rgb(17,17,17);
+  background-color: rgba(143,143,143,.12);
+  box-shadow: 0px 0px 1em 1em rgba(143,143,143,.12);
+}
+
+#topHome h1, #botHome h1 {
+  text-align: left;
+  text-decoration: underline;
+  font-size: 2.5em;
 }
 
 #topHome a, #botHome a {
@@ -121,4 +129,12 @@
 #links li{
   margin-top: 5%;
   margin-bottom: 5%;
+}
+
+#container {
+  overflow: hidden;
+  width: 40%;
+  margin: auto;
+  background-color: rgba(143,143,143,.12);
+  box-shadow: 0px 0px 1em 1em rgba(143,143,143,.12);
 }

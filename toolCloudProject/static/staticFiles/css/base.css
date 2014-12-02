@@ -244,6 +244,7 @@ html {
   display: table-cell;
   vertical-align: middle;
   padding: 30px 20px 30px 10px;
+  color: rgb(47,47,47);
 }
 .Message-body > p {
   line-height: 1.2;
@@ -339,4 +340,8 @@ form select {
 
 .grey_back {
   background-color: rgba(143,143,143,.4);
+}
+
+.center {
+  text-align: center;
 }
