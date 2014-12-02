@@ -350,3 +350,7 @@ form select {
 .center {
   text-align: center;
 }
+
+.margin5 {
+  margin: 5%;
+}
