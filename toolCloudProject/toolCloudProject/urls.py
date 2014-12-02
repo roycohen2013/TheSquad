@@ -55,6 +55,7 @@ urlpatterns = patterns('',
 
 	# misc
 	url(r'^about_us/$', 'toolCloudApp.views.about_us'),
+	url(r'^search/$', 'toolCloudApp.views.search'),
 
 	# sekret
 	url(r'^3spooky5me/$', 'toolCloudApp.views.spooked'),

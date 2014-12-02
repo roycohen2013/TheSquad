@@ -1,0 +1,14 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+
+<h1>Your Search Results</h1>
+{% if results %}
+  {% for result in results %}
+    <li><a href = "/tools/{{result.id}}">{{ result }}</a></li>
+  {% endfor %}
+{% else %}
+  <i>Something's not right here...no tools found on the site!</i>
+{% endif %}
+
+{% endblock %}

@@ -7,6 +7,7 @@ from django.core.context_processors import csrf
 import django.db
 from toolCloudApp.models import Profile, Tool, Shed, User, Notification, Action
 from toolCloudApp.mailSend import sendMail
+from toolCloudApp.search import *
 from datetime import datetime
 import string
 import random
@@ -467,3 +468,26 @@ def password_reset(request):
         form = passwordResetForm()
 
     return render(request, 'password_reset.html', {'form': form})
+
+def search(request):
+    query_string = ''
+    found_entries = None
+    results = []
+    if ('q' in request.GET) and request.GET['q'].strip():
+        query_string = request.GET['q']
+        
+        entry_query = get_query(query_string, ['name'])
+        print(query_string)
+        found_entries = Tool.objects.filter(name__icontains=query_string)
+        for i in found_entries:
+            results = results + [i]
+        print(results)
+
+        #return render_to_response('search.html')
+
+        context = {}
+        context.update(csrf(request))
+        context['results'] = results
+        context.update(content.genBaseLoggedIn(request))
+        return render_to_response('search.html', context)
+        

@@ -11,6 +11,7 @@
 			<ul>
 				<li><a href="/">Home Page<img id="navIcon" src="{% static 'img/shed.png' %}"/></a></li>
 			</ul>
+            </ul>
             <ul>
                 <li><a href="/accounts/my_account">my account</a></li>
             </ul>
@@ -19,6 +20,13 @@
             </ul>
             <ul>
                 <li><a href="/communities/{{ community }}/">community</a></li>
+            </ul>
+            <ul>
+            <form method="get" action="/search/">
+                <label for="id_q">Search:</label>
+            <input type="text" name="q" id="id_q"/>
+            <input type="submit" value="Search"/>
+            </form>
             </ul>
         </div>
         <div id="userInfo">

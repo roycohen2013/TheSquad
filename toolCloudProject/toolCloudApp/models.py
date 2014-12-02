@@ -128,8 +128,7 @@ class Tool(models.Model):
     """
     def __str__(self):
 
-        myList = ["Name: " + self.name, "Owned by " + self.owner.user.username, \
-                    "Borrowed by" + self.borrower.name, "My shed: " + self.myShed.name]
+        myList = ["" + self.name]
         return ",".join(myList)
 
 
