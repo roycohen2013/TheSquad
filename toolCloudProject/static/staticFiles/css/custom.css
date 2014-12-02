@@ -139,6 +139,10 @@
   box-shadow: 0px 0px 1em 1em rgba(143,143,143,.12);
 }
 
+#container h1 {
+  text-decoration: underline;
+}
+
 .profileList {
   margin-left: 18%;
 }
