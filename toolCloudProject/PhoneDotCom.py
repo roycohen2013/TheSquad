@@ -20,7 +20,7 @@ def sendText(toNumber, Content):
 
     r = requests.post(smsURL, data=json.dumps(payload), headers=headers,auth=auth)
 
-    print (r.text)
+    #print (r.text)
 
 
 

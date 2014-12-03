@@ -52,9 +52,8 @@ def user_register(request):
                 if user is not None:
                     login(request, user)
                 #send confirmation email
-                sendMail(profileUtil.getProfileFromUser(userAccount), user.email, \
-                    "Welcome to ToolCloud! ", \
-                     "Hi " + user.first_name + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
+                sendMail(profileUtil.getProfileFromUser(userAccount), \
+                    "Welcome aboard! ", "Thank you for registering with ToolCloud.")
                 shedName = form.cleaned_data['username'] + "'s Shed"
                 userProfile = profileUtil.getProfileFromUser(userAccount)
                 newShedObject = Shed(name=shedName, owner=userProfile, location='location', sharezone=form.cleaned_data['zip_code'],\
@@ -91,11 +90,10 @@ def tool_submission(request):
                 tool = form.save()
                 tool.save()
                 #send email
-                sendMail(profileUtil.getProfileFromUser(request.user), request.user.email, \
+                sendMail(profileUtil.getProfileFromUser(request.user), \
                     "Your tool has been submitted! ",\
-                     "Hey there " + request.user.first_name + \
-                     ", \n\nThanks for submitting your " + tool.name + \
-                      " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
+                     "Thanks for submitting your " + tool.name + \
+                      " to ToolCloud.  We'll let you know when someone wants to borrow it.")
                 return HttpResponseRedirect('/tools/' + str(tool.id) + '/success')
         else:
             form = ToolCreationForm(request.user)
@@ -122,11 +120,10 @@ def create_tool_shed(request):
             if form.is_valid():
                 shed = form.save()
                 #send email
-                sendMail(profileUtil.getProfileFromUser(request.user), request.user.email, \
+                sendMail(profileUtil.getProfileFromUser(request.user), \
                     "Your shed has been created! ", \
-                    "Hey there " + request.user.first_name + \
-                    ", \n\nThanks for creating " + shed.name + \
-                    " on ToolCloud.  We'll let you know when someone wants to join. \n\nCheers, \n\nThe Squad")
+                    "Thanks for creating " + shed.name + \
+                    " on ToolCloud.  We'll let you know when someone wants to join.")
                 return HttpResponseRedirect('/sheds/' + str(shed.id) + '/success')
         else:
             form = ShedCreationForm(request.user)
