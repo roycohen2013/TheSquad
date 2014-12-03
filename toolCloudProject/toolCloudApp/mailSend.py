@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 import smtplib
 # This is a Python function to send a ToolCloud message to the address (string)
 
-EMAIL_ENABLED = True
+EMAIL_ENABLED = False
 
 def sendMail (address, subject, body):
     if EMAIL_ENABLED:
