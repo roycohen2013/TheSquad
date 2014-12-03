@@ -13,7 +13,7 @@
 
   {% if borrower == currentProfile %}
     {% if not pendingReturnRequest %}
-      <h2>You are currently borrowing this tool.</h2>
+      <h4>You are currently borrowing this tool.</h4>
       <a class="btn btn-default" href="/tools/{{ tool.id }}/return">Return this tool</a>
     {% else %}
       <i>You have marked this tool as returned.  It will appear in your borrowed tools until the return is approved by the owner.</i>
@@ -29,7 +29,7 @@
       <i>Sorry, but this tool is currently not available to borrow.</i>
     {% endif %}
     {% if borrower %}
-      <h2>Current borrower: <a href = "/accounts/profile/{{borrower.user.username}}">{{borrower.user.username}}</a></h2>
+      <h4>Current borrower: <a href = "/accounts/profile/{{borrower.user.username}}">{{borrower.user.username}}</a></h4>
     {% endif %}
   {% elif pendingBorrowRequest %}
     {% if requester == currentProfile %}
