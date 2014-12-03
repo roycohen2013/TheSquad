@@ -14,6 +14,10 @@ import random
 
 names = [ ['Al', 'Arujunan'] , ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', 'Bowen'] , \
 			['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
+emails = ["2manyhats@gmail.com", "jad5366@g.rit.edu", "rxc1931@gmail.com", "mab2098@g.rit.edu", \
+			"tfa2773@g.rit.edu", "jpm4208@g.rit.edu", "adw7422@g.rit.edu"]
+phoneNumbers = ["1234567890", "203-209-7215", "917-690-5094", "240-469-7313", "248-229-2139", \
+			"315-480-5597", "617-680-3278"]
 
 profileObjects = []
 
@@ -22,14 +26,19 @@ for x in range(len(names)):
 	firstName = names[x][0]
 	lastName = names[x][1]
 	userName = firstName+lastName
+	email = emails[x]
+	pn = phoneNumbers[x]
 	x = str(x)
-	newProfile = Profile(user = User.objects.create_user(userName, userName+'@gmail.com', 'password'), \
-						 phoneNumber = '1234567892', streetAddress = '1 Lomb Memorial Drive', sharezone = '14623', \
+	newProfile = Profile(user = User.objects.create_user(userName, email, 'password'), \
+						 phoneNumber = pn, streetAddress = '1 Lomb Memorial Drive', sharezone = '14623', \
 						 city = 'Rochester', state = 'NY', stateName = 'New York', \
 						 status = 'status')
 	newProfile.user.first_name = firstName
 	newProfile.user.last_name = lastName
 	newProfile.user.save()
+	if userName == "AlArujunan":
+		newProfile.emailNotifs == False
+		newProfile.textNotifs == False
 	newProfile.save()
 	profileObjects.append(newProfile)
 

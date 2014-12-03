@@ -27,6 +27,9 @@ class Profile(models.Model):
     reputation = models.IntegerField(default=50) #0..100 rating
     canBorrow = models.BooleanField(default=True) #will become false after overdrafting a tool
 
+    emailNotifs = models.BooleanField(default=True)
+    textNotifs = models.BooleanField(default=True)
+
     preferences_Privacy = models.IntegerField(default=0)
     #public   0 - you can see everything 
     #private 1 - persons name
