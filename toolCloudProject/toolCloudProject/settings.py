@@ -96,19 +96,19 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static', 'staticFiles'),
 )
 
-DEFAULT_FROM_EMAIL = 'squad@toolcloud.me'
+DEFAULT_FROM_EMAIL = 'toolshare@toolcloud.me'
 
-SERVER_EMAIL = 'squad@toolcloud.me'
+SERVER_EMAIL = 'toolshare@toolcloud.me'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_USE_TLS = True
 
-EMAIL_HOST = 'toolcloud.me'
+EMAIL_HOST = 'mail.privateemail.com'
 
-EMAIL_PORT = 1337
+EMAIL_PORT = 25
 
-EMAIL_HOST_USER = 'squad'
+EMAIL_HOST_USER = 'toolshare@toolcloud.me'
 
 EMAIL_HOST_PASSWORD = 'Squad4lYfe'
 

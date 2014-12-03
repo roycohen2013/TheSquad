@@ -6,7 +6,7 @@ EMAIL_ENABLED = False
 
 def sendMail (address, subject, body):
     if EMAIL_ENABLED:
-        sender = 'thesquad.toolcloud@gmail.com'
+        sender = 'toolshare@toolcloud.me'
         
         #message = EmailMessage('From:  ToolCloud <thesquad.toolcloud@gmail.com>\nSubject:  ' + subject, body, to=[address])
         try:
@@ -20,5 +20,7 @@ def sendMail (address, subject, body):
             pass
     else:
         print("Email notifications are disabled.")
+        
+        
         
 
