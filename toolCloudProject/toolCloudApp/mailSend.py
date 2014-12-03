@@ -10,7 +10,6 @@ doNotReply = "\n\nPlease do not reply to this message."
 
 def sendMail (recipientProfile, address, subject, body):
     if EMAIL_ENABLED:
-<<<<<<< HEAD
         if recipientProfile.emailNotifs:
             sender = 'toolbot@toolcloud.me'
             
@@ -24,20 +23,6 @@ def sendMail (recipientProfile, address, subject, body):
             except smtplib.SMTPException as error:
                 #print(error)
                 pass
-=======
-        sender = 'toolbot@toolcloud.me'
-        
-        #message = EmailMessage('From:  ToolCloud <thesquad.toolcloud@gmail.com>\nSubject:  ' + subject, body, to=[address])
-        try:
-            #smtp = smtplib.SMTP('smtp.gmail.com:587')
-            #smtp.starttls()
-            #smtp.login('thesquad.toolcloud','hailthesynergy')
-            #smtp.sendmail(sender,address,message)
-            send_mail(subject, body, sender,[address], fail_silently = True )
-        except smtplib.SMTPException as error:
-            #print(error)
-            pass
->>>>>>> d0a5b303a24d1818eddd59252021ac0d68f1ff78
     else:
         print("Email notifications are disabled.")
     if TEXT_ENABLED:
