@@ -28,6 +28,8 @@ def sendMail (recipientProfile, address, subject, body):
     if TEXT_ENABLED:
         if recipientProfile.textNotifs:
             sendText(recipientProfile.phoneNumber, body + doNotReply)
+    else:
+        print("Text notifications are disabled.")
         
         
         
