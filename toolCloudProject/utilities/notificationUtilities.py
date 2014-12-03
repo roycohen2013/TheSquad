@@ -42,7 +42,7 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     newNotification.save()
 
     #send confirmation email
-    sendMail(recipientProfile.user.email, \
+    sendMail(recipientProfile, recipientProfile.user.email, \
         "You have a new notification!", \
         "Hi " + recipientProfile.user.first_name + ", \n\n" + \
         content + "\n\nCheers, \n\nThe Squad")
@@ -60,7 +60,7 @@ def createBadInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
 
     newNotification.save()
-    sendMail(recipientProfile.user.email, \
+    sendMail(recipientProfile, recipientProfile.user.email, \
         "You have a new notification!", \
         "Hi " + recipientProfile.user.first_name + ", \n\n" + \
         content + "\n\nCheers, \n\nThe Squad")
@@ -80,7 +80,7 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
     newNotification.save()
-    sendMail(recipientProfile.user.email, \
+    sendMail(recipientProfile, recipientProfile.user.email, \
         "You have a new notification!! ", \
         "Hi " + recipientProfile.user.first_name + ", \n\n" + \
         content + "\n\nCheers, \n\nThe Squad")

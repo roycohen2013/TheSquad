@@ -16,8 +16,8 @@ names = [ ['Al', 'Arujunan'] , ['Jake', 'Dulin'] , ['Roy', 'Cohen'] , ['Alex', '
 			['Taikhoom', 'Attar'], ['Jackson', 'McMahon'] , ['Adam','Walsh'] ]
 emails = ["2manyhats@gmail.com", "jad5366@g.rit.edu", "rxc1931@gmail.com", "mab2098@g.rit.edu", \
 			"tfa2773@g.rit.edu", "jpm4208@g.rit.edu", "adw7422@g.rit.edu"]
-phoneNumbers = ["1234567890", "203-209-7215", "917-690-5094", "240-469-7313", "248-229-2139", \
-			"315-480-5597", "617-680-3278"]
+phoneNumbers = ["1234567890", "2032097215", "9176905094", "2404697313", "2482292139", \
+			"3154805597", "6176803278"]
 
 profileObjects = []
 

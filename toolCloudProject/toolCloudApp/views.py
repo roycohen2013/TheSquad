@@ -52,7 +52,7 @@ def user_register(request):
                 if user is not None:
                     login(request, user)
                 #send confirmation email
-                sendMail(user.email, \
+                sendMail(profileUtil.getProfileFromUser(userAccount), user.email, \
                     "Welcome to ToolCloud! ", \
                      "Hi " + user.first_name + ", \n\nThank you for registering with ToolCloud. \n\nLove, \n\nThe Squad")
                 shedName = form.cleaned_data['username'] + "'s Shed"
@@ -91,7 +91,7 @@ def tool_submission(request):
                 tool = form.save()
                 tool.save()
                 #send email
-                sendMail(request.user.email, \
+                sendMail(profileUtil.getProfileFromUser(request.user), request.user.email, \
                     "Your tool has been submitted! ",\
                      "Hey there " + request.user.first_name + \
                      ", \n\nThanks for submitting your " + tool.name + \
@@ -122,7 +122,7 @@ def create_tool_shed(request):
             if form.is_valid():
                 shed = form.save()
                 #send email
-                sendMail(request.user.email, \
+                sendMail(profileUtil.getProfileFromUser(request.user), request.user.email, \
                     "Your shed has been created! ", \
                     "Hey there " + request.user.first_name + \
                     ", \n\nThanks for creating " + shed.name + \
