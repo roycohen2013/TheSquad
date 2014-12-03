@@ -79,9 +79,9 @@ def processActions():
 
             elif actionInstance.currrentState == "acceptDecline":
                 #if the owner of the tool has responded to the tool request notification:
-                if utilities.notificationUtilities.notifHasResponse(actionUtil.getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(actionUtil.getRequestNotifOfAction(actionInstance)):
                    # if the owner of the tool accepted the tool request:
-                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getRequestNotifOfAction(actionInstance)) == 'Accept':
                         #update the tool's borrowedTime field
                         actionInstance.tool.borrowedTime = timezone.now()
                         #update tool's borrower field
@@ -97,7 +97,7 @@ def processActions():
                         #then add the tool to the requester's personal shed
                         shedUtil.addToolToShed(targetShed, actionInstance.tool)
                         #delete the borrow request notification from the database so it no longer displays
-                        actionUtil.getNotifOfAction(actionInstance).delete()
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
                         #proceed to next state
                         response = "Your request to borrow " + \
                                         actionInstance.tool.name + " from " + actionInstance.workSpace + \
@@ -109,7 +109,7 @@ def processActions():
                     # the owner of the tool declined the borrowing of the tool
                     else:
                         #delete the borrow request notification from the database so it no longer displays
-                        actionUtil.getNotifOfAction(actionInstance).delete()
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
                         #send an info notification to the requester saying he was denied
                         response = "Your request to borrow " + \
                                         actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + \
@@ -136,12 +136,46 @@ def processActions():
                 actionInstance.save()
                 processActions()
 
-            #moving into the "returned" state is handled by the UI
+            #moving into the "markedReturned" state is handled by the UI
+            elif actionInstance.currrentState == "markedReturned":
+                actionInstance.currrentState = "confirmReturned"
+                actionInstance.save()
+                question = "Your " + actionInstance.tool.name + " has been marked as returned to " + \
+                                actionInstance.workSpace + ".  Has this tool been returned?"
+                userOptions = "Accept,Deny" #adding options       
+                utilities.notificationUtilities.createResponseNotif(actionInstance, actionInstance.tool.owner, \
+                                                            question, options = userOptions)
+                processActions()
+
+            elif actionInstance.currrentState == "confirmReturned":
+                if utilities.notificationUtilities.notifHasResponse(actionUtil.getRequestNotifOfAction(actionInstance)):
+                    # if the owner of the tool denied that it has been returned:
+                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getRequestNotifOfAction(actionInstance)) == "Deny":
+                        #delete the borrow request notification from the database so it no longer displays
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
+                        #send a passive aggressive notif
+                        response = "The owner of " + \
+                                        actionInstance.tool.name + " has indicated that you failed to return the tool to " \
+                                        + actionInstance.workSpace + ".  Please do not mark a tool as returned unless " \
+                                        + "it has actually been returned to its shed."
+                        utilities.notificationUtilities.createBadInfoNotif(actionInstance, actionInstance.requester, response)
+                        actionInstance.currrentState = "borrowed"
+                        actionInstance.save()
+
+                    # the owner of the tool confirmed it has been returned
+                    else:
+                        #delete the borrow request notification from the database so it no longer displays
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
+                        #proceed to next state
+                        actionInstance.currrentState = "returned"
+                        actionInstance.save()
+                        processActions()
+
             elif actionInstance.currrentState == "returned":
                 #notify tool owner that his tool has been returned
-                message = "Your " + actionInstance.tool.name + " has been returned to " + \
-                                actionInstance.workSpace + ". "
-                utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
+                # message = "Your " + actionInstance.tool.name + " has been returned to " + \
+                #                 actionInstance.workSpace + ". "
+                # utilities.notificationUtilities.createInfoNotif(actionInstance, actionInstance.tool.owner, message)
                 #reduce user reputation by 5 for every day the tool is late!
                 timeSinceBorrowed = timezone.now() - actionInstance.tool.borrowedTime
                 for day in range(timeSinceBorrowed.days):
@@ -184,19 +218,22 @@ def processActions():
 
             elif actionInstance.currrentState == "acceptDeny":
                 #if the notification has been responded to
-                if utilities.notificationUtilities.notifHasResponse(actionUtil.getNotifOfAction(actionInstance)):
+                if utilities.notificationUtilities.notifHasResponse(actionUtil.getRequestNotifOfAction(actionInstance)):
                     #if the admin responded 'Accept'
-                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getNotifOfAction(actionInstance)) == 'Accept':
+                    if utilities.notificationUtilities.getNotifResponse(actionUtil.getRequestNotifOfAction(actionInstance)) == 'Accept':
                         #add the guy to the shed
                         shedUtil.addMemberToShed(actionInstance.shed, actionInstance.requester)
                         #delete the notif that asked about accepting and denying
-                        actionUtil.getNotifOfAction(actionInstance).delete()
+                        message = "You have been approved to join " + actionInstance.shed.name + "!"
+                        utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,message)
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
                         actionInstance.currrentState = "idle"
                         actionInstance.save()
                     else:
                         #send an info notification to the requester saying he was denied
                         message = "You have been denied from joining " + actionInstance.shed.name + "."
                         utilities.notificationUtilities.createInfoNotif(actionInstance,actionInstance.requester,message)
+                        actionUtil.getRequestNotifOfAction(actionInstance).delete()
                         #proceed to next state
                         actionInstance.currrentState = "idle"
                         actionInstance.save()

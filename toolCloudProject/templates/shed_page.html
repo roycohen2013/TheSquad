@@ -5,7 +5,6 @@
 {% block content %}
 <div id="container" class="center">
   <h1>{{ name }}</h1>
-  <h2>Owner: {{ owner.user.username }}</h2>
     <h2>Admins</h2>
     <ul class="left profileList">
     {% for admin in admins %}
@@ -30,7 +29,7 @@
     {% endif %}
   {% if meetsMin and not alreadyMember and not pendingRequest %}
     <a class="btn btn-default" href="/sheds/{{shed.id}}/join">Join this shed</a>
-  {% elif pendingRequest %}
+  {% elif pendingRequest and not alreadyMember %}
     <i>Your request to join this shed is currently pending.</i>
   {% elif not meetsMin %}
     <i>Sorry, but you do not meet the minimum reputation set by the shed's admins in order to join.</i>

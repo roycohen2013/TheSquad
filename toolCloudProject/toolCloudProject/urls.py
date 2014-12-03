@@ -33,6 +33,8 @@ urlpatterns = patterns('',
 	url(r'^tools/$', 'toolCloudApp.views.all_tools'),
 	url(r'^tools/submit/$', 'toolCloudApp.views.tool_submission'),
 	url(r'^tools/(?P<id>\d+)/$', 'toolCloudApp.views.view_tool_page', {'contextArg': None}, name="toolPage"),
+	url(r'^tools/(?P<id>\d+)/success/$', 'toolCloudApp.views.view_tool_page', \
+		{'contextArg': content.addGoodToolSubmissionNoti(dict())}),
 	url(r'^tools/(?P<id>\d+)/borrow/$', 'toolCloudApp.views.borrow_tool', name="borrowRequest"),
 	url(r'^tools/(?P<id>\d+)/return/$', 'toolCloudApp.views.return_tool', name="toolReturn"),
 	url(r'^tools/(?P<id>\d+)/returned/$', 'toolCloudApp.views.view_tool_page', \
@@ -45,6 +47,8 @@ urlpatterns = patterns('',
 	url(r'^sheds/$', 'toolCloudApp.views.all_sheds'),
 	url(r'^sheds/create/$', 'toolCloudApp.views.create_tool_shed'),
 	url(r'^sheds/(?P<id>\d+)/$', 'toolCloudApp.views.view_shed_page', {'contextArg': None}, name="shedPage"),
+	url(r'^sheds/(?P<id>\d+)/success/$', 'toolCloudApp.views.view_shed_page', \
+		{'contextArg': content.addGoodShedCreationNoti(dict())}),
 	url(r'^sheds/(?P<id>\d+)/join/$', 'toolCloudApp.views.join_shed', name="joinRequest"),
 	url(r'^sheds/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_shed', name="shedEdit"),
 	url(r'^sheds/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_shed_page', \

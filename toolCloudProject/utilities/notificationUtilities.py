@@ -42,7 +42,19 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     #actionManager.processActions()
     return newNotification
 
+def createBadInfoNotif(sourceObj,recipientProfile,content):
+    if isinstance(sourceObj, Shed):
+        newNotification = Notification(sourceShed = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
+    elif isinstance(sourceObj, Tool):
+        newNotification = Notification(sourceTool = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
+    elif isinstance(sourceObj, Profile):
+       newNotification = Notification(sourceProfile = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
+    elif isinstance(sourceObj, Action):
+        newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
 
+    newNotification.save()
+    #actionManager.processActions()
+    return newNotification
 """
     Create a new Notification that waits for a response.
 """
@@ -99,6 +111,16 @@ def acceptBorrowRequest(notifObj):
 """
 def denyBorrowRequest(notifObj):
     notifObj.response =  "Deny"
+    notifObj.save()
+    actionManager.processActions()
+
+def confirmReturn(notifObj):
+    notifObj.response = "Yes"
+    notifObj.save()
+    actionManager.processActions()
+
+def denyReturn(notifObj):
+    notifObj.response = "No"
     notifObj.save()
     actionManager.processActions()
 

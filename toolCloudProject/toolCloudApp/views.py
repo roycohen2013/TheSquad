@@ -62,7 +62,8 @@ def user_register(request):
                 newShedObject.admins.add(userProfile)
                 newShedObject.save()
                 context = {}
-                context['name'] = form.cleaned_data['username']
+                context.update(content.genUserHome(request))
+                context.update(content.addGoodRegisterNoti(dict()))
                 return render_to_response('userHome.html', context)
         else:
             form = UserRegistrationForm()
@@ -89,9 +90,7 @@ def tool_submission(request):
                 tool.save()
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-                context = {}
-                context['name'] = form.cleaned_data['name']
-                return render_to_response('submission_success.html', context)
+                return HttpResponseRedirect('/tools/' + str(tool.id) + '/success')
         else:
             form = ToolCreationForm(request.user)
         context = {}
@@ -118,10 +117,7 @@ def create_tool_shed(request):
                 shed = form.save()
                 #send email
                 #sendMail(request.user.email, "Your Tool Submission Has Been Accepted! ", "Hey there " + request.first_name + ", \n\nThanks for submitting your " + form.cleaned_data['name'] + " to ToolCloud.  We'll let you know when someone wants to borrow it. \n\nCheers, \n\nThe Squad")
-                context = {}
-                context['name'] = form.cleaned_data['name']
-                context.update(content.genBaseLoggedIn(request))
-                return render_to_response('shed_registration_success.html', context)
+                return HttpResponseRedirect('/sheds/' + str(shed.id) + '/success')
         else:
             form = ShedCreationForm(request.user)
         context = {}
@@ -209,7 +205,10 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
                 context.update(content.genBaseLoggedIn(request))
                 return render_to_response("dne.html", context)
         else:
-            return HttpResponseRedirect('/tools/toolnotfound') #redirect to tool not found page
+            context = {}
+            context['object'] = 'tool'
+            context.update(content.genBaseLoggedIn(request))
+            return render_to_response("dne.html", context)
         owner = toolUtil.getToolOwner(toolObj)
         name = toolUtil.getToolName(toolObj)
         description = toolUtil.getToolDescription(toolObj)
@@ -218,15 +217,24 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         condition = toolUtil.getToolConditionReadable(toolObj)
         available = toolUtil.isToolAvailable(toolObj)
         actions = actionUtil.getProfileAction(profileUtil.getProfileFromUser(request.user))
-        actionRequest = None
+        actionBorrowRequest = None
+        actionReturnRequest = None
+        requesterProfile = None
         for action in actions:
             if action.tool == toolObj:
                 if action.currrentState == "userBorrowRequest" or action.currrentState == "acceptDecline":
-                    actionRequest = action
-        if actionRequest:
-            pendingRequest = True
+                    actionBorrowRequest = action
+                if action.currrentState == "markedReturned" or action.currrentState == "confirmReturned":
+                    actionReturnRequest = action
+        if actionBorrowRequest:
+            pendingBorrowRequest = True
+            requesterProfile = actionBorrowRequest.requester
         else:
-            pendingRequest = False
+            pendingBorrowRequest = False
+        if actionReturnRequest:
+            pendingReturnRequest = True
+        else:
+            pendingReturnRequest = False
         if profileUtil.getProfileFromUser(request.user) == owner:
             ownedByUser = True
         else:
@@ -243,11 +251,13 @@ def view_tool_page(request, id, contextArg):#contextArg is a dict to be added to
         context['tags'] = tags
         context['currentProfile'] = profileObj
         context['borrower'] = borrower
+        context['requester'] = requesterProfile
         context['condition'] = condition
         context['available'] = available
         context['ownedByUser'] = ownedByUser
         context['meetsMin'] = meetsMinRep
-        context['pendingRequest'] = pendingRequest
+        context['pendingBorrowRequest'] = pendingBorrowRequest
+        context['pendingReturnRequest'] = pendingReturnRequest
         context['canBorrow'] = canBorrow
         context.update(content.genBaseLoggedIn(request))
         if contextArg:
@@ -351,7 +361,7 @@ def return_tool(request, id):
     else:
         toolObj = toolUtil.getToolFromID(id)
         actionObj = actionUtil.getBorrowedToolAction(toolObj)
-        actionObj.currrentState = "returned"
+        actionObj.currrentState = "markedReturned"
         actionObj.save()
         actionManager.processActions()
         return HttpResponseRedirect('/tools/' + id + '/returned')
@@ -475,16 +485,16 @@ def search(request):
     else:
         query_string = ''
         found_entries = None
+        no_results = True
         tool_results = []
         profile_results =[]
         shed_results = []
         if ('q' in request.GET) and request.GET['q'].strip():
             query_string = request.GET['q']
-            if query_string == '' or None:
+            if query_string == '' or query_string == None:
                 tool_results = None
                 profile_results = None
                 shed_results = None
-                no_results = True
             else:
                 entry_query = get_query(query_string, ['name'])
                 found_tools = Tool.objects.filter(name__icontains=query_string)
@@ -492,17 +502,21 @@ def search(request):
                 found_tools = Tool.objects.filter(tags__icontains=query_string)
                 for tool in found_tools:
                     if tool not in tool_results:
-                        tool_results += list(tool)
+                        tool_results.append(tool)
+                found_tools = Tool.objects.filter(description__icontains=query_string)
+                for tool in found_tools:
+                    if tool not in tool_results:
+                        tool_results.append(tool)
                 found_profiles = Profile.objects.filter(user__username__icontains=query_string)
                 profile_results = list(found_profiles)
                 found_profiles = Profile.objects.filter(user__first_name__icontains=query_string)
                 for profile in found_profiles:
                     if profile not in profile_results:
-                        profile_results += list(profile)
-                found_profiles = Profile.objects.filter(user__last_name__icontains=query_string)
+                        profile_results.append(profile)
+                found_profiles = Profile.objects.filter(user__last_name__icontains=query_string) 
                 for profile in found_profiles:
                     if profile not in profile_results:
-                        profile_results += list(profile)
+                        profile_results.append(profile)
                 found_sheds = Shed.objects.filter(name__icontains=query_string)
                 shed_results = list(found_sheds)
                 all_results = shed_results + profile_results + tool_results

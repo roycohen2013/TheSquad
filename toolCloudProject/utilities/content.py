@@ -49,6 +49,14 @@ def addGoodRegisterNoti(contentDict):
 	newNoti = notifUtil.createTempInfoNotif("Registration successful! You are now logged in.", "success")
 	return addNoti(contentDict, newNoti)
 
+def addGoodToolSubmissionNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Your tool was successfully submitted!", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodShedCreationNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Your shed was successfully created!", "success")
+	return addNoti(contentDict, newNoti)
+
 def addGoodPasswordChangeNoti(contentDict):
 	newNoti = notifUtil.createTempInfoNotif("Password changed successfully.", "success")
 	return addNoti(contentDict, newNoti)
@@ -85,7 +93,7 @@ def addRequestDeniedNoti(contentDict):
 	adds a returned tool notification (for tool borrower)
 """
 def addToolReturnedNoti(contentDict):
-	newNoti = notifUtil.createTempInfoNotif("Tool returned.", "success")
+	newNoti = notifUtil.createTempInfoNotif("Tool marked as returned.  The owner must confirm it has been returned.", "success")
 	return addNoti(contentDict, newNoti)
 
 """
