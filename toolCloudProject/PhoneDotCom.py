@@ -16,10 +16,11 @@ def sendText(toNumber, Content):
     headers = {'content-type': 'application/json'}
     payload = { 'from': FromNumber, 'to': toNumber,'message': Content }
 
-    auth = HTTPBasicAuth(username, Password)
+    auth = HTTPBasicAuth(username, Password) 
 
     r = requests.post(smsURL, data=json.dumps(payload), headers=headers,auth=auth)
 
+    print (r.text)
 
 
 
