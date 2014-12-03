@@ -94,7 +94,7 @@ class UserRegistrationForm(UserCreationForm):
     phone_number = forms.CharField(required = True)
     street_address = forms.CharField(required = True)
     city = forms.CharField(required = True)
-    state = forms.ChoiceField(choices = STATE_CHOICES, required = True)
+    state = forms.ChoiceField(choices = STATE_CHOICES, required = True, initial=STATE_CHOICES[31][0])
     zip_code = forms.CharField(required = True)
 
     class Meta:
@@ -126,13 +126,23 @@ class UserRegistrationForm(UserCreationForm):
 """
 
 class ToolCreationForm(ModelForm):
-    condition = forms.ChoiceField(choices=CONDITION_CHOICES, required=True)
-    maximum_borrow_time = forms.IntegerField(max_value=60, min_value=1, required=False)
-    minimum_reputation = forms.IntegerField(max_value=100, min_value=0, required=False)
+    condition = forms.ChoiceField(choices=CONDITION_CHOICES, required=True, \
+        help_text = 'The physical condition of your tool.', initial=CONDITION_CHOICES[2][0])
+    maximum_borrow_time = forms.IntegerField(max_value=60, min_value=1, required=False, \
+        help_text = 'The maximum number of days a user is allowed to borrow this tool. 1-60 days.', \
+        initial=30)
+    minimum_reputation = forms.IntegerField(max_value=100, min_value=0, required=False, \
+        help_text = 'The minimum reputation required for a user to borrow this tool. 0-100.', \
+        initial=0)
 
     def __init__(self, user, *args, **kwargs):
         self.userObject = user
+        shedList = list(shedUtil.getAllShedsJoinedBy(profileUtil.getProfileFromUser(self.userObject)))
+        self.shedChoiceList = []
+        for shed in shedList:
+            self.shedChoiceList.append((shed.id, shed.name))
         super(ToolCreationForm, self).__init__(*args, **kwargs)
+        self.fields['shed'] = forms.ChoiceField(choices=self.shedChoiceList, help_text = 'The shed this tool will be a part of.')
 
     class Meta:
         model = Tool
@@ -153,7 +163,7 @@ class ToolCreationForm(ModelForm):
         tool.borrowedCount = 0
         tool.requestedCount = 0
         tool.preferences = ''
-        tool.myShed = None
+        tool.myShed = shedUtil.getShedFromID(self.cleaned_data['shed'])
         if commit:
             tool.save()
         return tool

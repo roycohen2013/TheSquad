@@ -4,7 +4,9 @@
 
 <div id="container" class="center">
   <h1>{{name}}</h1>
-  <h3>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h3>  <h3>Condition: {{ condition }}</h3>
+  <h3>Owner: <a href = "/accounts/profile/{{owner.user.username}}">{{owner.user.username}}</a></h3> 
+  <h3>This tool belongs to shed <a href = "/sheds/{{ tool.myShed.id }}">{{ tool.myShed.name }}</a>
+  <h3>Condition: {{ condition }}</h3>
   <h3>Tags: </h3>{% if tags %}<p>{{ tags }}</p>{% else %}<i>The owner has not tagged this tool with anything.</i>{% endif %}
   <p>{{description}}</p>
 

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
-from mailSend import sendMail
+from toolCloudApp.mailSend import sendMail
 
 """
     Create a new object of the "info" type with no recipientProfile or source
@@ -42,7 +42,7 @@ def createInfoNotif(sourceObj,recipientProfile,content):
     newNotification.save()
 
     #send confirmation email
-    sendMail(recipientProfile, "You have a new notification!", + content)
+    sendMail(recipientProfile, "You have a new notification!", content)
     #actionManager.processActions()
     return newNotification
 
@@ -57,7 +57,7 @@ def createBadInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
 
     newNotification.save()
-    sendMail(recipientProfile, "You have a new notification!", + content)
+    sendMail(recipientProfile, "You have a new notification!", content)
     #actionManager.processActions()
     return newNotification
 """
@@ -74,7 +74,7 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
     newNotification.save()
-    sendMail(recipientProfile, "You have a new notification!", + content)
+    sendMail(recipientProfile, "You have a new notification!", content)
     #actionManager.processActions()
     return newNotification
 
