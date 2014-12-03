@@ -2,11 +2,11 @@ from django.core.mail import send_mail
 import smtplib
 # This is a Python function to send a ToolCloud message to the address (string)
 
-EMAIL_ENABLED = False
+EMAIL_ENABLED = True
 
 def sendMail (address, subject, body):
     if EMAIL_ENABLED:
-        sender = 'toolshare@toolcloud.me'
+        sender = 'toolbot@toolcloud.me'
         
         #message = EmailMessage('From:  ToolCloud <thesquad.toolcloud@gmail.com>\nSubject:  ' + subject, body, to=[address])
         try:
