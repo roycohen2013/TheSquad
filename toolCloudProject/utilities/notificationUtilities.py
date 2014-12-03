@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from toolCloudApp.models import Profile, Tool, Shed, Notification, Action
+from mailSend import sendMail
 
 """
     Create a new object of the "info" type with no recipientProfile or source
@@ -39,6 +40,12 @@ def createInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "info")
 
     newNotification.save()
+
+    #send confirmation email
+    sendMail(recipientProfile.user.email, \
+        "You have a new notification!", \
+        "Hi " + recipientProfile.user.first_name + ", \n\n" + \
+        content + "\n\nCheers, \n\nThe Squad")
     #actionManager.processActions()
     return newNotification
 
@@ -53,6 +60,10 @@ def createBadInfoNotif(sourceObj,recipientProfile,content):
         newNotification = Notification(sourceAction = sourceObj, content = content, recipient = recipientProfile, notificationType = "alert")
 
     newNotification.save()
+    sendMail(recipientProfile.user.email, \
+        "You have a new notification!", \
+        "Hi " + recipientProfile.user.first_name + ", \n\n" + \
+        content + "\n\nCheers, \n\nThe Squad")
     #actionManager.processActions()
     return newNotification
 """
@@ -69,6 +80,10 @@ def createResponseNotif(sourceObj,recipientProfile,content,options):
         newNotification = Notification(sourceAction = sourceObj, options=options, content = content, recipient = recipientProfile, notificationType = "request")
 
     newNotification.save()
+    sendMail(recipientProfile.user.email, \
+        "You have a new notification!! ", \
+        "Hi " + recipientProfile.user.first_name + ", \n\n" + \
+        content + "\n\nCheers, \n\nThe Squad")
     #actionManager.processActions()
     return newNotification
 
