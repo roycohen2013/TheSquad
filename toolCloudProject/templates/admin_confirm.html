@@ -1,0 +1,10 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+
+<h2>Are you sure you want to make {{newAdmin.user.username}} an admin of {{shed.name}}?  This user will be allowed to edit the shed information, approve new members, and ban current members.</h2>
+<div class="center">
+<a class="btn btn-primary" href="/sheds/{{shed.id}}/add_admin/{{newAdmin.user.username}}">Yes, make this user an admin.</a>    <a class="btn btn-default" href="/sheds/{{shed.id}}">No, return to shed page.</a>
+</div>
+
+{% endblock %}

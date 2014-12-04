@@ -38,7 +38,7 @@ def home(request):
     return render_to_response('userHome.html', content.genUserHome(request))
 
 #Import a user registration form
-from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm, passwordResetForm
+from toolCloudApp.forms import UserRegistrationForm, ToolCreationForm, ShedCreationForm, passwordResetForm, UserEditForm, ToolEditForm, ShedEditForm
 
 
 # User Register View
@@ -62,6 +62,7 @@ def user_register(request):
                 newShedObject.members.add(userProfile)
                 newShedObject.admins.add(userProfile)
                 newShedObject.save()
+                userProfile.personalShed = newShedObject
                 context = {}
                 context.update(content.genUserHome(request))
                 context.update(content.addGoodRegisterNoti(dict()))
@@ -76,6 +77,24 @@ def user_register(request):
         return render_to_response('register.html', context)
     else:
         return HttpResponseRedirect('/')
+
+def edit_user_info(request):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login/')
+    else:
+        if request.method == 'POST':
+            profileObj = profileUtil.getProfileFromUser(request.user)
+            form = UserEditForm(profileObj, request.POST)
+            if form.is_valid():
+                profileObj = form.save()
+                return HttpResponseRedirect('/accounts/my_account/account_updated')
+        else:
+            form = UserEditForm(profileUtil.getProfileFromUser(request.user))
+        context = {}
+        context.update(csrf(request))
+        context.update(content.genBaseLoggedIn(request))
+        context['form'] = form
+        return render_to_response('user_update.html', context)
 
 # Tool Submission View
 def tool_submission(request):
@@ -104,8 +123,24 @@ def tool_submission(request):
         return render_to_response('tool_creation.html', context)
 
 def edit_tool(request, id):
-    #stuff
-    pass
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login/')
+    else:
+        if request.method == 'POST':
+            toolObj = toolUtil.getToolFromID(id)
+            form = ToolEditForm(toolObj, request.POST)
+            if form.is_valid():
+                toolObj = form.save()
+                return HttpResponseRedirect('/tools/' + str(toolObj.id) + '/edit/success')
+        else:
+            toolObj = toolUtil.getToolFromID(id)
+            form = ToolEditForm(toolObj)
+        context = {}
+        context.update(csrf(request))
+        context.update(content.genBaseLoggedIn(request))
+        context['form'] = form
+        context['tool'] = toolUtil.getToolFromID(id)
+        return render_to_response('tool_update.html', context)
 
 #a view for the creation of a new Shed
 def create_tool_shed(request):
@@ -119,6 +154,9 @@ def create_tool_shed(request):
             
             if form.is_valid():
                 shed = form.save()
+                profileObj = profileUtil.getProfileFromUser(request.user)
+                shed.members.add(profileObj)
+                shed.admins.add(profileObj)
                 #send email
                 sendMail(profileUtil.getProfileFromUser(request.user), \
                     "Your shed has been created! ", \
@@ -134,8 +172,23 @@ def create_tool_shed(request):
         return render_to_response('shed_creation.html', context)
 
 def edit_shed(request, id):
-    #other stuff
-    pass
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login/')
+    else:
+        if request.method == 'POST':
+            shedObj = shedUtil.getShedFromID(id)
+            form = ShedEditForm(shedObj, request.POST)
+            if form.is_valid():
+                shedObj = form.save()
+                return HttpResponseRedirect('/sheds/' + str(shedObj.id) + '/edit/success')
+        else:
+            form = ShedEditForm(shedUtil.getShedFromID(id))
+        context = {}
+        context.update(csrf(request))
+        context.update(content.genBaseLoggedIn(request))
+        context['form'] = form
+        context['shed'] = shedUtil.getShedFromID(id)
+        return render_to_response('shed_update.html', context)
 
 #a view that allows the user to see their profile
 def view_profile(request, username=None):
@@ -291,6 +344,10 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         owner = shedUtil.getOwnerOfShed(shedObj)
         name = shedUtil.getNameOfShed(shedObj)
         admins = shedUtil.getAllAdminsOfShed(shedObj)
+        isAdmin = False
+        for admin in admins:
+            if admin == profileUtil.getProfileFromUser(request.user):
+                isAdmin = True
         members = shedUtil.getAllMembersOfShed(shedObj)
         tools = toolUtil.getAllToolsInShed(shedObj)
         userProfile = profileUtil.getProfileFromUser(request.user)
@@ -309,12 +366,14 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         context.update(csrf(request))
         context['shed'] = shedObj
         context['owner'] = owner
+        context['currentUser'] = profileUtil.getProfileFromUser(request.user)
         context['name'] = name
         context['admins'] = admins
         context['members'] = members
         context['tools'] = tools
         context['meetsMin'] = meetsMinRep
         context['alreadyMember'] = shedMembership
+        context['isAdmin'] = isAdmin
         context['pendingRequest'] = pendingRequest
         context.update(content.genBaseLoggedIn(request))
         if contextArg:
@@ -426,6 +485,181 @@ def request_decline(request, id):
     actionUtil.forceProcessActions()
     return render_to_response("view_notifs.html", content.addRequestDeniedNoti(context))
 
+def confirm_add_shed_admin(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        newAdmin = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        admins = shedUtil.getAllAdminsOfShed(shedObj)
+        isAdmin = False
+        for admin in admins:
+            if admin == userProfile:
+                isAdmin = True
+        if isAdmin:
+            context = {}
+            context['currentUser'] = userProfile
+            context['shed'] = shedObj
+            context['newAdmin'] = newAdmin
+            context.update(content.genBaseLoggedIn(request))
+            return render_to_response("admin_confirm.html", context)
+        else:
+            return HttpResponseRedirect('/')
+
+def add_shed_admin(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        newAdmin = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        admins = shedUtil.getAllAdminsOfShed(shedObj)
+        isAdmin = False
+        for admin in admins:
+            if admin == userProfile:
+                isAdmin = True
+        if isAdmin:
+            shedObj.admins.add(newAdmin)
+            notifUtil.createInfoNotif(shedObj, newAdmin, "You have been made an admin of the shed " + shedObj.name + "! ")
+            return HttpResponseRedirect("/sheds/" + str(shedObj.id) + "/add_admin/added/success")
+        else:
+            return HttpResponseRedirect('/')
+
+def confirm_remove_shed_admin(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        removeAdmin = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        if shedObj.owner == removeAdmin:
+            return HttpResponseRedirect('/')
+        else:
+            if shedObj.owner == userProfile:
+                context = {}
+                context['currentUser'] = userProfile
+                context['shed'] = shedObj
+                context['removeAdmin'] = removeAdmin
+                context.update(content.genBaseLoggedIn(request))
+                return render_to_response("admin_remove_confirm.html", context)
+            else:
+                return HttpResponseRedirect('/')
+
+def remove_shed_admin(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        removeAdmin = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        if shedObj.owner == removeAdmin:
+            return HttpResponseRedirect('/')
+        else:
+            if shedObj.owner == userProfile:
+                shedUtil.removeAdminFromShed(shedObj, removeAdmin)
+                notifUtil.createBadInfoNotif(shedObj, removeAdmin, "You have been removed as an admin from the shed " + shedObj.name + ". ")
+                return HttpResponseRedirect('/sheds/' + str(shedObj.id) + '/remove_admin/removed/success')
+            else:
+                return HttpResponseRedirect('/')
+
+def confirm_remove_shed_member(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        banUser = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        admins = shedUtil.getAllAdminsOfShed(shedObj)
+        isAdmin = False
+        for admin in admins:
+            if admin == userProfile:
+                isAdmin = True
+        if isAdmin:
+            context = {}
+            context['currentUser'] = userProfile
+            context['shed'] = shedObj
+            context['banned'] = banUser
+            context.update(content.genBaseLoggedIn(request))
+            return render_to_response("remove_member_confirm.html", context)
+        else:
+            return HttpResponseRedirect('/')
+
+def remove_shed_member(request, id, username):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        banUser = profileUtil.getProfileFromUser(User.objects.get(username=username))
+        admins = shedUtil.getAllAdminsOfShed(shedObj)
+        userIsAdmin = False
+        banUserIsAdmin = False
+        for admin in admins:
+            if admin == userProfile:
+                userIsAdmin = True
+            elif admin == banUser:
+                banUserIsAdmin = True
+        if userIsAdmin:
+            if banUserIsAdmin:
+                if shedObj.owner == userProfile:
+                    shedUtil.removeAdminFromShed(shedObj, banUser)
+                    notifUtil.createBadInfoNotif(shedObj, banUser, "You have been removed as an admin from the shed " + shedObj.name + ". ")
+                    shedUtil.removeMemberFromShed(shedObj, banUser)
+                    notifUtil.createBadInfoNotif(shedObj, banUser, "You have been kicked from the shed " + shedObj.name + ". ")
+                    shedTools = toolUtil.getAllToolsInShed
+                    for tool in shedTools:
+                        if tool.owner == banUser:
+                            shedUtil.removeToolFromShed(shedObj, tool)
+                            shedUtil.addToolToShed(banUser.personalShed, tool)
+                    return HttpResponseRedirect("/sheds/" + str(shedObj.id) + "/remove_member/kicked/success")
+                else:
+                    return HttpResponseRedirect('/')
+            else:
+                shedUtil.removeMemberFromShed(shedObj, banUser)
+                shedObj.bannedUsers.add(banUser)
+                notifUtil.createBadInfoNotif(shedObj, banUser, "You have been kicked from the shed " + shedObj.name + ". ")
+                shedTools = toolUtil.getAllToolsInShed(shedObj)
+                for tool in shedTools:
+                    if tool.owner == banUser:
+                        shedUtil.removeToolFromShed(shedObj, tool)
+                        shedUtil.addToolToShed(banUser.personalShed, tool)
+                return HttpResponseRedirect("/sheds/" + str(shedObj.id) + "/remove_member/kicked/success")
+        else:
+            return HttpResponseRedirect('/')
+
+def confirm_leave_shed(request, id):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        context = {}
+        context['currentUser'] = userProfile
+        context['shed'] = shedObj
+        return render_to_response("leave_shed_confirm.html", context)
+
+def leave_shed(request, id):
+    if request.user.is_anonymous():
+        return HttpResponseRedirect('/accounts/login')
+    else:
+        userProfile = profileUtil.getProfileFromUser(request.user)
+        shedObj = shedUtil.getShedFromID(id)
+        if shedObj.owner == userProfile:
+            return HttpResponseRedirect('/')
+        else:
+            shedObj = shedUtil.getAllAdminsOfShed(shedObj)
+            for admin in admins:
+                if admin == userProfile:
+                    shedUtil.removeAdminFromShed(shedObj, userProfile)
+            shedUtil.removeMemberFromShed(shedObj, userProfile)
+            shedTools = toolUtil.getAllToolsInShed(shedObj)
+            for tool in shedTools:
+                if tool.owner == userProfile:
+                    shedUtil.removeToolFromShed(shedObj, tool)
+                    shedUtil.addToolToShed(userProfile.personalShed, tool)
+            return HttpResponseRedirect('/sheds/' + str(shedObj.id) + '/leave/success')
+
 def view_notifications(request):
     if request.user.is_anonymous():
         return HttpResponseRedirect('/accounts/login')
@@ -479,6 +713,9 @@ def password_reset(request):
             if (passone == passtoo):
                 request.user.set_password (passone)
                 request.user.save()
+                sendMail(profileUtil.getProfileFromUser(request.user), \
+                    "Your password has been changed", \
+                    "Your password has been changed on ToolCloud.")
             return HttpResponseRedirect('/accounts/my_account/password_changed')
     # if a GET (or any other method) we'll create a blank form
     else:

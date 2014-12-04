@@ -20,9 +20,12 @@ urlpatterns = patterns('',
 	url(r'^accounts/invalid/$', 'toolCloudProject.views.invalid_login'),
 	url(r'^accounts/profile/(?P<username>\w+)/$', 'toolCloudApp.views.view_profile', name="profile"), 
 	url(r'^accounts/my_account/$', 'toolCloudApp.views.view_current_profile', {'contextArg': None}, name="my_account"),
+	url(r'^accounts/my_account/edit/$', 'toolCloudApp.views.edit_user_info', name="userEdit"),
+	url(r'^accounts/my_account/account_updated/$', 'toolCloudApp.views.view_current_profile', \
+		{'contextArg': content.addGoodAccountUpdateNoti(dict())}),
 	url(r'^accounts/my_account/password_changed/$', 'toolCloudApp.views.view_current_profile', \
 		{'contextArg': content.addGoodPasswordChangeNoti(dict())}),
-	url(r'^accounts/change_password/$', 'toolCloudApp.views.password_reset'),
+	url(r'^accounts/my_account/change_password/$', 'toolCloudApp.views.password_reset'),
 
 	# Notification urls
 	url(r'^accounts/notifications/$', 'toolCloudApp.views.view_notifications'),
@@ -40,6 +43,8 @@ urlpatterns = patterns('',
 	url(r'^tools/(?P<id>\d+)/returned/$', 'toolCloudApp.views.view_tool_page', \
 		{'contextArg': content.addToolReturnedNoti(dict())}, name="toolReturned"),
 	url(r'^tools/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_tool', name="toolEdit"),
+	url(r'^tools/(?P<id>\d+)/edit/success/$', 'toolCloudApp.views.view_tool_page', \
+		{'contextArg': content.addGoodToolEditNoti(dict())}),
 	url(r'^tools/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_tool_page', \
 		{'contextArg': content.addBorrowRequestNoti(dict())}),
 
@@ -51,8 +56,26 @@ urlpatterns = patterns('',
 		{'contextArg': content.addGoodShedCreationNoti(dict())}),
 	url(r'^sheds/(?P<id>\d+)/join/$', 'toolCloudApp.views.join_shed', name="joinRequest"),
 	url(r'^sheds/(?P<id>\d+)/edit/$', 'toolCloudApp.views.edit_shed', name="shedEdit"),
+	url(r'^sheds/(?P<id>\d+)/edit/success/$', 'toolCloudApp.views.view_shed_page', \
+		{'contextArg': content.addGoodShedEditNoti(dict())}),
 	url(r'^sheds/(?P<id>\d+)/request_sent/$', 'toolCloudApp.views.view_shed_page', \
 		{'contextArg': content.addShedJoinRequestNoti(dict())}),
+	url(r'^sheds/(?P<id>\d+)/add_admin/(?P<username>\w+)/confirm/$', 'toolCloudApp.views.confirm_add_shed_admin'),
+	url(r'^sheds/(?P<id>\d+)/add_admin/(?P<username>\w+)/$', 'toolCloudApp.views.add_shed_admin'),
+	url(r'^sheds/(?P<id>\d+)/add_admin/added/success/$', 'toolCloudApp.views.view_shed_page',
+		{'contextArg': content.addGoodAdminAddNoti(dict())}),
+	url(r'^sheds/(?P<id>\d+)/remove_admin/(?P<username>\w+)/confirm/$', 'toolCloudApp.views.confirm_remove_shed_admin'),
+	url(r'^sheds/(?P<id>\d+)/remove_admin/(?P<username>\w+)/$', 'toolCloudApp.views.remove_shed_admin'),
+	url(r'^sheds/(?P<id>\d+)/remove_admin/removed/success/$', 'toolCloudApp.views.view_shed_page',
+		{'contextArg': content.addGoodAdminRemoveNoti(dict())}),
+	url(r'^sheds/(?P<id>\d+)/remove_member/(?P<username>\w+)/confirm/$', 'toolCloudApp.views.confirm_remove_shed_member'),
+	url(r'^sheds/(?P<id>\d+)/remove_member/(?P<username>\w+)/$', 'toolCloudApp.views.remove_shed_member'),
+	url(r'^sheds/(?P<id>\d+)/remove_member/kicked/success/$', 'toolCloudApp.views.view_shed_page', \
+		{'contextArg': content.addGoodBanNoti(dict())}),
+	url(r'^sheds/(?P<id>\d+)/leave/confirm/$', 'toolCloudApp.views.confirm_leave_shed'), \
+	url(r'^sheds/(?P<id>\d+)/leave/$', 'toolCloudApp.views.leave_shed'), \
+	url(r'^sheds/(?P<id>\d+)/leave/success/$', 'toolCloudApp.views.view_shed_page', \
+		{'contextArg': content.addLeaveShedNoti(dict())}),
 
 	# Community urls
 	url(r'^communities/(?P<sharezone>\d+)/$', 'toolCloudApp.views.view_community_page', name="communityPage"),

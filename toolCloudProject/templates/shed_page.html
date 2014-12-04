@@ -5,19 +5,26 @@
 {% block content %}
 <div id="container" class="center">
   <h1>{{ name }}</h1>
-    <h2>Admins</h2>
+    {% if alreadyMember %}
+      <h4>Shed location: {{ shed.location }}</h4>
+    {% endif %}
+    <h3>Admins</h3>
     <ul class="left profileList">
     {% for admin in admins %}
-      <li><a href = "/accounts/profile/{{admin.user.username}}">{{ admin.user.username }}</a></li>
+      <li><a href = "/accounts/profile/{{admin.user.username}}">{{ admin.user.username }}</a></li>{% if owner == currentUser and admin != currentUser%}
+      <div class="btn-group btn-group-sm" role="group" aria-label="">
+      <a class="btn btn-default" href= "/sheds/{{shed.id}}/remove_admin/{{admin.user.username}}/confirm">Remove admin</a>    <a class="btn btn-danger" href= "/sheds/{{shed.id}}/remove_member/{{admin.user.username}}/confirm">Remove from shed</a></div>{% endif %}
     {% endfor %}
     </ul>  
-    <h2>Members</h2>
+    <h3>Members</h3>
     <ul class="left profileList">
     {% for member in members %}
-      <li><a href = "/accounts/profile/{{member.user.username}}">{{ member.user.username }}</a></li>
+      <li><a href = "/accounts/profile/{{member.user.username}}">{{ member.user.username }}</a>{% if isAdmin and member != currentUser %}  
+        <div class="btn-group btn-group-sm" role="group" aria-label="">
+          {% if member not in admins %}<a class="btn btn-primary" href= "/sheds/{{shed.id}}/add_admin/{{member.user.username}}/confirm">Make admin</a>    <a class="btn btn-danger" href= "/sheds/{{shed.id}}/remove_member/{{member.user.username}}/confirm">Remove from shed</a></div>{% endif %}{% endif %}</li>
     {% endfor %}
     </ul>
-    <h2>Tools</h2>
+    <h3>Tools</h3>
     {% if tools %}
       <ul class="left profileList">
       {% for tool in tools %}
@@ -27,7 +34,13 @@
     {% else %}
       <i>No one has submitted any tools to this shed yet!</i>
     {% endif %}
-  {% if meetsMin and not alreadyMember and not pendingRequest %}
+  {% if isAdmin %}
+    <a class="btn btn-default" href="/sheds/{{shed.id}}/edit">Edit this shed</a>
+  {% endif %}
+  {% if alreadyMember and currentUser != owner %}
+    <a class="btn btn-danger" href="/sheds/{{shed.id}}/leave/confirm">Leave this shed</a>
+  {% endif %}
+  {% if meetsMin and not alreadyMember and not pendingRequest and not banned %}
     <a class="btn btn-default" href="/sheds/{{shed.id}}/join">Join this shed</a>
   {% elif pendingRequest and not alreadyMember %}
     <i>Your request to join this shed is currently pending.</i>

@@ -50,12 +50,14 @@ shedObjects = []
 
 for x in range(len(shedNames)):
 
-	newShed = Shed(name=shedNames[x], owner=profileObjects[x], location='location', \
-					sharezone='14623', status='status')
+	newShed = Shed(name=shedNames[x], owner=profileObjects[x], location=profileObjects[x].streetAddress + \
+		", " + profileObjects[x].city + ", " + profileObjects[x].state + " " + profileObjects[x].sharezone, \
+					sharezone=profileObjects[x].sharezone, status='status')
 	newShed.save()
 	newShed.members.add(profileObjects[x])
 	newShed.admins.add(profileObjects[x])
 	newShed.save()
+	profileObjects[x].personalShed = newShed
 	shedObjects.append(newShed)
 
 
@@ -68,10 +70,11 @@ toolObjects = []
 
 for x in range(len(toolNames)):
 
-	newTool = Tool(name = toolNames[x], description='description', location = 'location', \
+	newTool = Tool(name = toolNames[x], description='description', \
 					isAvailable = True, tags = 'tags')
 	newTool.owner = profileObjects[x % len(profileObjects)]
 	newTool.myShed = shedObjects[x % len(shedObjects)]
+	newTool.location = newTool.myShed.location
 	newTool.save()
 	toolObjects.append(newTool)
 

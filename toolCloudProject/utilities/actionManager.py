@@ -70,8 +70,8 @@ def processActions():
                 actionInstance.save()
                 #send a request notification to the user who's tool is being requested
                 #the response options will be "Accept" or "Deny"
-                question = "Can " + actionInstance.requester.user.username + " borrow your " + \
-                                actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + "?"
+                question = actionInstance.requester.user.username + " has requested to borrow your " + \
+                                actionInstance.tool.name + " from " + actionInstance.tool.myShed.name + ". "
                 userOptions = "Accept,Deny" #adding options       
                 utilities.notificationUtilities.createResponseNotif(actionInstance, actionInstance.tool.owner, \
                                                             question, options = userOptions)
@@ -96,6 +96,7 @@ def processActions():
                         shedUtil.removeToolFromShed(actionInstance.tool.myShed, actionInstance.tool)
                         #then add the tool to the requester's personal shed
                         shedUtil.addToolToShed(targetShed, actionInstance.tool)
+                        toolUtil.updateToolLocation(actionInstance.tool, targetShed.location)
                         #delete the borrow request notification from the database so it no longer displays
                         actionUtil.getRequestNotifOfAction(actionInstance).delete()
                         #proceed to next state
@@ -188,6 +189,7 @@ def processActions():
                 shedUtil.removeToolFromShed(actionInstance.tool.myShed, actionInstance.tool)
                 oldShed = shedUtil.getShedByName(actionInstance.workSpace)[0]
                 shedUtil.addToolToShed(oldShed, actionInstance.tool)
+                toolUtil.updateToolLocation(actionInstance.tool, oldShed.location)
                 #move to idle state
                 actionInstance.currentState = "idle"
                 actionInstance.save()
@@ -206,8 +208,8 @@ def processActions():
                 print(adminList)
                 for admin in adminList:
                     newAction = actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
-                    content = "Can " + newAction.requester.user.username +  ' join your shed "' + \
-                                newAction.shed.name + '?"'
+                    content = newAction.requester.user.username +  ' has requested to join your shed "' + \
+                                newAction.shed.name + '."'
                     userOptions = "Accept,Deny"
                     utilities.notificationUtilities.createResponseNotif(newAction,admin,content,userOptions)
                     newAction.currrentState = 'acceptDeny'

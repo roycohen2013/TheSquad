@@ -14,7 +14,7 @@ from django.utils import timezone
 """
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='myProfile')
-
+    personalShed = models.OneToOneField('Shed', related_name='shedOwner', null=True)
     timeCreated = models.DateTimeField(auto_now_add=True)
     phoneNumber = models.CharField(max_length=12)
     streetAddress = models.CharField(max_length=50)
@@ -56,7 +56,7 @@ class Shed(models.Model):
     owner = models.ForeignKey('Profile',related_name='mySheds') #the Profile who owns this shed (sueprAdmin)
     admins = models.ManyToManyField('Profile',related_name='adminOfShed',null=True) #admins of shed
     members = models.ManyToManyField('Profile',related_name='memberOfShed',null=True) #members of shed
-
+    bannedUsers = models.ManyToManyField('Profile',related_name='bannedFromShed',null=True)
     timeCreated = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=75) #address of the shed
@@ -80,7 +80,7 @@ class Shed(models.Model):
         #NonMemberView - no one that is not a shed member is even aware of this shed.
         #joining       - Join is only on invite by a shed admin
 
-    minimumReputation = models.IntegerField(default=-1) # this only applies to public sheds
+    minimumReputation = models.IntegerField(default=0) # this only applies to public sheds
 
     """
         ToString method.
@@ -104,7 +104,7 @@ class Tool(models.Model):
     timeLastEdited = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
-    tags = models.CharField(max_length=200)#categories that apply to this tool object
+    tags = models.CharField(max_length=200, null=True, blank=True)#categories that apply to this tool object
     location = models.CharField(max_length=75) #current location of the tool
     #picture = models.FileField(upload_to='documents/%Y/%m/%d')
     condition = models.IntegerField(default=3) #1-5 scale
@@ -153,7 +153,7 @@ class Notification(models.Model):
 
     #replacing genericForeignKeys with an individual link to each possible object type
     #only one of these should be linked at any given time
-    sourceShed = models.OneToOneField('Shed', related_name='sourceShedNotification', null=True)
+    sourceShed = models.ForeignKey('Shed', related_name='sourceShedNotification', null=True)
     sourceProfile = models.OneToOneField('Profile', related_name='sourceProfileNotification', null=True)
     sourceTool = models.OneToOneField('Tool', related_name = 'sourceToolNotification', null=True)
     sourceAction = models.ForeignKey('Action', related_name = 'sourceActionNotification', null=True)

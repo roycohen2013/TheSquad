@@ -1,0 +1,10 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+
+<h2>Are you sure you want to leave {{shed.name}}?  You will be unable to re-join until approved by an admin.  Any tools you submitted to the shed will return to your personal shed.</h2>
+<div class="center">
+<a class="btn btn-danger" href="/sheds/{{shed.id}}/leave">Yes, I want to leave.</a>    <a class="btn btn-default" href="/sheds/{{shed.id}}">No, return to shed page.</a>
+</div>
+
+{% endblock %}

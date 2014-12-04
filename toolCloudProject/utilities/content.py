@@ -61,6 +61,34 @@ def addGoodPasswordChangeNoti(contentDict):
 	newNoti = notifUtil.createTempInfoNotif("Password changed successfully.", "success")
 	return addNoti(contentDict, newNoti)
 
+def addGoodAccountUpdateNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Account information updated successfully.", "success") 
+	return addNoti(contentDict, newNoti)
+
+def addGoodToolEditNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Tool information updated successfully.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodShedEditNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("Shed information updated successfully.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodAdminAddNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("This user has been made an admin of the shed.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodAdminRemoveNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("This user has been removed as an admin of the shed.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addGoodBanNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("This user has been banned from the shed.", "success")
+	return addNoti(contentDict, newNoti)
+
+def addLeaveShedNoti(contentDict):
+	newNoti = notifUtil.createTempInfoNotif("You have left the shed.", "success")
+	return addNoti(contentDict, newNoti)
+
 """
 	adds a sucessful logout notification to the dict and returns it
 """

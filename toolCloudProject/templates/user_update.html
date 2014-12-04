@@ -1,0 +1,11 @@
+{% extends "loggedInBase.html" %}
+
+{% block title %}{{ section.title }}{% endblock %}
+
+{% block content %}
+<form action="/accounts/my_account/edit/" method="POST"> {% csrf_token %}
+<h2>Update the fields you wish to change. . .</h2>
+    {{ form.as_p }}
+<input id="submit" class="btn-default" type="submit" value="Save">
+</form>
+{% endblock %}

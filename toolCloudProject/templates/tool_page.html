@@ -10,7 +10,9 @@
   <h3>Tags: </h3>{% if tags %}<p>{{ tags }}</p>{% else %}<i>The owner has not tagged this tool with anything.</i>{% endif %}
   <p>{{description}}</p>
 
-
+  {% if owner == currentProfile %}
+    <a class="btn btn-default" href="/tools/{{ tool.id }}/edit">Edit this tool</a>
+  {% endif %}
   {% if borrower == currentProfile %}
     {% if not pendingReturnRequest %}
       <h4>You are currently borrowing this tool.</h4>

@@ -1,0 +1,10 @@
+{% extends "loggedInBase.html" %}
+
+{% block content %}
+
+<h2>Are you sure you want to remove {{removeAdmin.user.username}} as an admin from {{shed.name}}?  This user will remain a member of the shed, but will no longer be able to edit the shed information, approve new users, or ban users.</h2>
+<div class="center">
+<a class="btn btn-primary" href="/sheds/{{shed.id}}/remove_admin/{{removeAdmin.user.username}}">Yes, remove this user as an admin.</a>    <a class="btn btn-default" href="/sheds/{{shed.id}}">No, return to shed page.</a>
+</div>
+
+{% endblock %}
