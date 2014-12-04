@@ -270,7 +270,7 @@ class ShedCreationForm(ModelForm):
         self.userAddress = self.profileObject.streetAddress + ", " + self.profileObject.city + ", " + self.profileObject.state + \
            " " + self.profileObject.sharezone
         super(ShedCreationForm, self).__init__(*args, **kwargs)
-        self.fields['location'] = forms.CharField(required=False, initial=self.userAddress, \
+        self.fields['location'] = forms.CharField(required=True, initial=self.userAddress, \
             help_text= 'The location of the shed.  Only visible to approved members.  Edit if not your own address.')
 
     class Meta:
@@ -305,7 +305,7 @@ class ShedEditForm(ModelForm):
         self.fields['minimum_reputation'] = forms.IntegerField(max_value=100, min_value=0, required=False, \
         help_text = 'The minimum reputation required for a user to join this shed. 0-100.', \
         initial=self.shedObject.minimumReputation)
-        self.fields['location_'] = forms.CharField(required=False, initial=self.shedObject.location, \
+        self.fields['location_'] = forms.CharField(required=True, initial=self.shedObject.location, \
             help_text= 'The location of the shed.  Only visible to approved members.  Edit if not your own address.')
 
     class Meta:

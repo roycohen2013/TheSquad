@@ -229,6 +229,7 @@ def view_current_profile(request, contextArg):
     else:
         currentUser = request.user
         userProfile = profileUtil.getProfileFromUser(currentUser)
+        print(userProfile.personalShed)
         reputation = profileUtil.getReputation(userProfile)
         timeCreated = userProfile.timeCreated
         streetAddress = profileUtil.getAddress(userProfile)
@@ -355,13 +356,13 @@ def view_shed_page(request, id, contextArg):#contextArg is a dict to be added to
         shedMembership = shedUtil.checkForMembership(userProfile, id)
         actions = actionUtil.getProfileAction(profileUtil.getProfileFromUser(request.user))
         actionRequest = None
+        pendingRequest = False
         for action in actions:
             if action.shed == shedObj:
                 actionRequest = action
         if actionRequest:
-            pendingRequest = True
-        else:
-            pendingRequest = False
+            if actionRequest.currrentState == "userShedRequest" or actionRequest.currrentState == "acceptDeny":
+                pendingRequest = True
         context = {}
         context.update(csrf(request))
         context['shed'] = shedObj
@@ -607,7 +608,7 @@ def remove_shed_member(request, id, username):
                     notifUtil.createBadInfoNotif(shedObj, banUser, "You have been removed as an admin from the shed " + shedObj.name + ". ")
                     shedUtil.removeMemberFromShed(shedObj, banUser)
                     notifUtil.createBadInfoNotif(shedObj, banUser, "You have been kicked from the shed " + shedObj.name + ". ")
-                    shedTools = toolUtil.getAllToolsInShed
+                    shedTools = toolUtil.getAllToolsInShed(shedObj)
                     for tool in shedTools:
                         if tool.owner == banUser:
                             shedUtil.removeToolFromShed(shedObj, tool)
@@ -648,7 +649,7 @@ def leave_shed(request, id):
         if shedObj.owner == userProfile:
             return HttpResponseRedirect('/')
         else:
-            shedObj = shedUtil.getAllAdminsOfShed(shedObj)
+            admins = shedUtil.getAllAdminsOfShed(shedObj)
             for admin in admins:
                 if admin == userProfile:
                     shedUtil.removeAdminFromShed(shedObj, userProfile)

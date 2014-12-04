@@ -33,6 +33,8 @@ def getShedByName(name):
 """
 def addToolToShed(shedObj, toolObj):
 	toolObj.myShed = shedObj
+	toolObj.save()
+	return toolObj
 
 
 """
@@ -40,6 +42,7 @@ def addToolToShed(shedObj, toolObj):
 """
 def removeToolFromShed(shedObj, toolObj):
 	toolObj.myShed = None
+	toolObj.save()
 	return shedObj
 
 

@@ -205,17 +205,17 @@ def processActions():
             if actionInstance.currrentState == "userShedRequest":
                 #send shed request notif to all admins of shed and the shed owner
                 adminList = shedUtil.getAllAdminsOfShed(actionInstance.shed)
-                print(adminList)
+                #print(adminList)
                 for admin in adminList:
-                    newAction = actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
-                    content = newAction.requester.user.username +  ' has requested to join your shed "' + \
-                                newAction.shed.name + '."'
+                    #newAction = actionUtil.createShedRequestAction(actionInstance.shed,actionInstance.requester)
+                    content = actionInstance.requester.user.username +  ' has requested to join your shed "' + \
+                                actionInstance.shed.name + '."'
                     userOptions = "Accept,Deny"
-                    utilities.notificationUtilities.createResponseNotif(newAction,admin,content,userOptions)
-                    newAction.currrentState = 'acceptDeny'
-                    newAction.save()
+                    utilities.notificationUtilities.createResponseNotif(actionInstance,admin,content,userOptions)
+                    #newAction.currrentState = 'acceptDeny'
+                    #newAction.save()
                 #move to acceptDeny state
-                actionInstance.currrentState = "idle"
+                actionInstance.currrentState = "acceptDeny"
                 actionInstance.save()
 
             elif actionInstance.currrentState == "acceptDeny":

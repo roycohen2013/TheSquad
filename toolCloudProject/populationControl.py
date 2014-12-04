@@ -58,6 +58,7 @@ for x in range(len(shedNames)):
 	newShed.admins.add(profileObjects[x])
 	newShed.save()
 	profileObjects[x].personalShed = newShed
+	profileObjects[x].save()
 	shedObjects.append(newShed)
 
 
